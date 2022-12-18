@@ -4,6 +4,11 @@ using UnityEngine;
 
 public abstract class Potion : Item
 {
-    public Rarity rarity { get; private set; }
+    [SerializeField] private Rarity rarity;
     public abstract void Use();
+
+    public Rarity GetRarity()
+    {
+        return rarity;
+    }
 }

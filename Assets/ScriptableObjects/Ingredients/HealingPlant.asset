@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Healing Plant
   icon: {fileID: 21300000, guid: e60f501bc556323499d8eb86b035fdc9, type: 3}
   price: 5
-  itemType: 2
+  description: 'Ingredient. Healing effect (5/10). '
   rarity: 1
   mainEffect:
     effect: {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}

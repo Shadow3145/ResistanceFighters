@@ -15,5 +15,6 @@ MonoBehaviour:
   itemName: Healing Potion
   icon: {fileID: 21300000, guid: 4817fe8a973d8f94389e5fe736552e4d, type: 3}
   price: 20
-  itemType: 1
+  description: Potion. Restores 10 HP.
+  rarity: 1
   value: 10

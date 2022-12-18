@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class AlchemyTable : MonoBehaviour
 {
     [SerializeField] private List<PotionRecipe> recipes; 
@@ -39,6 +40,8 @@ public class AlchemyTable : MonoBehaviour
 
     public void Craft()
     {
+        if (ingredients.Count == 0)
+            return;
         ConsumeIngredients();
         List<Potion> potions = GetCraftablePotions();
         ClearTable();
@@ -89,7 +92,7 @@ public class AlchemyTable : MonoBehaviour
                 continue;
             }
 
-            if (pot.rarity > potion.rarity)
+            if (pot.GetRarity() > potion.GetRarity())
                 potion = pot;
         }
 

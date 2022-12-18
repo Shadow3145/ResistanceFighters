@@ -28,6 +28,7 @@ public class Tooltip : MonoBehaviour
     {
         header.text = "";
         icon.color = new Color(1f, 1f, 1f, 0f);
+        description.text = "";
     }
 
     private void SetIcon(Sprite icon)
