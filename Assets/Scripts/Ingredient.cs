@@ -27,7 +27,9 @@ public class Ingredient : Item
 
     public List<IngredientEffect> GetEffects()
     {
-        List<IngredientEffect> effects = secondaryEffects;
+        List<IngredientEffect> effects = new List<IngredientEffect>();
+        foreach (IngredientEffect e in secondaryEffects)
+            effects.Add(e);
         effects.Add(mainEffect);
         return effects;
     }
