@@ -44,12 +44,13 @@ public class AlchemyTable : MonoBehaviour
         ClearTable();
         if (potions.Count == 0)
         {
-            Debug.Log("This is not a potion.");
+            CraftingMessage.instance.Show();
             return;
         }
         Potion potion = GetPotionOfHighestRarity(potions);
         int index = ItemManager.instance.GetIndex(potion);
         InventoryItem potionItem = new InventoryItem(index, ItemType.Potion);
+        CraftingMessage.instance.Show(potionItem);
         Inventory.instance.AddItem(potionItem);
 
         //TODO: Add recipe to recipes
