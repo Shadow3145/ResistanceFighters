@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "SO/Alchemy/PotionRecipe")]
 public class PotionRecipe : ScriptableObject
 {
-    private List<Ingredient> requiredIngredients;
-    private int amountOfIngredients;
+    [SerializeField] private List<Ingredient> requiredIngredients;
+    [SerializeField] private int amountOfIngredients;
 
-    private List<IngredientEffect> effects;
+    [SerializeField] private List<IngredientEffect> effects;
 
-    private Potion result;
+    [SerializeField] private Potion result;
 
 
     private bool HasIngredients(List<Ingredient> ingredients)
@@ -32,11 +33,11 @@ public class PotionRecipe : ScriptableObject
             {
                 foreach (IngredientEffect eff in ingredient.GetEffects())
                 {
-                    if (effect.effect == eff.effect)
-                        strength += eff.effectStrenght;
+                    if (effect.GetEffect() == eff.GetEffect())
+                        strength += eff.GetEffectStrength();
                 }
             }
-            if (strength < effect.effectStrenght)
+            if (strength < effect.GetEffectStrength())
                 return false;
         }
         return true;

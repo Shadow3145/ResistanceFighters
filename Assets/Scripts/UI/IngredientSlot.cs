@@ -18,7 +18,7 @@ public class IngredientSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 
         //TODO: set ingredient
         AlchemyTable.instance.AddIngredient(ingredient);
-        icon.sprite = ingredient.icon;
+        icon.sprite = ingredient.GetIcon();
     }
 
     public void OnPointerClick(PointerEventData eventData)

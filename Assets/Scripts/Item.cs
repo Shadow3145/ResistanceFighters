@@ -3,52 +3,45 @@ using UnityEngine;
 
 public class Item : ScriptableObject, IEquatable<Item>
 {
-    [SerializeField] public float price { get; protected set; }
-    [SerializeField] public string itemName { get; protected set; }
-    [SerializeField] public Sprite icon { get; protected set; }
+    [SerializeField] protected string itemName;
+    [SerializeField] protected Sprite icon;
+    [SerializeField] protected float price;
 
-    protected int ownedAmount = 0;
+    [SerializeField] protected ItemType itemType;
 
-    private float Sell(int amount)
+    public Item()
     {
-        if (!HasEnough(amount))
-        {
-            Debug.Log("Don't have enough");
-            return 0f;
-        }
 
-        Consume(amount);
-
-        return price * amount;
+    }
+    public Item(string name, float price, Sprite icon)
+    {
+        itemName = name;
+        this.price = price;
+        this.icon = icon;
     }
 
-    public void Consume(int amount)
+    public Item(Item item)
     {
-        if (HasEnough(amount))
-            ownedAmount -= amount;
+        itemName = item.name;
+        icon = item.icon;
+        price = item.price;
     }
 
-    private bool HasEnough(int amount)
+    public Sprite GetIcon()
     {
-        return ownedAmount >= amount;
+        return icon;
     }
 
-    public void Add(int amount)
+    public string GetName()
     {
-        ownedAmount += amount;
+        return itemName;
     }
-
-    public int GetAmount()
-    {
-        return ownedAmount;
-    }
-
+ 
     public bool Equals(Item other)
     {
         if (other == null)
             return false;
 
-        return this.itemName == other.itemName;
-        
+        return this.itemName == other.itemName;        
     }
 }

@@ -38,14 +38,20 @@ public class AlchemyTable : MonoBehaviour
         }
 
         Potion potion = GetPotionOfHighestRarity(potions);
-        Inventory.instance.AddItem(potion);
+        int index = ItemManager.instance.GetIndex(potion);
+        InventoryItem potionItem = new InventoryItem(index, ItemType.Potion);
+        Inventory.instance.AddItem(potionItem);
         //TODO: Add recipe to recipes
     }
 
     private void ConsumeIngredients()
     {
         foreach (Ingredient ingredient in ingredients)
-            Inventory.instance.RemoveItem(ingredient);
+        {
+            int index = ItemManager.instance.GetIndex(ingredient);
+            InventoryItem ingredientItem = new InventoryItem(index, ItemType.Ingredient);
+            Inventory.instance.ConsumeItem(ingredientItem);
+        }
     }
 
     private List<Potion> GetCraftablePotions()

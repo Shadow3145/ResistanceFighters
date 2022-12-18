@@ -12,10 +12,27 @@ public enum EffectType
     Debuff,
     Misc
 }
-
-public class Effect : MonoBehaviour
+[CreateAssetMenu(menuName = "SO/Alchemy/Effect")]
+[System.Serializable]
+public class Effect : ScriptableObject
 {
-    public EffectType effectType { get; private set; }
-    public string effectName { get; private set; }
-    public string effectDescription { get; private set; }
+    [SerializeField] private EffectType effectType;
+    [SerializeField] private string effectName;
+    [SerializeField] private string effectDescription;
+
+    public EffectType GetEffectType()
+    {
+        return effectType;
+    }
+
+    public string GetEffectName()
+    {
+        return effectName;
+    }
+
+    public string GetEffectDescription()
+    {
+        return effectDescription;
+    }
+
 }

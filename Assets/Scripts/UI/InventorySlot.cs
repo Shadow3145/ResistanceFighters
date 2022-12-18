@@ -5,29 +5,38 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    public int itemIndex;
+    private DragDrop dragDrop;
+
+    private void Start()
+    {
+        dragDrop = FindObjectOfType<DragDrop>();
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        dragDrop.SetItem(Inventory.instance.GetItemAtIndex(itemIndex));
+        dragDrop.transform.position = eventData.position;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        dragDrop.GetComponent<RectTransform>().position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        dragDrop.ResetItem();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //TODO: Show tooltip
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //TODO: Hide tooltip 
     }
 }
-}
+

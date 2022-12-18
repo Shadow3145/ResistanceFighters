@@ -1,9 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class IngredientEffect : MonoBehaviour
+[System.Serializable]
+public class IngredientEffect
 {
-    public Effect effect { get; private set; }
-    public float effectStrenght { get; private set; }
+    [SerializeField] private Effect effect;
+    [SerializeField] private float effectStrenght;
+
+    public Effect GetEffect()
+    {
+        return effect;
+    }
+
+    public float GetEffectStrength()
+    {
+        return effectStrenght;
+    }
 }

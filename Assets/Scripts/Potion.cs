@@ -5,9 +5,5 @@ using UnityEngine;
 public abstract class Potion : Item
 {
     public Rarity rarity { get; private set; }
-    public virtual void Use()
-    {
-        ownedAmount--;
-        //TODO: do effect of the potion
-    }
+    public abstract void Use();
 }
