@@ -6,8 +6,8 @@ public class Item : ScriptableObject, IEquatable<Item>
     [SerializeField] protected string itemName;
     [SerializeField] protected Sprite icon;
     [SerializeField] protected float price;
-
     [SerializeField] protected ItemType itemType;
+    [SerializeField] protected string description;
 
     public Item()
     {
@@ -44,4 +44,11 @@ public class Item : ScriptableObject, IEquatable<Item>
 
         return this.itemName == other.itemName;        
     }
+
+    public virtual string GetDescription()
+    {
+        return description;
+    }
+
+
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StrongHealingPotion
   m_EditorClassIdentifier: 
   itemName: Strong Healing Potion
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4dca8a5cf301c7747a9545eff18a5484, type: 3}
   price: 40
   itemType: 1
   value: 25

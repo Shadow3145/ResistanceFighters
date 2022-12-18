@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AlchemyTable : MonoBehaviour
 {
-    [SerializeField] private List<PotionRecipe> recipes;
+    [SerializeField] private List<PotionRecipe> recipes; 
 
     public static AlchemyTable instance;
 
@@ -13,7 +13,10 @@ public class AlchemyTable : MonoBehaviour
     private void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            ingredients = new List<Ingredient>();
+        }
     }
 
     public void AddIngredient(Ingredient ingredient)

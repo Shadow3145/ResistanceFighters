@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[System.Serializable]
 public class InventoryItem : IEquatable<InventoryItem>
 {
-    private int index;
-    private ItemType itemType;
-    private int amount;
+    [SerializeField]private int index;
+    [SerializeField] private ItemType itemType;
+    [SerializeField] private int amount;
 
     public InventoryItem(int index, ItemType itemType, int amount = 1)
     {
@@ -45,19 +46,32 @@ public class InventoryItem : IEquatable<InventoryItem>
     {
         return (index == other.index && itemType == other.itemType);
     }
+
+    public Item GetItem()
+    {
+       return ItemManager.instance.GetItem(this);
+    }
 }
 
 public class Inventory : MonoBehaviour
 {
     public static Inventory instance;
 
-    private List<InventoryItem> inventoryItems = new List<InventoryItem>();
+    [SerializeField] private List<InventoryItem> inventoryItems = new List<InventoryItem>();
+
+    private InventorySlot[] inventorySlots;
 
     private void Awake()
     {
         if (instance == null)
             instance = this;
     }
+
+    private void Start()
+    {
+        inventorySlots = FindObjectsOfType<InventorySlot>();
+    }
+
 
     public void AddItem(InventoryItem item)
     {
@@ -68,6 +82,8 @@ public class Inventory : MonoBehaviour
         }
 
         inventoryItems.Add(item);
+        AddItemToUI(inventoryItems.Count - 1);
+
     }
 
     public void ConsumeItem(InventoryItem item)
@@ -83,11 +99,33 @@ public class Inventory : MonoBehaviour
             inventoryItems[index].Consume(item.GetAmount());        
     }
 
-    public InventoryItem GetItemAtIndex(int index)
+    public InventoryItem GetInventoryItem(int index)
     {
         if (index < 0 || index >= inventoryItems.Count)
             return null;
         
         return inventoryItems[index];
+    }
+
+    public Item GetItem(int index)
+    {
+        InventoryItem invItem = GetInventoryItem(index);
+        if (invItem == null)
+            return null;
+
+        return invItem.GetItem();
+    }
+
+    private void AddItemToUI(int index)
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.itemIndex != -1)
+                continue;
+
+            slot.itemIndex = index;
+            slot.SetIcon();
+            return;
+        }
     }
 }

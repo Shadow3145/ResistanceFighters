@@ -16,7 +16,7 @@ public class IngredientSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
         if (ingredient != null)
             AlchemyTable.instance.RemoveIngredient(ingredient);
 
-        //TODO: set ingredient
+        SetItem(eventData.pointerDrag.GetComponent<InventorySlot>().GetItem());
         AlchemyTable.instance.AddIngredient(ingredient);
         icon.sprite = ingredient.GetIcon();
     }
@@ -26,5 +26,10 @@ public class IngredientSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
         AlchemyTable.instance.RemoveIngredient(ingredient);
         ingredient = null;
         icon.sprite = defaultIcon;
+    }
+
+    private void SetItem(InventoryItem item)
+    {
+        ingredient = item.GetItem() as Ingredient;
     }
 }

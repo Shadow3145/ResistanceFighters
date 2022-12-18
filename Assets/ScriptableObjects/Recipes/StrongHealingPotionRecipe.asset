@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fa5b5086e08e0a4684fc689435257af, type: 3}
-  m_Name: HealingPotionRecipe
+  m_Name: StrongHealingPotionRecipe
   m_EditorClassIdentifier: 
   requiredIngredients:
   - {fileID: 11400000, guid: 7373ae1f9f0d69747807ba2b9660aff8, type: 2}
@@ -19,5 +19,5 @@ MonoBehaviour:
   amountOfIngredients: 2
   effects:
   - effect: {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
-    effectStrenght: 6
+    effectStrenght: 8
   result: {fileID: 11400000, guid: a123b9380d9ce9743af79a2d5d0beee0, type: 2}

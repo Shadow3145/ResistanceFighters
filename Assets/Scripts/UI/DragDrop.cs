@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class DragDrop : MonoBehaviour
 {
     private InventoryItem dragItem = null;
-    [SerializeField] private Sprite defaultImage;
 
     public void SetItem(InventoryItem item)
     {
@@ -16,7 +15,6 @@ public class DragDrop : MonoBehaviour
     public void ResetItem()
     {
         dragItem = null;
-        GetComponent<Image>().sprite = defaultImage;
         GetComponent<CanvasGroup>().alpha = 0;
     }
 }
