@@ -57,7 +57,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory instance;
 
-    [SerializeField] private List<InventoryItem> inventoryItems = new List<InventoryItem>();
+    private List<InventoryItem> inventoryItems;
 
     private InventorySlot[] inventorySlots;
 
@@ -70,6 +70,14 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         inventorySlots = FindObjectsOfType<InventorySlot>();
+        inventoryItems = new List<InventoryItem>();
+        for (int i = 0; i < inventorySlots.Length; i++)
+            inventoryItems.Add(null);
+        for (int i = 0; i < 3; i++)
+        {
+            inventoryItems[i] = new InventoryItem(i, ItemType.Ingredient, 10);
+            AddItemToUI(i);
+        }
     }
 
 
@@ -77,12 +85,15 @@ public class Inventory : MonoBehaviour
     {
         if (inventoryItems.Contains(item))
         {
-            inventoryItems[inventoryItems.IndexOf(item)].Add(item.GetAmount());
+            int index = inventoryItems.IndexOf(item);
+            inventoryItems[index].Add(item.GetAmount());
+            ChangeAmountInUI(index);
             return;
         }
 
-        inventoryItems.Add(item);
-        AddItemToUI(inventoryItems.Count - 1);
+        int i = FindFreeIndex();
+        inventoryItems[i] = item;
+        AddItemToUI(i);
 
     }
 
@@ -94,9 +105,15 @@ public class Inventory : MonoBehaviour
         int index = inventoryItems.IndexOf(item);
 
         if (inventoryItems[index].GetAmount() <= item.GetAmount())
-            inventoryItems.Remove(item);
+        {
+            inventoryItems[index] = null;
+            RemoveItemFromUI(index);
+        }
         else
-            inventoryItems[index].Consume(item.GetAmount());        
+        {
+            inventoryItems[index].Consume(item.GetAmount());
+            ChangeAmountInUI(index);
+        }
     }
 
     public InventoryItem GetInventoryItem(int index)
@@ -124,8 +141,43 @@ public class Inventory : MonoBehaviour
                 continue;
 
             slot.itemIndex = index;
-            slot.SetIcon();
+            slot.AddItem();
             return;
         }
+    }
+
+    private void ChangeAmountInUI(int index)
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.itemIndex == index)
+            {
+                slot.SetAmount();
+                return;
+            }
+        }
+    }
+
+    private void RemoveItemFromUI(int index)
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.itemIndex == index)
+            {
+                slot.RemoveItem();
+                return;
+            }
+        }
+    }
+
+    private int FindFreeIndex()
+    {
+        for (int i = 0; i < inventoryItems.Count; i++)
+        {
+            if (inventoryItems[i] == null)
+                return i;
+        }
+
+        return -1;
     }
 }

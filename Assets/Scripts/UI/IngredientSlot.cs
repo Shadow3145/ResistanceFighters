@@ -24,12 +24,17 @@ public class IngredientSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         AlchemyTable.instance.RemoveIngredient(ingredient);
-        ingredient = null;
-        icon.sprite = defaultIcon;
+        Reset();
     }
 
     private void SetItem(InventoryItem item)
     {
         ingredient = item.GetItem() as Ingredient;
+    }
+
+    public void Reset()
+    {
+        ingredient = null;
+        icon.sprite = defaultIcon;
     }
 }

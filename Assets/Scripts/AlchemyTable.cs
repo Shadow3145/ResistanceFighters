@@ -10,6 +10,8 @@ public class AlchemyTable : MonoBehaviour
 
     private List<Ingredient> ingredients;
 
+    private IngredientSlot[] slots;
+
     private void Awake()
     {
         if (instance == null)
@@ -17,6 +19,11 @@ public class AlchemyTable : MonoBehaviour
             instance = this;
             ingredients = new List<Ingredient>();
         }
+    }
+
+    private void Start()
+    {
+        slots = FindObjectsOfType<IngredientSlot>();
     }
 
     public void AddIngredient(Ingredient ingredient)
@@ -34,16 +41,17 @@ public class AlchemyTable : MonoBehaviour
     {
         ConsumeIngredients();
         List<Potion> potions = GetCraftablePotions();
+        ClearTable();
         if (potions.Count == 0)
         {
             Debug.Log("This is not a potion.");
             return;
         }
-
         Potion potion = GetPotionOfHighestRarity(potions);
         int index = ItemManager.instance.GetIndex(potion);
         InventoryItem potionItem = new InventoryItem(index, ItemType.Potion);
         Inventory.instance.AddItem(potionItem);
+
         //TODO: Add recipe to recipes
     }
 
@@ -85,5 +93,13 @@ public class AlchemyTable : MonoBehaviour
         }
 
         return potion;
+    }
+
+    private void ClearTable()
+    {
+        ingredients.Clear();
+
+        foreach (IngredientSlot slot in slots)
+            slot.Reset();
     }
 }

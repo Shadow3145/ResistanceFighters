@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public int itemIndex = -1;
     [SerializeField] private Image itemIcon;
     [SerializeField] private Sprite defaultIcon;
+    [SerializeField] private GameObject amount;
+    private TextMeshProUGUI amountText;
 
     private DragDrop dragDrop;
 
@@ -16,11 +19,12 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         dragDrop = FindObjectOfType<DragDrop>();
         SetIcon();
+        SetAmount();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (itemIndex == -1)
+        if (itemIndex == -1 || Inventory.instance.GetInventoryItem(itemIndex).GetItemType() != ItemType.Ingredient)
         {
             eventData = null;
             return;
@@ -31,7 +35,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (itemIndex == -1)
+        if (itemIndex == -1 || Inventory.instance.GetInventoryItem(itemIndex).GetItemType() != ItemType.Ingredient)
         {
             eventData = null;
             return;
@@ -57,7 +61,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Tooltip.instance.HideItemTooltip();
     }
 
-    public void SetIcon()
+    private void SetIcon()
     {
         Item item = Inventory.instance.GetItem(itemIndex);
         itemIcon.sprite = item == null
@@ -65,9 +69,34 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             : item.GetIcon();
     }
 
+    public void SetAmount()
+    {
+        if (itemIndex == -1)
+        {
+            amount.SetActive(false);
+            return;
+        }
+        amount.SetActive(true);
+        amountText = amount.GetComponentInChildren<TextMeshProUGUI>();
+        amountText.text = GetItem().GetAmount().ToString();
+    }
+
     public InventoryItem GetItem()
     {
         return Inventory.instance.GetInventoryItem(itemIndex);
+    }
+
+    public void AddItem()
+    {
+        SetIcon();
+        SetAmount();
+    }
+
+    public void RemoveItem()
+    {
+        itemIndex = -1;
+        SetIcon();
+        amount.SetActive(false);
     }
 }
 
