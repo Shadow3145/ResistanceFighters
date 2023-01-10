@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 439dc7b8d02df7d41a9293b976715c84
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - defaultCommon: {instanceID: 0}
+  - defaultRare: {instanceID: 0}
+  - defaultEpic: {instanceID: 0}
+  - common: {fileID: 11400000, guid: 42f29872ad18c9549985ca39c03b1faa, type: 2}
+  - rare: {instanceID: 0}
+  - epic: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

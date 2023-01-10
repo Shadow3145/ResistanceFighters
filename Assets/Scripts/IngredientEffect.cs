@@ -4,7 +4,13 @@ using UnityEngine;
 public class IngredientEffect
 {
     [SerializeField] private Effect effect;
-    [SerializeField] private float effectStrenght;
+    [SerializeField] private float effectStrength;
+
+    public IngredientEffect(Effect effect, float effectStrength)
+    {
+        this.effect = effect;
+        this.effectStrength = effectStrength;
+    }
 
     public Effect GetEffect()
     {
@@ -13,6 +19,6 @@ public class IngredientEffect
 
     public float GetEffectStrength()
     {
-        return effectStrenght;
+        return effectStrength;
     }
 }

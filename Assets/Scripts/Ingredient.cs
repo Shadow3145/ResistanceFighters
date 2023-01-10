@@ -1,13 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Rarity : int
-{
-    Common = 1,
-    Rare = 2,
-    Epic = 3
-}
-
 [CreateAssetMenu(menuName = "SO/Alchemy/Ingredient")]
 public class Ingredient : Item
 {
@@ -23,6 +16,16 @@ public class Ingredient : Item
         this.rarity = rarity;
         this.mainEffect = main;
         this.secondaryEffects = effects;
+    }
+
+    public Ingredient Init(float price, Rarity rarity, IngredientEffect main, List<IngredientEffect> effects)
+    {
+        this.price = price;
+        this.rarity = rarity;
+        this.mainEffect = main;
+        this.secondaryEffects = effects;
+
+        return this;
     }
 
     public List<IngredientEffect> GetEffects()

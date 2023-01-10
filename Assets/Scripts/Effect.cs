@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum EffectType
 {
+    None,
     Restoration,
     Immunity,
     Cure,
