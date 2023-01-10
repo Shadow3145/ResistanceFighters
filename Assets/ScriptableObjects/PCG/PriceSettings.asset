@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d6ad35dbd7286448a9303b4afe115e, type: 3}
-  m_Name: Antibleed
+  m_Script: {fileID: 11500000, guid: 817e8c598307ef146bcff070c8e150f2, type: 3}
+  m_Name: PriceSettings
   m_EditorClassIdentifier: 
-  effectType: 2
-  effectName: Antibleed
-  effectDescription: Grants immunity against bleeding for some time period.
+  rarityPriceBase:
+  - 0.05
+  - 0.1
+  - 0.5
+  amountMod: 0.02
+  primaryStrengthMod: 0.005
+  secondaryStrengthMod: 0.0025

@@ -21,13 +21,15 @@ public class RaritySettings : ScriptableObject
     [SerializeField] private float minPrimaryValue;
     [SerializeField] private float maxPrimaryValue;
 
-    public RaritySettings(List<float> amountProbabilities, float minSumValue, float maxSumValue, float minPrimaryValue, float maxPrimaryValue)
+    public RaritySettings Init(List<float> amountProbabilities, float minSumValue, float maxSumValue, float minPrimaryValue, float maxPrimaryValue)
     {
         this.amountProbabilities = amountProbabilities;
         this.minSumValue = minSumValue;
         this.maxSumValue = maxSumValue;
         this.minPrimaryValue = minPrimaryValue;
         this.maxPrimaryValue = maxPrimaryValue;
+
+        return this;
     }
 
     public float GetProbability(int index)
@@ -45,30 +47,5 @@ public class RaritySettings : ScriptableObject
     public (float, float) GetPrimaryValueRange()
     {
         return (minPrimaryValue, maxPrimaryValue);
-    }
-
-    public void SetProbability(int index, float val)
-    {
-        amountProbabilities[index] = val;
-    }
-
-    public void SetMinSum(float val)
-    {
-        minSumValue = val;
-    }
-
-    public void SetMaxSum(float val)
-    {
-        maxSumValue = val;
-    }
-
-    public void SetMinPrimary(float val)
-    {
-        minPrimaryValue = val;
-    }
-
-    public void SetMaxPrimary(float val)
-    {
-        maxPrimaryValue = val;
     }
 }

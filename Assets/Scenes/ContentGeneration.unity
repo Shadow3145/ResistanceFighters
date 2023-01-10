@@ -252,18 +252,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 342035a33cbd1c74b966a9ff300e9907, type: 2}
   - {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
   effectTypeRules:
-  - effects: 
-  - effects: 
-  - effects: 
-  - effects: 
-  - effects: 
-  - effects: 
-  raritySettings:
-  - {fileID: 11400000, guid: 42f29872ad18c9549985ca39c03b1faa, type: 2}
-  - {fileID: 11400000, guid: d77a347f9352f054ba756748f7c6c3fc, type: 2}
-  - {fileID: 11400000, guid: 8d92b548f3a12024e93492ec09db2dca, type: 2}
-  rareProbability: 0
-  epicProbability: 0
+  - effects: 0100000002000000
+  - effects: 0100000003000000
+  - effects: 0100000005000000
+  - effects: 0200000003000000
+  - effects: 0200000005000000
+  - effects: 0300000005000000
+  - effects: 0600000004000000
+  - effects: 020000000300000005000000
+  - effects: 0100000007000000
+  - effects: 0200000007000000
+  - effects: 0300000007000000
+  - effects: 030000000700000002000000
+  defaultConfig: {fileID: 11400000, guid: 7b6f3b2d1158b9c4793111783bb9267c, type: 2}
+  priceSettings: {fileID: 11400000, guid: a8691d9fe46eea2439e4fc43f42deada, type: 2}
 --- !u!4 &1979474028
 Transform:
   m_ObjectHideFlags: 0

@@ -6,8 +6,9 @@ public class Item : ScriptableObject, IEquatable<Item>
     [SerializeField] protected string itemName;
     [SerializeField] protected Sprite icon;
     [SerializeField] protected float price;
-   // [SerializeField] protected ItemType itemType;
+
     [SerializeField] protected string description;
+    [SerializeField] protected float dropProbability;
 
     public Item()
     {

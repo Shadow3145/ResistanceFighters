@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d6ad35dbd7286448a9303b4afe115e, type: 3}
   m_Name: Regeneration
   m_EditorClassIdentifier: 
-  effectType: 0
+  effectType: 1
   effectName: Regeneration
   effectDescription: Restores health of target unit every few seconds.

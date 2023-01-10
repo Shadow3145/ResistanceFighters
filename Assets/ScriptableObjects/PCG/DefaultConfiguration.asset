@@ -18,3 +18,4 @@ MonoBehaviour:
   amountToGenerate: 20
   rareProbability: 0.35
   epicProbability: 0.15
+  folderPath: Assets/ScriptableObjects/Ingredients/Generated

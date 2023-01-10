@@ -16,7 +16,7 @@ MonoBehaviour:
   - 0.7
   - 0.3
   - 0
-  minSumValue: 5
-  maxSumValue: 0
-  minPrimaryValue: 0
-  maxPrimaryValue: 0
+  minSumValue: 7
+  maxSumValue: 12
+  minPrimaryValue: 5
+  maxPrimaryValue: 8

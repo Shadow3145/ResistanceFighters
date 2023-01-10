@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d6ad35dbd7286448a9303b4afe115e, type: 3}
   m_Name: SlowDown
   m_EditorClassIdentifier: 
-  effectType: 5
+  effectType: 6
   effectName: Slow Down
   effectDescription: Decreases the defense of the target.

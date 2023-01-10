@@ -9,10 +9,8 @@ public class EditorScript : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        if (GUILayout.Button("Test"))
-            ProceduralGenerationManager.Test();
-        else if (GUILayout.Button("Delete Generated"))
-            ProceduralGenerationManager.Delete();
+        if (GUILayout.Button("Delete Generated"))
+            ProceduralGenerationManager.DeleteDefault();
         else if (GUILayout.Button("Open Generator Window"))
             ContentGeneratorEditorWindow.ShowWindow();
     }

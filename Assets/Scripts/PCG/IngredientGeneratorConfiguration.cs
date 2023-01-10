@@ -14,4 +14,6 @@ public class IngredientGeneratorConfiguration : ScriptableObject
 
     [Range(0, 1)] public float rareProbability;
     [Range(0,1)] public float epicProbability;
+
+    public string folderPath;
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d6ad35dbd7286448a9303b4afe115e, type: 3}
   m_Name: Bleeding
   m_EditorClassIdentifier: 
-  effectType: 3
+  effectType: 4
   effectName: Bleeding
   effectDescription: Makes the target unit bleed when wounded.

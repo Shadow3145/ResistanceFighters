@@ -8,7 +8,7 @@ public class Ingredient : Item
     [SerializeField] private IngredientEffect mainEffect;
     [SerializeField] private List<IngredientEffect> secondaryEffects;
 
-    public Ingredient(string name, float price, Sprite icon, Rarity rarity, IngredientEffect main, List<IngredientEffect> effects)
+    public Ingredient(string name, float price, Sprite icon, Rarity rarity, IngredientEffect main, List<IngredientEffect> effects, float dropProbability)
     {
         this.itemName = name;
         this.price = price;
@@ -16,14 +16,16 @@ public class Ingredient : Item
         this.rarity = rarity;
         this.mainEffect = main;
         this.secondaryEffects = effects;
+        this.dropProbability = dropProbability;
     }
 
-    public Ingredient Init(float price, Rarity rarity, IngredientEffect main, List<IngredientEffect> effects)
+    public Ingredient Init(float price, Rarity rarity, IngredientEffect main, List<IngredientEffect> effects, float dropProbability)
     {
         this.price = price;
         this.rarity = rarity;
         this.mainEffect = main;
         this.secondaryEffects = effects;
+        this.dropProbability = dropProbability;
 
         return this;
     }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d6ad35dbd7286448a9303b4afe115e, type: 3}
   m_Name: PoisonCure
   m_EditorClassIdentifier: 
-  effectType: 2
+  effectType: 3
   effectName: PoisonCure
   effectDescription: Cures the character if they are poisoned.
