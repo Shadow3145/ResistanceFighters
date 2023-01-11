@@ -25,8 +25,9 @@ public class ProceduralGenerationManager : MonoBehaviour
     [SerializeField] private List<EffectTypeCombo> effectTypeRules;
     [SerializeField] private IngredientGeneratorConfiguration defaultConfig;
     [SerializeField] private PriceSettings priceSettings;
+    [SerializeField] private DropProbabilitySettings dropProbabilitySettings;
 
-    private IngredientGeneratorConfiguration config;
+    private IngredientGeneratorConfiguration config; 
     private int amountOfGenerated;
 
     public void GenerateIngredients(IngredientGeneratorConfiguration config)
@@ -56,8 +57,9 @@ public class ProceduralGenerationManager : MonoBehaviour
         IngredientEffect mainEffect = new IngredientEffect(primaryEffect, strength);
         List<IngredientEffect> secondaryEffects = GetSecondaryIngredientEffects(amount, effectTypes, rarity, mainEffect);
         float price = GetPrice(rarity, mainEffect, secondaryEffects);
+        float dropProbability = GetDropProbability(rarity, mainEffect, secondaryEffects);
 
-        return ScriptableObject.CreateInstance<Ingredient>().Init(price, rarity, mainEffect, secondaryEffects, 0.5f);
+        return ScriptableObject.CreateInstance<Ingredient>().Init(price, rarity, mainEffect, secondaryEffects, dropProbability);
     }
 
     public static void Delete(string folderPath)
@@ -250,5 +252,23 @@ public class ProceduralGenerationManager : MonoBehaviour
         }
 
         return (float) Math.Round(price, 3);
+    }
+
+    private float GetDropProbability(Rarity rarity, IngredientEffect main, List<IngredientEffect> secondary)
+    {
+        float probability = dropProbabilitySettings.GetBaseProbability((int)rarity);
+
+        float mainMod = Mathf.Pow(dropProbabilitySettings.GetPrimaryMod(), main.GetEffectStrength()/2f);
+        float amountMod = Mathf.Pow(dropProbabilitySettings.GetAmountMod(), secondary.Count);
+        float secondarySum = 0f;
+        foreach (IngredientEffect iEffect in secondary)
+        {
+            secondarySum += iEffect.GetEffectStrength();
+        }
+        float secondaryMod = Mathf.Pow(dropProbabilitySettings.GetSecondaryMod(), secondarySum/2f);
+
+        probability *= mainMod * amountMod * secondaryMod;
+
+        return (float)Math.Round(probability, 2);
     }
 }
