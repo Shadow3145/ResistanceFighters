@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: HealingPotionRecipe
   m_EditorClassIdentifier: 
   requiredIngredients:
-  - {fileID: 11400000, guid: 7373ae1f9f0d69747807ba2b9660aff8, type: 2}
-  - {fileID: 11400000, guid: 55c1e6c87c067a946ab72864851bf0e7, type: 2}
-  - {fileID: 11400000, guid: ea5864815e841d1458f0f2a9d7eed86d, type: 2}
+  - {fileID: 11400000, guid: 9c83e9761c576ed4aa940445b6522d89, type: 2}
+  - {fileID: 11400000, guid: 40759f9ea138cf0458316dd31ad91cb9, type: 2}
+  - {fileID: 11400000, guid: 9a4467be8585d0c4982ada6f816eef05, type: 2}
+  - {fileID: 11400000, guid: 42a5bfedcde23a7479ab574def88e80f, type: 2}
   amountOfIngredients: 2
   effects:
   - effect: {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
-    effectStrenght: 6
+    effectStrength: 12
   result: {fileID: 11400000, guid: a123b9380d9ce9743af79a2d5d0beee0, type: 2}

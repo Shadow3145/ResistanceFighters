@@ -17,12 +17,15 @@ public class EffectTypeCombo
     {
         return effects;
     }
+
+    public bool Contains(EffectType effectType)
+    {
+        return effects.Contains(effectType);
+    }
 }
-public class ProceduralGenerationManager : MonoBehaviour
+public class IngredientGenerator : MonoBehaviour
 {
     [Header("Database")]
-    [SerializeField] private List<Effect> effects;
-    [SerializeField] private List<EffectTypeCombo> effectTypeRules;
     [SerializeField] private IngredientGeneratorConfiguration defaultConfig;
     [SerializeField] private PriceSettings priceSettings;
     [SerializeField] private DropProbabilitySettings dropProbabilitySettings;
@@ -91,7 +94,7 @@ public class ProceduralGenerationManager : MonoBehaviour
     private int GetAmountOfEffects(Rarity rarity)
     {
         float rand = UnityEngine.Random.Range(0f, 1f);
-        RaritySettings settings = GetRaritySettings(rarity);
+        IngredientRaritySettings settings = GetRaritySettings(rarity);
 
 
         if (rand < settings.GetProbability(0))
@@ -122,7 +125,7 @@ public class ProceduralGenerationManager : MonoBehaviour
     private EffectTypeCombo GetComboOfSize(int size)
     {
         List<EffectTypeCombo> combos = new List<EffectTypeCombo>();
-        foreach (EffectTypeCombo etc in effectTypeRules)
+        foreach (EffectTypeCombo etc in GetComponentInParent<AlchemyGeneratorManager>().effectTypeRules)
         {
             if (etc.GetSize() == size)
                 combos.Add(etc);
@@ -136,7 +139,7 @@ public class ProceduralGenerationManager : MonoBehaviour
         int rand = UnityEngine.Random.Range(0, effectTypes.Count);
         EffectType type = effectTypes[rand];
 
-        List<Effect> eff = effects.FindAll(e => e.GetEffectType() == type);
+        List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type);
         rand = UnityEngine.Random.Range(0, eff.Count);
 
         return eff[rand];
@@ -149,7 +152,7 @@ public class ProceduralGenerationManager : MonoBehaviour
         {
             int rand = UnityEngine.Random.Range(0, effectTypes.Count);
             EffectType type = effectTypes[rand];
-            List<Effect> eff = effects.FindAll(e => e.GetEffectType() == type && !usedEffects.Contains(e));
+            List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type && !usedEffects.Contains(e));
             if (eff.Count > 0)
             {
                 rand = UnityEngine.Random.Range(0, eff.Count);
@@ -163,14 +166,14 @@ public class ProceduralGenerationManager : MonoBehaviour
 
     private float GetPrimaryEffectStrenght(Rarity rarity)
     {
-        RaritySettings raritySettings = GetRaritySettings(rarity);
+        IngredientRaritySettings raritySettings = GetRaritySettings(rarity);
         (float min, float max) range = raritySettings.GetPrimaryValueRange();
         float strength = UnityEngine.Random.Range(range.min, range.max);
 
         return (float)Math.Round(strength, 1);
     }
 
-    private RaritySettings GetRaritySettings(Rarity rarity)
+    private IngredientRaritySettings GetRaritySettings(Rarity rarity)
     {
         switch (rarity)
         {
@@ -220,7 +223,7 @@ public class ProceduralGenerationManager : MonoBehaviour
     {
         List<float> values = new List<float>();
         
-        RaritySettings raritySettings = GetRaritySettings(rarity);
+        IngredientRaritySettings raritySettings = GetRaritySettings(rarity);
         (float min, float max) range = raritySettings.GetSumRange();
         float sum = UnityEngine.Random.Range(range.min, range.max);
 

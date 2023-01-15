@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 083116b0340b2d941a7d5aea5aea2bb3, type: 3}
-  m_Name: HealingPlant
+  m_Name: ShiveringMoss
   m_EditorClassIdentifier: 
-  itemName: Healing Plant
-  icon: {fileID: 21300000, guid: 436baef0b965a8449894bbefde04807e, type: 3}
-  price: 0.08
+  itemName: Shivering Moss
+  icon: {fileID: 21300000, guid: f19f27ac2cf527c4c9462e8a76b00924, type: 3}
+  price: 0.078
   description: 
-  dropProbability: 0.68
+  dropProbability: 0.69
   rarity: 0
   mainEffect:
-    effect: {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
-    effectStrength: 6
+    effect: {fileID: 11400000, guid: 342035a33cbd1c74b966a9ff300e9907, type: 2}
+    effectStrength: 5.5
   secondaryEffects: []

@@ -12,6 +12,15 @@ public class PotionRecipe : ScriptableObject
     [SerializeField] private Potion result;
 
 
+    public PotionRecipe Init(List<Ingredient> requiredIngredients, int amountOfIngredients, List<IngredientEffect> effects)
+    {
+        this.requiredIngredients = requiredIngredients;
+        this.amountOfIngredients = amountOfIngredients;
+        this.effects = effects;
+
+        return this; 
+    }
+
     private bool HasIngredients(List<Ingredient> ingredients)
     {
         int amount = 0;

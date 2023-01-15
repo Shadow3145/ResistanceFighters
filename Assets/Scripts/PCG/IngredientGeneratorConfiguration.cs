@@ -6,9 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName =  "SO/Generator/Configuration")]
 public class IngredientGeneratorConfiguration : ScriptableObject
 {
-    public RaritySettings common;
-    public RaritySettings rare;
-    public RaritySettings epic;
+    public IngredientRaritySettings common;
+    public IngredientRaritySettings rare;
+    public IngredientRaritySettings epic;
 
     public int amountToGenerate;
 

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 083116b0340b2d941a7d5aea5aea2bb3, type: 3}
-  m_Name: HealingPlant
+  m_Name: GhostRoot
   m_EditorClassIdentifier: 
-  itemName: Healing Plant
-  icon: {fileID: 21300000, guid: 436baef0b965a8449894bbefde04807e, type: 3}
-  price: 0.08
+  itemName: Ghost Root
+  icon: {fileID: 21300000, guid: 126d379cd44e66944b744fe907853b85, type: 3}
+  price: 0.083
   description: 
   dropProbability: 0.68
   rarity: 0
   mainEffect:
-    effect: {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
-    effectStrength: 6
+    effect: {fileID: 11400000, guid: 8fe1c42fccd79a84baaa7df0ca1c3b50, type: 2}
+    effectStrength: 7.5
   secondaryEffects: []

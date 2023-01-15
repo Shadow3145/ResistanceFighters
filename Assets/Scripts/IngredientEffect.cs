@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
-public class IngredientEffect
+public class IngredientEffect : IEquatable<IngredientEffect>, IComparable<IngredientEffect>
 {
     [SerializeField] private Effect effect;
     [SerializeField] private float effectStrength;
@@ -20,5 +21,36 @@ public class IngredientEffect
     public float GetEffectStrength()
     {
         return effectStrength;
+    }
+
+    public string GetEffectDescriptionHeading()
+    {
+        return effect.GetEffectName() + " " + GetEffectStrengthDescription();
+    }
+
+    public string GetEffectStrengthDescription()
+    {
+        return "(" + effectStrength.ToString() + "/15)";
+    }
+
+    public void ChangeEffectStrength(float value)
+    {
+        effectStrength += value;
+    }
+    
+    public bool Equals(IngredientEffect other)
+    {
+        return effect == other.effect;
+    }
+
+    public override bool Equals(object obj)
+    {
+        IngredientEffect other = obj as IngredientEffect;
+        return this.Equals(other);
+    }
+
+    public int CompareTo(IngredientEffect other)
+    {
+        return effectStrength.CompareTo(other.effectStrength);
     }
 }

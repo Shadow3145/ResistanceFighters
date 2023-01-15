@@ -123,6 +123,124 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &304853223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 304853225}
+  - component: {fileID: 304853224}
+  m_Layer: 0
+  m_Name: PotionRecipeGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &304853224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304853223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e538e547823b5f94aade37cfb8e365f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &304853225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304853223}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1050055285}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1050055283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1050055285}
+  - component: {fileID: 1050055284}
+  m_Layer: 0
+  m_Name: AlchemyGeneratorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1050055284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050055283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53f3c4dd538355b44963a97f8df3fb0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - {fileID: 11400000, guid: 23057612d7a82a347943bca49f5caf14, type: 2}
+  - {fileID: 11400000, guid: 1c9fa2cea540c6c47bd5e8de408a1ee4, type: 2}
+  - {fileID: 11400000, guid: 95ea033a0458ff742b1eade32d64fbf6, type: 2}
+  - {fileID: 11400000, guid: a9df1076684932c43ac06e7e700a8e3c, type: 2}
+  - {fileID: 11400000, guid: 8fe1c42fccd79a84baaa7df0ca1c3b50, type: 2}
+  - {fileID: 11400000, guid: b7b681d1c87c68048a301b519eaa040e, type: 2}
+  - {fileID: 11400000, guid: 61f2dbc78fc3cfb4691f84fb74226892, type: 2}
+  - {fileID: 11400000, guid: 248bdaf7b002ce149ae1fdba8c3afa1b, type: 2}
+  - {fileID: 11400000, guid: bf13e13f0c9f0ca4a87ce9cbe3c0228d, type: 2}
+  - {fileID: 11400000, guid: eca4ee3bd903a454292595fa78980491, type: 2}
+  - {fileID: 11400000, guid: 424afdb71f5a2374587dbcb533133cfa, type: 2}
+  - {fileID: 11400000, guid: 8f239458491740142b5deeffa6e28544, type: 2}
+  - {fileID: 11400000, guid: 1d4ccb86f68ccdf4a9bbae00f0b27a26, type: 2}
+  - {fileID: 11400000, guid: 342035a33cbd1c74b966a9ff300e9907, type: 2}
+  - {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
+  effectTypeRules:
+  - effects: 0100000002000000
+  - effects: 0100000003000000
+  - effects: 0100000005000000
+  - effects: 0200000003000000
+  - effects: 0200000005000000
+  - effects: 0300000005000000
+  - effects: 0600000004000000
+  - effects: 020000000300000005000000
+  - effects: 0100000007000000
+  - effects: 0200000007000000
+  - effects: 0300000007000000
+  - effects: 030000000700000002000000
+  ingredients: []
+--- !u!4 &1050055285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050055283}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 229.05542, y: 683.09546, z: -907.9143}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1979474028}
+  - {fileID: 304853225}
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1127991859
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +335,7 @@ GameObject:
   - component: {fileID: 1979474028}
   - component: {fileID: 1979474027}
   m_Layer: 0
-  m_Name: ProceduralGenerationManager
+  m_Name: IngredientGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,35 +353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 944cda7ce934c3d44aeee5ef827e3441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effects:
-  - {fileID: 11400000, guid: 23057612d7a82a347943bca49f5caf14, type: 2}
-  - {fileID: 11400000, guid: 1c9fa2cea540c6c47bd5e8de408a1ee4, type: 2}
-  - {fileID: 11400000, guid: 95ea033a0458ff742b1eade32d64fbf6, type: 2}
-  - {fileID: 11400000, guid: a9df1076684932c43ac06e7e700a8e3c, type: 2}
-  - {fileID: 11400000, guid: 8fe1c42fccd79a84baaa7df0ca1c3b50, type: 2}
-  - {fileID: 11400000, guid: b7b681d1c87c68048a301b519eaa040e, type: 2}
-  - {fileID: 11400000, guid: 61f2dbc78fc3cfb4691f84fb74226892, type: 2}
-  - {fileID: 11400000, guid: 248bdaf7b002ce149ae1fdba8c3afa1b, type: 2}
-  - {fileID: 11400000, guid: bf13e13f0c9f0ca4a87ce9cbe3c0228d, type: 2}
-  - {fileID: 11400000, guid: eca4ee3bd903a454292595fa78980491, type: 2}
-  - {fileID: 11400000, guid: 424afdb71f5a2374587dbcb533133cfa, type: 2}
-  - {fileID: 11400000, guid: 8f239458491740142b5deeffa6e28544, type: 2}
-  - {fileID: 11400000, guid: 1d4ccb86f68ccdf4a9bbae00f0b27a26, type: 2}
-  - {fileID: 11400000, guid: 342035a33cbd1c74b966a9ff300e9907, type: 2}
-  - {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
-  effectTypeRules:
-  - effects: 0100000002000000
-  - effects: 0100000003000000
-  - effects: 0100000005000000
-  - effects: 0200000003000000
-  - effects: 0200000005000000
-  - effects: 0300000005000000
-  - effects: 0600000004000000
-  - effects: 020000000300000005000000
-  - effects: 0100000007000000
-  - effects: 0200000007000000
-  - effects: 0300000007000000
-  - effects: 030000000700000002000000
   defaultConfig: {fileID: 11400000, guid: 7b6f3b2d1158b9c4793111783bb9267c, type: 2}
   priceSettings: {fileID: 11400000, guid: a8691d9fe46eea2439e4fc43f42deada, type: 2}
   dropProbabilitySettings: {fileID: 11400000, guid: b7230b8f2932c4e4c99eae45777831f0, type: 2}
@@ -274,10 +363,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1979474026}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 371.66177, y: 682.3107, z: -899.7992}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 142.60635, y: -0.784729, z: 8.115112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 1050055285}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

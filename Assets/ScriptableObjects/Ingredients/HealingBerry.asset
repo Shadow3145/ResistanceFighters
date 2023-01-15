@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 083116b0340b2d941a7d5aea5aea2bb3, type: 3}
-  m_Name: HealingPlant
+  m_Name: HealingBerry
   m_EditorClassIdentifier: 
-  itemName: Healing Plant
-  icon: {fileID: 21300000, guid: 436baef0b965a8449894bbefde04807e, type: 3}
-  price: 0.08
+  itemName: Healing Berry
+  icon: {fileID: 21300000, guid: c8c553070c3602446803ba097be0f2ba, type: 3}
+  price: 0.175
   description: 
-  dropProbability: 0.68
-  rarity: 0
+  dropProbability: 0.41
+  rarity: 1
   mainEffect:
     effect: {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
-    effectStrength: 6
-  secondaryEffects: []
+    effectStrength: 9
+  secondaryEffects:
+  - effect: {fileID: 11400000, guid: 8f239458491740142b5deeffa6e28544, type: 2}
+    effectStrength: 4

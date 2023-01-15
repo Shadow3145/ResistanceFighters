@@ -35,7 +35,7 @@ public class ContentGeneratorEditorWindow : EditorWindow
 
     [SerializeField] private IngredientGeneratorConfiguration defaultConfig;
 
-    private ProceduralGenerationManager pcgManager;
+    private IngredientGenerator pcgManager;
 
 
     public static void ShowWindow()
@@ -47,7 +47,7 @@ public class ContentGeneratorEditorWindow : EditorWindow
 
     private void CreateGUI()
     {
-        pcgManager = FindObjectOfType<ProceduralGenerationManager>();
+        pcgManager = FindObjectOfType<IngredientGenerator>();
 
         Label header = CreateHeader("Rarity probabilities", headerFontSize);
         header.tooltip = "The probabilities with which the rarities are selected. Common is not included as it is a default.";
@@ -80,7 +80,7 @@ public class ContentGeneratorEditorWindow : EditorWindow
 
         rootVisualElement.Add(CreateButton("Generate ingredients", () => GenerateIngredients()));
         rootVisualElement.Add(CreateButton("Reset default values", () => SetDefaultValues()));
-        rootVisualElement.Add(CreateButton("Delete ingredients from folder", () => ProceduralGenerationManager.Delete(folderPathField.value)));
+        rootVisualElement.Add(CreateButton("Delete ingredients from folder", () => IngredientGenerator.Delete(folderPathField.value)));
     }
 
     private void GenerateIngredients()
@@ -93,9 +93,9 @@ public class ContentGeneratorEditorWindow : EditorWindow
     private IngredientGeneratorConfiguration CreateConfiguration()
     {
         IngredientGeneratorConfiguration config = ScriptableObject.CreateInstance<IngredientGeneratorConfiguration>();
-        RaritySettings common = CreateRaritySettings(commonSettings);
-        RaritySettings rare = CreateRaritySettings(rareSettings);
-        RaritySettings epic = CreateRaritySettings(epicSettings);
+        IngredientRaritySettings common = CreateRaritySettings(commonSettings);
+        IngredientRaritySettings rare = CreateRaritySettings(rareSettings);
+        IngredientRaritySettings epic = CreateRaritySettings(epicSettings);
 
         int amount = amountToGenerateField.value;
         float rareProbability = rareProbabilitySlider.value;
@@ -125,11 +125,12 @@ public class ContentGeneratorEditorWindow : EditorWindow
         folderPathField.value = defaultConfig.folderPath;
     }
 
-    private void SetRaritySettings(RaritySettingsUI raritySettingsUI, RaritySettings settings)
+    private void SetRaritySettings(RaritySettingsUI raritySettingsUI, IngredientRaritySettings settings)
     {
         for (int i = 0; i < raritySettingsUI.effectAmountSliders.Count; i++)
         {
-            raritySettingsUI.effectAmountSliders[i].value = settings.GetProbability(i);
+            float val = settings.GetProbability(i);
+            raritySettingsUI.effectAmountSliders[i].value = val;
         }
         raritySettingsUI.minSum.value = settings.GetSumRange().Item1;
         raritySettingsUI.maxSum.value = settings.GetSumRange().Item2;
@@ -137,7 +138,7 @@ public class ContentGeneratorEditorWindow : EditorWindow
         raritySettingsUI.maxPrimary.value = settings.GetPrimaryValueRange().Item2;
     }
 
-    private RaritySettings CreateRaritySettings(RaritySettingsUI raritySettingsUI)
+    private IngredientRaritySettings CreateRaritySettings(RaritySettingsUI raritySettingsUI)
     {
         List<float> amountProbabilities = new List<float>();
         for (int i = 0; i < raritySettingsUI.effectAmountSliders.Count; i++)
@@ -145,7 +146,7 @@ public class ContentGeneratorEditorWindow : EditorWindow
             amountProbabilities.Add(raritySettingsUI.effectAmountSliders[i].value);
         }
 
-        return ScriptableObject.CreateInstance<RaritySettings>().Init(amountProbabilities, raritySettingsUI.minSum.value, 
+        return ScriptableObject.CreateInstance<IngredientRaritySettings>().Init(amountProbabilities, raritySettingsUI.minSum.value, 
             raritySettingsUI.maxSum.value, raritySettingsUI.minPrimary.value, raritySettingsUI.maxPrimary.value);
 
     }

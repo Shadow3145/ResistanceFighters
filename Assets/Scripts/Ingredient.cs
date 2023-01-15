@@ -33,9 +33,14 @@ public class Ingredient : Item
     public List<IngredientEffect> GetEffects()
     {
         List<IngredientEffect> effects = new List<IngredientEffect>();
+        effects.Add(mainEffect);
         foreach (IngredientEffect e in secondaryEffects)
             effects.Add(e);
-        effects.Add(mainEffect);
         return effects;
+    }
+
+    public IngredientEffect GetMainEffect()
+    {
+        return mainEffect;
     }
 }

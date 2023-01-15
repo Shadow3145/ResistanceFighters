@@ -9,19 +9,20 @@ public enum Rarity : int
     Epic = 2
 }
 
-[CreateAssetMenu(menuName = "SO/Generator/RaritySettings")]
-public class RaritySettings : ScriptableObject
+[CreateAssetMenu(menuName = "SO/Generator/IngredientRaritySettings")]
+public class IngredientRaritySettings : ScriptableObject
 {
+    [Header(header:"Ingredient Settings")]
     [SerializeField]
     [Range(0, 1)] private List<float> amountProbabilities;
     
-    [SerializeField] public float minSumValue;
+    [SerializeField] private float minSumValue;
     [SerializeField] private float maxSumValue;
     
     [SerializeField] private float minPrimaryValue;
     [SerializeField] private float maxPrimaryValue;
 
-    public RaritySettings Init(List<float> amountProbabilities, float minSumValue, float maxSumValue, float minPrimaryValue, float maxPrimaryValue)
+    public IngredientRaritySettings Init(List<float> amountProbabilities, float minSumValue, float maxSumValue, float minPrimaryValue, float maxPrimaryValue)
     {
         this.amountProbabilities = amountProbabilities;
         this.minSumValue = minSumValue;
@@ -34,7 +35,7 @@ public class RaritySettings : ScriptableObject
 
     public float GetProbability(int index)
     {
-        return (index > 0 && index < amountProbabilities.Count)
+        return (index >= 0 && index < amountProbabilities.Count)
             ? amountProbabilities[index]
             : 0f;
     }
