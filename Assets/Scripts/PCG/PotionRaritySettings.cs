@@ -16,7 +16,7 @@ public class PotionRaritySettings : ScriptableObject
     [SerializeField] private Range ingredientsAmount;
     [SerializeField] [Range(0,1)] private List<float> amountProbabilities;
     [SerializeField] private Range mainEffectStrength;
-    [SerializeField] private List<Range> secondaryEffectsStrengths;
+    [SerializeField] private Range secondaryEffectStrength;
 
     public Range GetIngredientAmount()
     {
@@ -33,8 +33,8 @@ public class PotionRaritySettings : ScriptableObject
         return mainEffectStrength;
     }
 
-    public Range GetSecondaryEffectStrength(int index)
+    public Range GetSecondaryEffectStrength()
     {
-        return secondaryEffectsStrengths[index];
+        return secondaryEffectStrength;
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -21,7 +20,6 @@ public class PotionGenerator : MonoBehaviour
                 AssetDatabase.CreateAsset(potionRecipe, folderPath + "/" + fileName);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-
             }
         }
     }
@@ -41,13 +39,49 @@ public class PotionGenerator : MonoBehaviour
            return ScriptableObject.CreateInstance<PotionRecipe>().Init(requiredIngredients, requiredAmount, ingredientEffects);
         }
 
-        return null; 
+        List<IngredientEffect> secondaryEffects = GetSecondaryEffects(amountOfEffects, requiredIngredients, effect);
+        GetPotionSecondaryEffects(rarity, secondaryEffects, ingredientEffects);
+
+        return ScriptableObject.CreateInstance<PotionRecipe>().Init(requiredIngredients, requiredAmount, ingredientEffects); 
     }
 
-    private List<Effect> GetSecondaryEffects(int amountOfEffects, List<Ingredient> requiredIngredients, Effect mainEffect)
+    private void GetPotionSecondaryEffects(Rarity rarity, List<IngredientEffect> secondaryEffects, List<IngredientEffect> final)
     {
-        List<Effect> secondaryEffects = new List<Effect>();
+        foreach (IngredientEffect iEffect in secondaryEffects)
+        {
+            float strength = GetSecondaryEffectStrength(rarity, iEffect.GetEffectStrength());
+            if (strength == -1)
+                continue;
+            final.Add(new IngredientEffect(iEffect.GetEffect(), strength));
+        }
+    }
+
+    private List<IngredientEffect> GetSecondaryEffects(int amountOfEffects, List<Ingredient> requiredIngredients, Effect mainEffect)
+    {
+        List<IngredientEffect> secondaryEffects = new List<IngredientEffect>();
         List<EffectTypeCombo> effectTypeCombos = (GetComponentInParent<AlchemyGeneratorManager>().effectTypeRules).FindAll(er => er.Contains(mainEffect.GetEffectType()));
+        List<IngredientEffect> effects = GetSortedEffects(requiredIngredients, mainEffect);
+
+        foreach (IngredientEffect iEffect in effects)
+        {
+            if (amountOfEffects <= 0)
+                break;
+            foreach (EffectTypeCombo combo in effectTypeCombos)
+            {
+                if (combo.Contains(iEffect.GetEffect().GetEffectType()))
+                {
+                    secondaryEffects.Add(iEffect);
+                    amountOfEffects--;
+                    break;
+                }
+            }
+        }
+
+        return secondaryEffects;
+    }
+
+    private List<IngredientEffect> GetSortedEffects(List<Ingredient> requiredIngredients, Effect mainEffect)
+    {
         List<IngredientEffect> effects = new List<IngredientEffect>();
         foreach (Ingredient ingredient in requiredIngredients)
         {
@@ -64,8 +98,7 @@ public class PotionGenerator : MonoBehaviour
             }
         }
         effects.Sort();
-
-        return secondaryEffects;
+        return effects;
     }
 
     private List<Ingredient> GetRequiredIngredients(Effect effect)
@@ -96,6 +129,16 @@ public class PotionGenerator : MonoBehaviour
         return strength;
     }
 
+    private float GetSecondaryEffectStrength(Rarity rarity, float maxVal)
+    {
+        Range range = raritySettings[(int)rarity].GetSecondaryEffectStrength();
+        if (maxVal < range.minValue)
+            return -1;
+        float strength = Random.Range(range.minValue, Mathf.Max(range.maxValue, maxVal));
+
+        return strength;
+    }
+
     private int GetAmountOfEffects(Rarity rarity)
     {
         PotionRaritySettings settings = raritySettings[(int)rarity];
@@ -106,7 +149,6 @@ public class PotionGenerator : MonoBehaviour
             return 1;
         return 2;
     }
-
 
     private string GetRarityName(Rarity rarity)
     {

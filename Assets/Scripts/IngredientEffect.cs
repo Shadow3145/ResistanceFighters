@@ -49,6 +49,11 @@ public class IngredientEffect : IEquatable<IngredientEffect>, IComparable<Ingred
         return this.Equals(other);
     }
 
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
     public int CompareTo(IngredientEffect other)
     {
         return effectStrength.CompareTo(other.effectStrength);

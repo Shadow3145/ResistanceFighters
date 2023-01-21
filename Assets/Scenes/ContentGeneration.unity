@@ -152,6 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e538e547823b5f94aade37cfb8e365f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raritySettings:
+  - {fileID: 11400000, guid: d1e9446b0d187734883081eef8f582e5, type: 2}
+  - {fileID: 11400000, guid: 50aaf40f1b266784c8edc36db946cf35, type: 2}
+  - {fileID: 11400000, guid: 6ce36e7e969c5544c9a80439f976ba93, type: 2}
+  folderPath: Assets/ScriptableObjects/Ingredients/Generated
 --- !u!4 &304853225
 Transform:
   m_ObjectHideFlags: 0
