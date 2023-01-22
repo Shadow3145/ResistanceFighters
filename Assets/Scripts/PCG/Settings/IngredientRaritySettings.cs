@@ -12,7 +12,6 @@ public enum Rarity : int
 [CreateAssetMenu(menuName = "SO/Generator/IngredientRaritySettings")]
 public class IngredientRaritySettings : ScriptableObject
 {
-    [Header(header:"Ingredient Settings")]
     [SerializeField]
     [Range(0, 1)] private List<float> amountProbabilities;
     

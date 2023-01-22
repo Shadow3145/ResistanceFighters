@@ -12,7 +12,7 @@ public class IngredientEditorScript : Editor
         if (GUILayout.Button("Delete Generated"))
             IngredientGenerator.DeleteDefault();
         else if (GUILayout.Button("Open Generator Window"))
-            IngredientGeneratorWindowEditor.ShowWindow();
+            AlchemyContentGeneratorWindowEditor.ShowWindow(0);
     }
 }
 
@@ -24,6 +24,8 @@ public class AlchemyGeneratorEditor : Editor
         DrawDefaultInspector();
         if (GUILayout.Button("Update Ingredients"))
             AlchemyGeneratorManager.UpdateIngredientsList();
+        if (GUILayout.Button("Open Editor"))
+            AlchemyContentGeneratorWindowEditor.ShowWindow(-1);
     }
 }
 

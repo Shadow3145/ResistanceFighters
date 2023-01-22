@@ -5,13 +5,21 @@ using UnityEngine;
 public class PotionGenerator : MonoBehaviour
 {
     private List<Ingredient> ingredients;
-    [SerializeField] private List<PotionRaritySettings> raritySettings;
+    [SerializeField] PotionRecipeGeneratorConfiguration defaultConfig;
+
+    private PotionRecipeGeneratorConfiguration config;
+
+   /* [SerializeField] private List<PotionRaritySettings> raritySettings;
     [SerializeField] private string folderPath;
 
-    private int minStrength = 10;
+    private int minStrength = 10;*/
 
-    public void GeneratePotionRecipes()
+    public void GeneratePotionRecipes(PotionRecipeGeneratorConfiguration config = null)
     {
+        if (config == null)
+            this.config = defaultConfig;
+        else
+            this.config = config;
         ingredients = GetComponentInParent<AlchemyGeneratorManager>().GetIngredients();
         foreach (Effect effect in GetComponentInParent<AlchemyGeneratorManager>().effects)
         { 
@@ -21,7 +29,7 @@ public class PotionGenerator : MonoBehaviour
                 if (potionRecipe == null)
                     continue;
                 string fileName = GetRarityName((Rarity)i) + effect.GetEffectName() + "PotionRecipe.asset";
-                AssetDatabase.CreateAsset(potionRecipe, folderPath + "/" + fileName);
+                AssetDatabase.CreateAsset(potionRecipe, config.folderPath + "/" + fileName);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }
@@ -30,7 +38,7 @@ public class PotionGenerator : MonoBehaviour
 
     public void Delete()
     {
-        string[] folder = { folderPath };
+        string[] folder = { config.folderPath };
         foreach (var asset in AssetDatabase.FindAssets("", folder))
         {
             var path = AssetDatabase.GUIDToAssetPath(asset);
@@ -126,7 +134,7 @@ public class PotionGenerator : MonoBehaviour
                 requiredIngredients.Add(ingredient);
             foreach (IngredientEffect iEffect in ingredient.GetSecondaryEffects())
             {
-                if (iEffect.GetEffect() == effect && iEffect.GetEffectStrength() >= minStrength)
+                if (iEffect.GetEffect() == effect && iEffect.GetEffectStrength() >= config.minStrength)
                     requiredIngredients.Add(ingredient);
             }
         }
@@ -134,9 +142,24 @@ public class PotionGenerator : MonoBehaviour
         return requiredIngredients;
     }
 
+    private PotionRaritySettings GetRaritySettings(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common:
+                return config.common;
+            case Rarity.Rare:
+                return config.rare;
+            case Rarity.Epic:
+                return config.epic;
+            default:
+                return null;
+        }
+    }
+
     private int GetRequiredAmountOfIngredients(Rarity rarity, int ingredientsCount)
     {
-        Range range = raritySettings[(int)rarity].GetIngredientAmount();
+        Range range = GetRaritySettings(rarity).GetIngredientAmount();
         if (ingredientsCount < range.minValue)
             return -1;
         int amount = Random.Range(range.minValue, (Mathf.Min((range.maxValue + 1), ingredientsCount)));
@@ -146,7 +169,7 @@ public class PotionGenerator : MonoBehaviour
 
     private float GetMainEffectStrength(Rarity rarity)
     {
-        Range range = raritySettings[(int)rarity].GetMainEffectStrength();
+        Range range = GetRaritySettings(rarity).GetMainEffectStrength();
         float strength = Random.Range(range.minValue, range.maxValue);
 
         return strength;
@@ -154,7 +177,7 @@ public class PotionGenerator : MonoBehaviour
 
     private float GetSecondaryEffectStrength(Rarity rarity, float maxVal)
     {
-        Range range = raritySettings[(int)rarity].GetSecondaryEffectStrength();
+        Range range = GetRaritySettings(rarity).GetSecondaryEffectStrength();
         if (maxVal < range.minValue)
             return -1;
         float strength = Random.Range(range.minValue, Mathf.Max(range.maxValue, maxVal));
@@ -164,7 +187,7 @@ public class PotionGenerator : MonoBehaviour
 
     private int GetAmountOfEffects(Rarity rarity)
     {
-        PotionRaritySettings settings = raritySettings[(int)rarity];
+        PotionRaritySettings settings = GetRaritySettings(rarity);
         float rand = Random.Range(0f, 1f);
         if (rand < settings.GetAmountOfEffects(0))
             return 0;

@@ -152,11 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e538e547823b5f94aade37cfb8e365f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raritySettings:
-  - {fileID: 11400000, guid: d1e9446b0d187734883081eef8f582e5, type: 2}
-  - {fileID: 11400000, guid: 50aaf40f1b266784c8edc36db946cf35, type: 2}
-  - {fileID: 11400000, guid: 6ce36e7e969c5544c9a80439f976ba93, type: 2}
-  folderPath: Assets/ScriptableObjects/Recipes/Generated
+  defaultConfig: {fileID: 11400000, guid: f3b6bed7c1bc37d498910cc51c8329c0, type: 2}
 --- !u!4 &304853225
 Transform:
   m_ObjectHideFlags: 0
@@ -276,7 +272,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050055283}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 229.05542, y: 683.09546, z: -907.9143}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1979474028}

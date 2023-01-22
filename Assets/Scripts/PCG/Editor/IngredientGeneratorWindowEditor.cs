@@ -23,13 +23,6 @@ public class ToggleUI
 
 public class IngredientGeneratorWindowEditor : EditorWindow
 {
-    private const float titleFontSize = 20f;
-    private const float headerFontSize = 15f;
-    private const float subheaderFontSize = 13f;
-    private const float normalFontSize = 12f;
-    private const float longWidth = 375f;
-    private const float shortWidth = 75f;
-
     private Slider rareProbabilitySlider;
     private Slider epicProbabilitySlider;
 
@@ -51,91 +44,81 @@ public class IngredientGeneratorWindowEditor : EditorWindow
 
     private IngredientGenerator pcgManager;
 
-
-    public static void ShowWindow()
-    {
-        IngredientGeneratorWindowEditor editorWindow = GetWindow<IngredientGeneratorWindowEditor>();
-        editorWindow.titleContent = new GUIContent("Alchemy Ingredients Generator");
-        editorWindow.minSize = new Vector2(200, 400);
-    }
-
-    private void CreateGUI()
+    public VisualElement CreateGUI()
     {
         pcgManager = FindObjectOfType<IngredientGenerator>();
 
-        VisualElement basicConfigurationElem = new VisualElement();  
-        SetContainerVisuals(basicConfigurationElem);
+        VisualElement basicConfigurationElem = new VisualElement();
+        VisualSetting.SetContainerVisuals(basicConfigurationElem);
         ShowBasicSettings(basicConfigurationElem);
         rootVisualElement.Add(basicConfigurationElem);
 
         VisualElement constraintsElem = new VisualElement();
-        SetContainerVisuals(constraintsElem);
+        VisualSetting.SetContainerVisuals(constraintsElem);
         ShowConstraintsSettings(constraintsElem);
         rootVisualElement.Add(constraintsElem);
 
         VisualElement configElem = new VisualElement();
-        SetContainerVisuals(configElem);
+        VisualSetting.SetContainerVisuals(configElem);
         ShowConfigFileSettings(configElem);
-        rootVisualElement.Add(configElem);      
+        rootVisualElement.Add(configElem);
 
         rootVisualElement.style.flexDirection = FlexDirection.Row;
 
         LoadValuesFromConfig();
+
+        return rootVisualElement;
     }
 
     private void ShowBasicSettings(VisualElement basicConfigurationElem)
     {
-        Label title = CreateHeader("Basic ingredient generator settings", titleFontSize);
+        Label title = VisualSetting.CreateHeader("Basic ingredient generator settings", VisualSetting.titleFontSize);
         basicConfigurationElem.Add(title);
-        Label header = CreateHeader("Rarity probabilities", headerFontSize);
+        Label header = VisualSetting.CreateHeader("Rarity probabilities", VisualSetting.headerFontSize);
         header.tooltip = "The probabilities with which the rarities are selected. Common is not included as it is a default.";
-        basicConfigurationElem.Add(CreateHeader("Rarity probabilities", headerFontSize));
-        rareProbabilitySlider = CreateProbabilitySlider("Rare");
+        basicConfigurationElem.Add(VisualSetting.CreateHeader("Rarity probabilities", VisualSetting.headerFontSize));
+        rareProbabilitySlider = VisualSetting.CreateProbabilitySlider("Rare");
         basicConfigurationElem.Add(rareProbabilitySlider);
-        epicProbabilitySlider = CreateProbabilitySlider("Epic");
+        epicProbabilitySlider = VisualSetting.CreateProbabilitySlider("Epic");
         basicConfigurationElem.Add(epicProbabilitySlider);
 
         commonSettings = CreateRaritySettingsUI();
         rareSettings = CreateRaritySettingsUI();
         epicSettings = CreateRaritySettingsUI();
 
-        basicConfigurationElem.Add(CreateHeader("Rarity settings", headerFontSize));
+        basicConfigurationElem.Add(VisualSetting.CreateHeader("Rarity settings", VisualSetting.headerFontSize));
         ShowRaritySettingsUI("Common", commonSettings, basicConfigurationElem);
         ShowRaritySettingsUI("Rare", rareSettings, basicConfigurationElem);
         ShowRaritySettingsUI("Epic", epicSettings, basicConfigurationElem);
 
 
-        basicConfigurationElem.Add(CreateHeader("Amount to generate", subheaderFontSize));
-        amountToGenerateField = CreateIntegerField("");
+        basicConfigurationElem.Add(VisualSetting.CreateHeader("Amount to generate", VisualSetting.subheaderFontSize));
+        amountToGenerateField = VisualSetting.CreateIntegerField("");
         basicConfigurationElem.Add(amountToGenerateField);
 
-        basicConfigurationElem.Add(CreateHeader("Target folder path", subheaderFontSize));
+        basicConfigurationElem.Add(VisualSetting.CreateHeader("Target folder path", VisualSetting.subheaderFontSize));
         folderPathField = new TextField();
-        folderPathField.style.width = longWidth;
+        folderPathField.style.width = VisualSetting.longWidth;
         basicConfigurationElem.Add(folderPathField);
 
-        basicConfigurationElem.Add(CreateButton("Generate ingredients", () => GenerateIngredients()));
-        basicConfigurationElem.Add(CreateButton("Reset default values", () => LoadValuesFromConfig()));
-        basicConfigurationElem.Add(CreateButton("Delete ingredients from folder", () => IngredientGenerator.Delete(folderPathField.value)));
+        basicConfigurationElem.Add(VisualSetting.CreateButton("Generate ingredients", () => GenerateIngredients()));
+        basicConfigurationElem.Add(VisualSetting.CreateButton("Reset default values", () => LoadValuesFromConfig()));
+        basicConfigurationElem.Add(VisualSetting.CreateButton("Delete ingredients from folder", () => IngredientGenerator.Delete(folderPathField.value)));
     }
 
     private void ShowConstraintsSettings(VisualElement constraintsElem)
     {
-        Label title = CreateHeader("Ingredient generator constraint settings", titleFontSize);
+        Label title = VisualSetting.CreateHeader("Ingredient generator constraint settings", VisualSetting.titleFontSize);
         constraintsElem.Add(title);
 
-        /*Effect Types
-         * List all effect types
-         * Have toggle buttons next to them
-         * Be able to toggle on/off all of them
-        */
+        // Effect Types
         VisualElement eTypeHeader = new VisualElement();
         constraintsElem.Add(eTypeHeader);
         eTypeHeader.style.flexDirection = FlexDirection.Row;
-        Label eToggleHeader = CreateHeader("Ignore effect types", headerFontSize);
+        Label eToggleHeader = VisualSetting.CreateHeader("Ignore effect types", VisualSetting.headerFontSize);
         eTypeHeader.Add(eToggleHeader);
         ShowEffectTypes();
-        effectTypesUI.toggleButton = CreateButton("Toggle On", () => ToggleAll(effectTypesUI), shortWidth);
+        effectTypesUI.toggleButton = VisualSetting.CreateButton("Toggle On", () => ToggleAll(effectTypesUI), VisualSetting.shortWidth);
         eTypeHeader.Add(effectTypesUI.toggleButton);
 
         foreach (Toggle t in effectTypesUI.toggles)
@@ -146,10 +129,10 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         VisualElement mHeader = new VisualElement();
         mHeader.style.flexDirection = FlexDirection.Row;
         constraintsElem.Add(mHeader);
-        Label mToggleHeader = CreateHeader("Ignore main effects", headerFontSize);
+        Label mToggleHeader = VisualSetting.CreateHeader("Ignore main effects", VisualSetting.headerFontSize);
         mHeader.Add(mToggleHeader);
         mainEffectsUI = new ToggleUI();
-        mainEffectsUI.toggleButton = CreateButton("Toggle On", () => ToggleAll(mainEffectsUI), shortWidth);
+        mainEffectsUI.toggleButton = VisualSetting.CreateButton("Toggle On", () => ToggleAll(mainEffectsUI), VisualSetting.shortWidth);
         mHeader.Add(mainEffectsUI.toggleButton);
         ShowEffects(mainEffectsUI);
         foreach (Toggle t in mainEffectsUI.toggles)
@@ -159,10 +142,10 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         VisualElement sHeader = new VisualElement();
         sHeader.style.flexDirection = FlexDirection.Row;
         constraintsElem.Add(sHeader);
-        Label sToggleHeader = CreateHeader("Ignore secondary effects", headerFontSize);
+        Label sToggleHeader = VisualSetting.CreateHeader("Ignore secondary effects", VisualSetting.headerFontSize);
         sHeader.Add(sToggleHeader);
         secondaryEffectsUI = new ToggleUI();
-        secondaryEffectsUI.toggleButton = CreateButton("Toggle On", () => ToggleAll(secondaryEffectsUI), shortWidth);
+        secondaryEffectsUI.toggleButton = VisualSetting.CreateButton("Toggle On", () => ToggleAll(secondaryEffectsUI), VisualSetting.shortWidth);
         sHeader.Add(secondaryEffectsUI.toggleButton);
         ShowEffects(secondaryEffectsUI);
         foreach (Toggle t in secondaryEffectsUI.toggles)
@@ -205,20 +188,20 @@ public class IngredientGeneratorWindowEditor : EditorWindow
 
     private void ShowConfigFileSettings(VisualElement configElem)
     {
-        configElem.Add(CreateHeader("Configuration files", titleFontSize));
-        configElem.Add(CreateHeader("Folder", subheaderFontSize));
+        configElem.Add(VisualSetting.CreateHeader("Configuration files", VisualSetting.titleFontSize));
+        configElem.Add(VisualSetting.CreateHeader("Folder", VisualSetting.subheaderFontSize));
         configPathField = new TextField();
-        configPathField.style.width = longWidth;
+        configPathField.style.width = VisualSetting.longWidth;
         configElem.Add(configPathField);
         configPathField.value = "Assets/ScriptableObjects/PCG/IngredientConfigs/";
 
-        configElem.Add(CreateHeader("Name", subheaderFontSize));
+        configElem.Add(VisualSetting.CreateHeader("Name", VisualSetting.subheaderFontSize));
         configNameField = new TextField();
-        configNameField.style.width = longWidth;
+        configNameField.style.width = VisualSetting.longWidth;
         configElem.Add(configNameField);
-        configElem.Add(CreateButton("Save config file", () => SaveConfigFile()));
-        configElem.Add(CreateButton("Delete config file and its settings", () => DeleteConfigFile()));
-        configElem.Add(CreateButton("Load values from config", () => LoadValuesFromConfig(configPathField.value + configNameField.value + ".asset")));
+        configElem.Add(VisualSetting.CreateButton("Save config file", () => SaveConfigFile()));
+        configElem.Add(VisualSetting.CreateButton("Delete config file and its settings", () => DeleteConfigFile()));
+        configElem.Add(VisualSetting.CreateButton("Load values from config", () => LoadValuesFromConfig(configPathField.value + configNameField.value + ".asset")));
     }
 
     private void GenerateIngredients()
@@ -237,7 +220,7 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         AssetDatabase.CreateAsset(config.common, ingredientRaritySettignsFolder + "/" + configNameField.value + "Common.asset");
         AssetDatabase.CreateAsset(config.rare, ingredientRaritySettignsFolder + "/" + configNameField.value + "Rare.asset");
         AssetDatabase.CreateAsset(config.epic, ingredientRaritySettignsFolder + "/" + configNameField.value + "Epic.asset");
-        
+
 
         AssetDatabase.CreateAsset(config, configPathField.value + configNameField.value + ".asset");
         AssetDatabase.SaveAssets();
@@ -285,9 +268,9 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         }
 
         return config;
-    }   
+    }
 
-    private void LoadValuesFromConfig(string path="")
+    private void LoadValuesFromConfig(string path = "")
     {
         IngredientGeneratorConfiguration config = path == ""
             ? defaultConfig
@@ -340,120 +323,43 @@ public class IngredientGeneratorWindowEditor : EditorWindow
             amountProbabilities.Add(raritySettingsUI.effectAmountSliders[i].value);
         }
 
-        return ScriptableObject.CreateInstance<IngredientRaritySettings>().Init(amountProbabilities, raritySettingsUI.minSum.value, 
+        return ScriptableObject.CreateInstance<IngredientRaritySettings>().Init(amountProbabilities, raritySettingsUI.minSum.value,
             raritySettingsUI.maxSum.value, raritySettingsUI.minPrimary.value, raritySettingsUI.maxPrimary.value);
 
-    }
-
-    private ScrollView CreateScrollView(string labelText, FloatField min, FloatField max)
-    {
-        ScrollView scrollView = new ScrollView(ScrollViewMode.Horizontal);
-        scrollView.Add(new Label());
-        scrollView.Add(CreateLabel(labelText, normalFontSize));
-        scrollView.Add(min);
-        scrollView.Add(max);
-        return scrollView;
-    }
+    }    
 
     private RaritySettingsUI CreateRaritySettingsUI()
     {
         RaritySettingsUI raritySettings = new RaritySettingsUI();
         for (int i = 0; i < 3; i++)
         {
-            Slider slider = CreateProbabilitySlider((i+1).ToString());
+            Slider slider = VisualSetting.CreateProbabilitySlider((i + 1).ToString());
             raritySettings.effectAmountSliders.Add(slider);
         }
 
-        raritySettings.minSum = CreateFloatField("", shortWidth);
-        raritySettings.minSum.bindingPath = "minSumValue";
-        raritySettings.maxSum = CreateFloatField("", shortWidth);
-        raritySettings.minPrimary = CreateFloatField("", shortWidth);
-        raritySettings.maxPrimary = CreateFloatField("", shortWidth);
+        raritySettings.minSum = VisualSetting.CreateFloatField("", VisualSetting.shortWidth);
+        raritySettings.maxSum = VisualSetting.CreateFloatField("", VisualSetting.shortWidth);
+        raritySettings.minPrimary = VisualSetting.CreateFloatField("", VisualSetting.shortWidth);
+        raritySettings.maxPrimary = VisualSetting.CreateFloatField("", VisualSetting.shortWidth);
 
         return raritySettings;
     }
 
     private void ShowRaritySettingsUI(string header, RaritySettingsUI settings, VisualElement basicConfigurationElem)
     {
-        Label h = CreateHeader(header, subheaderFontSize);
+        Label h = VisualSetting.CreateHeader(header, VisualSetting.subheaderFontSize);
         h.tooltip = "All settings for the rarity.";
         basicConfigurationElem.Add(h);
-        Label sH = CreateHeader("Effect Amount Probabilities", normalFontSize);
+        Label sH = VisualSetting.CreateHeader("Effect Amount Probabilities", VisualSetting.normalFontSize);
         sH.tooltip = "Probabilities for the amount of effects the ingredient is going to have. The probabilities have to sum up to 1";
         basicConfigurationElem.Add(sH);
         foreach (Slider slider in settings.effectAmountSliders)
             basicConfigurationElem.Add(slider);
-        ScrollView sumScroll = CreateScrollView("Sum range", settings.minSum, settings.maxSum);
+        ScrollView sumScroll = VisualSetting.CreateScrollView("Sum range", settings.minSum, settings.maxSum);
         sumScroll.tooltip = "The range for the sum of strenghts of the effects.";
         basicConfigurationElem.Add(sumScroll);
-        ScrollView primaryScroll = CreateScrollView("Primary range", settings.minPrimary, settings.maxPrimary);
+        ScrollView primaryScroll = VisualSetting.CreateScrollView("Primary range", settings.minPrimary, settings.maxPrimary);
         primaryScroll.tooltip = "The range for the strength of the primary effect of the ingredient";
         basicConfigurationElem.Add(primaryScroll);
-    }
-
-    private Label CreateHeader(string text, float fontSize)
-    {
-        Label label = new Label("<b>" + text + "</b>");
-        label.style.fontSize = fontSize;
-        return label;
-    }
-
-    private Label CreateLabel(string text, float fontSize)
-    {
-        Label label = new Label(text);
-        label.style.fontSize = fontSize;
-        TextAnchor anchor = TextAnchor.MiddleLeft;
-        label.style.unityTextAlign = anchor;
-        label.style.width = 100f;
-        return label;
-    }
-
-    private Slider CreateProbabilitySlider(string labelText)
-    {
-        Slider slider = new Slider(0f, 1f);
-        slider.label = labelText;
-        slider.showInputField = true;
-        slider.style.width = 375;
-        return slider;
-    }
-
-    private FloatField CreateFloatField(string labelText, float width = longWidth)
-    {
-        FloatField field = new FloatField(labelText);
-        field.style.width = width;
-        return field;
-    }
-
-    private IntegerField CreateIntegerField(string labelText, float width = longWidth)
-    {
-        IntegerField field = new IntegerField(labelText);
-        field.style.width = width;
-        return field;
-    }
-
-    private Button CreateButton(string labelText, System.Action clickEvent, float width = longWidth)
-    {
-        Button button = new Button(clickEvent);
-        button.text = labelText;
-        button.style.width = width;
-        return button;
-    }
-
-    private void SetContainerVisuals(VisualElement visElement)
-    {
-        visElement.style.borderBottomColor = Color.black;
-        visElement.style.borderLeftColor = Color.black;
-        visElement.style.borderRightColor = Color.black;
-        visElement.style.borderTopColor = Color.black;
-
-        visElement.style.width = longWidth + 50f;
-
-        visElement.style.borderBottomWidth = 3.5f;
-        visElement.style.borderTopWidth = 3.5f;
-        visElement.style.borderLeftWidth = 3.5f;
-        visElement.style.borderRightWidth = 3.5f;
-
-        visElement.style.marginRight = 10f;
-
-    }
+    }  
 }

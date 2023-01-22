@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SO/Generator/Configuration")]
+[CreateAssetMenu(menuName = "SO/Generator/IngredientConfiguration")]
 public class IngredientGeneratorConfiguration : ScriptableObject
 {
     public IngredientRaritySettings common;
