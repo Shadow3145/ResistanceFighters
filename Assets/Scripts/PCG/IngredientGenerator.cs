@@ -106,8 +106,14 @@ public class IngredientGenerator : MonoBehaviour
 
     private EffectType GetRandomEffectType()
     {
-        int rand = UnityEngine.Random.Range(1, 8);
-        return (EffectType)rand;
+        List<EffectType> effectTypes = new List<EffectType>();
+        for (int i = 0; i < Enum.GetNames(typeof(EffectType)).Length; i++)
+        {
+            if (!(config.ignoreEffectTypes.Contains((EffectType)i)))
+                effectTypes.Add((EffectType)i);
+        }
+        int rand = UnityEngine.Random.Range(1, effectTypes.Count);
+        return effectTypes[rand];
     }
 
     private List<EffectType> GetEffectTypes(int amount)
@@ -139,7 +145,7 @@ public class IngredientGenerator : MonoBehaviour
         int rand = UnityEngine.Random.Range(0, effectTypes.Count);
         EffectType type = effectTypes[rand];
 
-        List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type);
+        List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type && !config.ignoreMainEffects.Contains(e));
         rand = UnityEngine.Random.Range(0, eff.Count);
 
         return eff[rand];
@@ -152,7 +158,8 @@ public class IngredientGenerator : MonoBehaviour
         {
             int rand = UnityEngine.Random.Range(0, effectTypes.Count);
             EffectType type = effectTypes[rand];
-            List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type && !usedEffects.Contains(e));
+            List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.
+                FindAll(e => e.GetEffectType() == type && !usedEffects.Contains(e) && !config.ignoreSecondaryEffects.Contains(e));
             if (eff.Count > 0)
             {
                 rand = UnityEngine.Random.Range(0, eff.Count);

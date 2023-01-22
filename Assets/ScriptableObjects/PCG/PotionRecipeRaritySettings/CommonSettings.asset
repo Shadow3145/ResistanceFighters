@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CommonSettings
   m_EditorClassIdentifier: 
   ingredientsAmount:
-    minValue: 2
-    maxValue: 4
+    minValue: 1
+    maxValue: 3
   amountProbabilities:
   - 0.9
   - 0.1

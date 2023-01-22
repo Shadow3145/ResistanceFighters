@@ -12,7 +12,7 @@ public class IngredientEditorScript : Editor
         if (GUILayout.Button("Delete Generated"))
             IngredientGenerator.DeleteDefault();
         else if (GUILayout.Button("Open Generator Window"))
-            ContentGeneratorEditorWindow.ShowWindow();
+            IngredientGeneratorWindowEditor.ShowWindow();
     }
 }
 
@@ -24,5 +24,18 @@ public class AlchemyGeneratorEditor : Editor
         DrawDefaultInspector();
         if (GUILayout.Button("Update Ingredients"))
             AlchemyGeneratorManager.UpdateIngredientsList();
+    }
+}
+
+[CustomEditor(typeof(PotionGenerator))]
+public class PotionGeneratorEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        if (GUILayout.Button("Generate Recipes"))
+            FindObjectOfType<PotionGenerator>().GeneratePotionRecipes();
+        if (GUILayout.Button("Delete Generated Recipes"))
+            FindObjectOfType<PotionGenerator>().Delete();
     }
 }

@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName =  "SO/Generator/Configuration")]
+[CreateAssetMenu(menuName = "SO/Generator/Configuration")]
 public class IngredientGeneratorConfiguration : ScriptableObject
 {
     public IngredientRaritySettings common;
@@ -16,4 +14,8 @@ public class IngredientGeneratorConfiguration : ScriptableObject
     [Range(0,1)] public float epicProbability;
 
     public string folderPath;
+
+    public List<EffectType> ignoreEffectTypes = new List<EffectType>();
+    public List<Effect> ignoreMainEffects = new List<Effect>();
+    public List<Effect> ignoreSecondaryEffects = new List<Effect>();
 }

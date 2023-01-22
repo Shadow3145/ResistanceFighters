@@ -16,9 +16,9 @@ MonoBehaviour:
     minValue: 3
     maxValue: 4
   amountProbabilities:
-  - 0.5
-  - 0.35
-  - 0.15
+  - 0.425
+  - 0.45
+  - 0.125
   mainEffectStrength:
     minValue: 19
     maxValue: 23

@@ -30,6 +30,11 @@ public class Ingredient : Item
         return this;
     }
 
+    public List<IngredientEffect> GetSecondaryEffects()
+    {
+        return secondaryEffects;
+    }
+
     public List<IngredientEffect> GetEffects()
     {
         List<IngredientEffect> effects = new List<IngredientEffect>();
