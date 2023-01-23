@@ -7,7 +7,6 @@ public struct Range
 {
     public int minValue;
     public int maxValue;
-
     public Range(int min, int max)
     {
         minValue = min;

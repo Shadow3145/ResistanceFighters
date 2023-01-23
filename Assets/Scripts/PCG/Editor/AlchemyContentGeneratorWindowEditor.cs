@@ -35,6 +35,9 @@ public static class VisualSetting
         visElement.style.borderRightWidth = borderWidth;
 
         visElement.style.marginRight = margin;
+        visElement.style.marginLeft = margin;
+        visElement.style.marginTop = margin;
+        visElement.style.marginBottom = margin*2;
     }
 
     public static ScrollView CreateScrollView(string labelText, FloatField min, FloatField max, float labelWidth = 100f)
@@ -109,7 +112,8 @@ public class AlchemyContentGeneratorWindowEditor : EditorWindow
     {
         AlchemyContentGeneratorWindowEditor editorWindow = GetWindow<AlchemyContentGeneratorWindowEditor>();
         editorWindow.titleContent = new GUIContent("Alchemy Ingredients Generator");
-        editorWindow.minSize = new Vector2(1305, 800);
+        editorWindow.minSize = new Vector2(Mathf.Min(1305, Screen.width), Mathf.Min(800, Screen.height));
+        editorWindow.maximized = true;
         initState = state;
     }
 

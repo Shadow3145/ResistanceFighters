@@ -63,6 +63,11 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         ShowConfigFileSettings(configElem);
         rootVisualElement.Add(configElem);
 
+        VisualElement statElem = new VisualElement();
+        configElem.Add(VisualSetting.CreateHeader("Ingredient Statistics", VisualSetting.titleFontSize));
+        configElem.Add(statElem);
+        ShowIngredientStatistics(statElem);
+
         rootVisualElement.style.flexDirection = FlexDirection.Row;
 
         LoadValuesFromConfig();
@@ -109,11 +114,12 @@ public class IngredientGeneratorWindowEditor : EditorWindow
     private void ShowConstraintsSettings(VisualElement constraintsElem)
     {
         Label title = VisualSetting.CreateHeader("Ingredient generator constraint settings", VisualSetting.titleFontSize);
+        ScrollView scrollView = new ScrollView();
         constraintsElem.Add(title);
 
         // Effect Types
         VisualElement eTypeHeader = new VisualElement();
-        constraintsElem.Add(eTypeHeader);
+        scrollView.Add(eTypeHeader);
         eTypeHeader.style.flexDirection = FlexDirection.Row;
         Label eToggleHeader = VisualSetting.CreateHeader("Ignore effect types", VisualSetting.headerFontSize);
         eTypeHeader.Add(eToggleHeader);
@@ -122,13 +128,13 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         eTypeHeader.Add(effectTypesUI.toggleButton);
 
         foreach (Toggle t in effectTypesUI.toggles)
-            constraintsElem.Add(t);
+            scrollView.Add(t);
 
 
         //Main Effect
         VisualElement mHeader = new VisualElement();
         mHeader.style.flexDirection = FlexDirection.Row;
-        constraintsElem.Add(mHeader);
+        scrollView.Add(mHeader);
         Label mToggleHeader = VisualSetting.CreateHeader("Ignore main effects", VisualSetting.headerFontSize);
         mHeader.Add(mToggleHeader);
         mainEffectsUI = new ToggleUI();
@@ -136,12 +142,12 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         mHeader.Add(mainEffectsUI.toggleButton);
         ShowEffects(mainEffectsUI);
         foreach (Toggle t in mainEffectsUI.toggles)
-            constraintsElem.Add(t);
+            scrollView.Add(t);
 
         //Secondary Effects
         VisualElement sHeader = new VisualElement();
         sHeader.style.flexDirection = FlexDirection.Row;
-        constraintsElem.Add(sHeader);
+        scrollView.Add(sHeader);
         Label sToggleHeader = VisualSetting.CreateHeader("Ignore secondary effects", VisualSetting.headerFontSize);
         sHeader.Add(sToggleHeader);
         secondaryEffectsUI = new ToggleUI();
@@ -149,7 +155,9 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         sHeader.Add(secondaryEffectsUI.toggleButton);
         ShowEffects(secondaryEffectsUI);
         foreach (Toggle t in secondaryEffectsUI.toggles)
-            constraintsElem.Add(t);
+            scrollView.Add(t);
+
+        constraintsElem.Add(scrollView);
     }
 
     private void ShowEffectTypes()
@@ -204,6 +212,65 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         configElem.Add(VisualSetting.CreateButton("Load values from config", () => LoadValuesFromConfig(configPathField.value + configNameField.value + ".asset")));
     }
 
+    private void ShowIngredientStatistics(VisualElement statElement)
+    {
+        float count = 0;
+        float commonCount = 0;
+        float rareCount = 0;
+        float epicCount = 0;
+
+        Dictionary<Effect, (int main, int secondary)> effectCounts = new Dictionary<Effect, (int, int)>();
+
+        foreach (Effect e in FindObjectOfType<AlchemyGeneratorManager>().effects)
+        {
+            effectCounts.Add(e, (0,0));
+        }
+
+        foreach (var ingredient in Resources.FindObjectsOfTypeAll<Ingredient>())
+        {
+            if (ingredient.GetName() == "" || ingredient.GetName() == null)
+                continue;
+            
+            count++;
+            
+            switch (ingredient.GetRarity())
+            {
+                case Rarity.Common:
+                    commonCount++;
+                    break;
+                case Rarity.Rare:
+                    rareCount++;
+                    break;
+                case Rarity.Epic:
+                    epicCount++;
+                    break;
+                default:
+                    break;
+            }
+
+            (int main, int secondary) pair = effectCounts[ingredient.GetMainEffect().GetEffect()];
+            effectCounts[ingredient.GetMainEffect().GetEffect()] = (pair.main + 1, pair.secondary);
+
+            foreach (IngredientEffect iEffect in ingredient.GetSecondaryEffects())
+            {
+                (int main, int secondary) e = effectCounts[iEffect.GetEffect()];
+                effectCounts[iEffect.GetEffect()] = (e.main, e.secondary + 1);
+            }           
+        }
+
+        statElement.Add(new Label("Count: " + count.ToString()));
+        statElement.Add(VisualSetting.CreateHeader("Rarity Counts", VisualSetting.headerFontSize));
+        statElement.Add(new Label("Common: " + commonCount.ToString() + " (" + (Mathf.Round((commonCount/count)*100)).ToString() + "%)"));
+        statElement.Add(new Label("Rare: " + rareCount.ToString() + " (" + (Mathf.Round((rareCount/count)*100)).ToString() + "%)"));
+        statElement.Add(new Label("Epic: " + epicCount.ToString() + " (" + (Mathf.Round((epicCount/count)*100)).ToString() + "%)"));
+
+        statElement.Add(VisualSetting.CreateHeader("Effect Usage", VisualSetting.headerFontSize));
+        foreach (Effect effect in effectCounts.Keys)
+        {
+            statElement.Add(new Label(effect.GetEffectName() + ": " + effectCounts[effect].main + "; " + effectCounts[effect].secondary));
+        }
+
+    }
     private void GenerateIngredients()
     {
         IngredientGeneratorConfiguration config = CreateConfiguration();

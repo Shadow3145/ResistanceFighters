@@ -48,4 +48,9 @@ public class Ingredient : Item
     {
         return mainEffect;
     }
+
+    public Rarity GetRarity()
+    {
+        return rarity;
+    }
 }
