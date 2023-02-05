@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439dc7b8d02df7d41a9293b976715c84, type: 3}
+  m_Name: MissingEffects
+  m_EditorClassIdentifier: 
+  common: {fileID: 11400000, guid: 0314bbdf0472a384d82b35006e0b36ff, type: 2}
+  rare: {fileID: 11400000, guid: b67f27b0eebf30f40bc2511ffda22869, type: 2}
+  epic: {fileID: 11400000, guid: 24a4f215e9ee50b4d993137b36dc289b, type: 2}
+  amountToGenerate: 10
+  rareProbability: 0.25
+  epicProbability: 0.1
+  folderPath: Assets/ScriptableObjects/Ingredients/Generated
+  ignoreEffectTypes: 
+  ignoreMainEffects:
+  - {fileID: 11400000, guid: a9df1076684932c43ac06e7e700a8e3c, type: 2}
+  - {fileID: 11400000, guid: b7b681d1c87c68048a301b519eaa040e, type: 2}
+  - {fileID: 11400000, guid: 61f2dbc78fc3cfb4691f84fb74226892, type: 2}
+  - {fileID: 11400000, guid: bf13e13f0c9f0ca4a87ce9cbe3c0228d, type: 2}
+  - {fileID: 11400000, guid: 1d4ccb86f68ccdf4a9bbae00f0b27a26, type: 2}
+  - {fileID: 11400000, guid: 342035a33cbd1c74b966a9ff300e9907, type: 2}
+  - {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
+  ignoreSecondaryEffects:
+  - {fileID: 11400000, guid: 1c9fa2cea540c6c47bd5e8de408a1ee4, type: 2}
+  - {fileID: 11400000, guid: a9df1076684932c43ac06e7e700a8e3c, type: 2}
+  - {fileID: 11400000, guid: 248bdaf7b002ce149ae1fdba8c3afa1b, type: 2}
+  - {fileID: 11400000, guid: bf13e13f0c9f0ca4a87ce9cbe3c0228d, type: 2}

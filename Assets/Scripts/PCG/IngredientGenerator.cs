@@ -42,6 +42,11 @@ public class IngredientGenerator : MonoBehaviour
         for (int i = 0; i < config.amountToGenerate; i++)
         {
             Ingredient ingredient = GenerateIngredient();
+            if (ingredient == null)
+            {
+                i--;
+                continue;
+            }
             string fileName = "Ingredient_" + (i + amountOfGenerated).ToString();
             AssetDatabase.CreateAsset(ingredient, config.folderPath + "/" + fileName + ".asset");
             AssetDatabase.SaveAssets();
@@ -55,6 +60,8 @@ public class IngredientGenerator : MonoBehaviour
         int amount = GetAmountOfEffects(rarity);
         List<EffectType> effectTypes = GetEffectTypes(amount);
         Effect primaryEffect = GetPrimaryEffect(effectTypes);
+        if (primaryEffect == null)
+            return null;
         amount--;
         float strength = GetPrimaryEffectStrenght(rarity);
         IngredientEffect mainEffect = new IngredientEffect(primaryEffect, strength);
@@ -142,13 +149,22 @@ public class IngredientGenerator : MonoBehaviour
 
     private Effect GetPrimaryEffect(List<EffectType> effectTypes)
     {
-        int rand = UnityEngine.Random.Range(0, effectTypes.Count);
-        EffectType type = effectTypes[rand];
+        int tries = 10;
+        while (tries > 0)
+        {
+            tries--;
+            int rand = UnityEngine.Random.Range(0, effectTypes.Count);
+            EffectType type = effectTypes[rand];
 
-        List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type && !config.ignoreMainEffects.Contains(e));
-        rand = UnityEngine.Random.Range(0, eff.Count);
+            List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type && !config.ignoreMainEffects.Contains(e));
+            if (eff.Count == 0)
+                continue;
+            rand = UnityEngine.Random.Range(0, eff.Count);
 
-        return eff[rand];
+            return eff[rand];
+        }
+
+        return null;
     }
 
     private Effect GetEffect(List<EffectType> effectTypes, List<Effect> usedEffects)
