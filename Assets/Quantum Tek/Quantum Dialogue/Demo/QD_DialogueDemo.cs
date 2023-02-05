@@ -24,7 +24,7 @@ namespace QuantumTek.QuantumDialogue.Demo
 
         private void Awake()
         {
-            handler.SetConversation("Test conversation");
+            handler.SetConversation("Test");
             SetText();
         }
 
@@ -103,8 +103,31 @@ namespace QuantumTek.QuantumDialogue.Demo
             if (handler.currentMessageInfo.Type == QD_NodeType.Message)
             {
                 QD_Message message = handler.GetMessage();
+                QD_Variable variable = null;
+                foreach (QD_Variable var in handler.dialogue.Variables)
+                {
+                    if (var.Parent == message.ID)
+                    {
+                        variable = var;
+                        break;
+                    }
+                }
+
+                /*if (variable != null)
+                {
+                    string[] variables = new string[variable.Objects.Count];
+                    for (int i = 0; i < variable.Objects.Count; i++)
+                    {
+                        variables[i] = variable.Variables[i].FieldType.ToString();
+                    }
+
+                    messageText.text = String.Format(message.MessageText, variables);
+                }
+
+                else*/
+                    messageText.text = message.MessageText;
+
                 speakerName.text = message.SpeakerName;
-                messageText.text = String.Format(message.MessageText);
                 messageText.gameObject.SetActive(true);
 
             }

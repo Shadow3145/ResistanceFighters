@@ -41,9 +41,9 @@ namespace QuantumTek.QuantumDialogue.Editor
         {
             QD_Node node = QD_DialogueEditor.db.GetNode(ID);
             EditorGUI.BeginChangeCheck();
-            List<FieldInfo> variableNames = new List<FieldInfo>();
+            /*List<FieldInfo> variables = new List<FieldInfo>();
             foreach (var variable in Data.Variables)
-                variableNames.Add(variable);
+                variables.Add(variable);*/
 
             List<Object> objects = new List<Object>();
             foreach (var obj in Data.Objects)
@@ -53,14 +53,14 @@ namespace QuantumTek.QuantumDialogue.Editor
             foreach (var c in Data.Scripts)
                 scripts.Add(c);
 
-            int count = Data.Variables.Count;
+            int count = Data.Objects.Count;
             if (GUI.Button(new Rect(140, 60 + count * 70, 20, 20), "+", QD_DialogueEditor.skin.button) && Data.Variables.Count < 6)
             {
                 EditorUtility.SetDirty(QD_DialogueEditor.db);
                 EditorUtility.SetDirty(QD_DialogueEditor.db.DataDB);
                 node.Window.height += 70;
-                Data.Variables.Add(null);
-                variableNames.Add(null);
+                /*Data.Variables.Add(null);
+                variables.Add(null);*/
                 Data.Objects.Add(null);
                 objects.Add(null);
                 Data.Scripts.Add(null);
@@ -84,19 +84,19 @@ namespace QuantumTek.QuantumDialogue.Editor
                     scripts[i] = scs[EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), index, names)];
                 }
                 
-                if (scripts[i] != null)
+                /*if (scripts[i] != null)
                 {
                     var fields = scripts[i].GetType().GetFields();
                     if (fields.Length > 0)
                     {
                         string[] names = fields.Select(x => x.Name).ToArray();
 
-                        int index = variableNames[i] == null
+                        int index = variables[i] == null
                             ? 0
-                            : ArrayUtility.IndexOf(names, variableNames[i].Name);
-                        variableNames[i] = fields[EditorGUI.Popup(new Rect(75, 40 + (i + 1) * 30, 195, 20), index, names)];
+                            : ArrayUtility.IndexOf(names, variables[i].Name);
+                        variables[i] = fields[EditorGUI.Popup(new Rect(75, 40 + (i + 1) * 30, 195, 20), index, names)];
                     }
-                }
+                }*/
 
                 if (i == count - 1)
                 {
@@ -104,7 +104,7 @@ namespace QuantumTek.QuantumDialogue.Editor
                     {
                         EditorUtility.SetDirty(QD_DialogueEditor.db);
                         EditorUtility.SetDirty(QD_DialogueEditor.db.DataDB);
-                        variableNames.RemoveAt(i);
+                        //variables.RemoveAt(i);
                         objects.RemoveAt(i);
                         scripts.RemoveAt(i);
                         QD_DialogueEditor.editor.selectedNode = node;
@@ -118,7 +118,7 @@ namespace QuantumTek.QuantumDialogue.Editor
             {
                 EditorUtility.SetDirty(QD_DialogueEditor.db);
                 EditorUtility.SetDirty(QD_DialogueEditor.db.DataDB);
-                Data.Variables = variableNames;
+              //  Data.Variables = variables;
                 Data.Objects = objects;
                 Data.Scripts = scripts;
                 QD_DialogueEditor.db.DataDB.SetVariable(Data.ID, Data);

@@ -167,6 +167,8 @@ namespace QuantumTek.QuantumDialogue.Editor
                 QD_DialogueEditor.db.GetConversationNode(ID).OnConnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);
             else if (Type == QD_NodeType.Choice)
                 QD_DialogueEditor.db.GetChoiceNode(ID).OnConnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);
+            else if (Type == QD_NodeType.Variables)
+                QD_DialogueEditor.db.GetVariableNode(ID).OnConnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);
         }
 
         /// <summary>
@@ -185,6 +187,8 @@ namespace QuantumTek.QuantumDialogue.Editor
                 QD_DialogueEditor.db.GetConversationNode(ID).OnDisconnect(dialogue, connectionType, connectionID);
             else if (Type == QD_NodeType.Choice)
                 QD_DialogueEditor.db.GetChoiceNode(ID).OnDisconnect(dialogue, connectionType, connectionID);
+            else if (Type == QD_NodeType.Variables)
+                QD_DialogueEditor.db.GetVariableNode(ID).OnDisconnect(dialogue, connectionType, connectionID);
         }
 
         /// <summary>
@@ -205,6 +209,8 @@ namespace QuantumTek.QuantumDialogue.Editor
                 QD_DialogueEditor.db.GetConversationNode(ID).OnDisconnect(dialogue, connectionType, connectionID, knobID, knobType);
             else if (Type == QD_NodeType.Choice)
                 QD_DialogueEditor.db.GetChoiceNode(ID).OnDisconnect(dialogue, connectionType, connectionID, knobID, knobType);
+            else if (Type == QD_NodeType.Variables)
+                QD_DialogueEditor.db.GetVariableNode(ID).OnDisconnect(dialogue, connectionType, connectionID, knobID, knobType);
         }
 
         /// <summary>
@@ -226,6 +232,8 @@ namespace QuantumTek.QuantumDialogue.Editor
                 QD_DialogueEditor.db.GetConversationNode(ID).OnDisconnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);
             else if (Type == QD_NodeType.Choice)
                 QD_DialogueEditor.db.GetChoiceNode(ID).OnDisconnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);
+            else if (Type == QD_NodeType.Variables)
+                QD_DialogueEditor.db.GetVariableNode(ID).OnDisconnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);
         }
 
         /// <summary>

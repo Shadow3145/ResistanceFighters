@@ -12,8 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc788fe28a1947c5906bf24c0472406, type: 3}
   m_Name: TestDialogue
   m_EditorClassIdentifier: 
-  Conversations: []
-  Speakers: []
-  Messages: []
+  Conversations:
+  - ID: 0
+    Name: Test
+    FirstMessage: 3
+  Speakers:
+  - ID: 1
+    Name: Garrett
+    Icon: {fileID: 0}
+  Messages:
+  - ID: 3
+    Speaker: 1
+    SpeakerName: Garrett
+    PreviousMessage: -1
+    NextMessage: -1
+    MessageText: A
+    Clip: {fileID: 0}
   Choices: []
-  Variables: []
+  Variables:
+  - ID: 5
+    Objects:
+    - {fileID: 0}
+    Scripts:
+    - {fileID: 0}
+    Parent: 3

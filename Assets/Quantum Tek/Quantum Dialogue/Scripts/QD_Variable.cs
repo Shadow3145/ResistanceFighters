@@ -11,7 +11,7 @@ namespace QuantumTek.QuantumDialogue
         public List<FieldInfo> Variables = new List<FieldInfo>();
         public List<Object> Objects = new List<Object>();
         public List<Component> Scripts = new List<Component>();
-        public List<int> NextMessages = new List<int>();
+        public int Parent = -1;
 
         public QD_Variable(int id)
         { ID = id; }
@@ -27,9 +27,12 @@ namespace QuantumTek.QuantumDialogue
         /// <param name="knobType">The type of this node's knob.</param>
         public void OnConnect(QD_Dialogue dialogue, QD_NodeType connectionType, int connectionID, int connectionKnobID, int knobID, QD_KnobType knobType)
         {
-            if (knobID >= NextMessages.Count)
-                return;
-            NextMessages[knobID] = connectionID;
+            if (knobType == QD_KnobType.Input)
+            { }
+            else if (knobType == QD_KnobType.Output)
+            {
+                Parent = connectionID;
+            }
         }
 
         /// <summary>
@@ -40,10 +43,8 @@ namespace QuantumTek.QuantumDialogue
         /// <param name="connectionID">The id of the connected node.</param>
         public void OnDisconnect(QD_Dialogue dialogue, QD_NodeType connectionType, int connectionID)
         {
-            int count = NextMessages.Count;
-            for (int i = 0; i < count; ++i)
-                if (NextMessages[i] == connectionID)
-                    NextMessages[i] = -1;
+            if (Parent == connectionID)
+                    Parent = -1;
         }
 
         /// <summary>
@@ -56,14 +57,10 @@ namespace QuantumTek.QuantumDialogue
         /// <param name="knobType">The type of the knob.</param>
         public void OnDisconnect(QD_Dialogue dialogue, QD_NodeType connectionType, int connectionID, int knobID, QD_KnobType knobType)
         {
-            if (knobID >= NextMessages.Count)
-                return;
             if (knobType == QD_KnobType.Output)
             {
-                int count = NextMessages.Count;
-                for (int i = 0; i < count; ++i)
-                    if (NextMessages[i] == connectionID)
-                        NextMessages[i] = -1;
+                if (knobID == 0 && Parent == connectionID)
+                    Parent = -1;
             }
         }
 
