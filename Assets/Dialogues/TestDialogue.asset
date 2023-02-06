@@ -26,13 +26,13 @@ MonoBehaviour:
     SpeakerName: Garrett
     PreviousMessage: -1
     NextMessage: -1
-    MessageText: A
+    MessageText: Hi {0}
     Clip: {fileID: 0}
   Choices: []
   Variables:
-  - ID: 5
-    Objects:
-    - {fileID: 0}
-    Scripts:
-    - {fileID: 0}
+  - ID: 10
+    VariableInfos:
+    - parentObject: {fileID: 0}
+      componentIndex: 1
+      fieldIndex: 0
     Parent: 3

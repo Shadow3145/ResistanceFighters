@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEditor;
+using System.Reflection;
 
 namespace QuantumTek.QuantumDialogue.Demo
 {
@@ -113,19 +114,24 @@ namespace QuantumTek.QuantumDialogue.Demo
                     }
                 }
 
-                /*if (variable != null)
+                if (variable != null && variable.VariableInfos != null)
                 {
-                    string[] variables = new string[variable.Objects.Count];
-                    for (int i = 0; i < variable.Objects.Count; i++)
+                    string[] variables = new string[variable.VariableInfos.Count];
+                    
+                    for (int i = 0; i < variable.VariableInfos.Count; i++)
                     {
-                        variables[i] = variable.Variables[i].FieldType.ToString();
+                        string v = variable.VariableInfos[i].GetValue();
+                        if (v == null)
+                            continue;
+                        variables[i] = v;
                     }
 
-                    messageText.text = String.Format(message.MessageText, variables);
+                    if (variables.Length > 0)
+                        messageText.text = String.Format(message.MessageText, variables);
+                    else
+                        messageText.text = message.MessageText;
                 }
-
-                else*/
-                    messageText.text = message.MessageText;
+                
 
                 speakerName.text = message.SpeakerName;
                 messageText.gameObject.SetActive(true);

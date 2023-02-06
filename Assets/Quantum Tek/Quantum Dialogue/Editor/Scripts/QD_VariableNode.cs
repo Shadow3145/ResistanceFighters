@@ -41,62 +41,48 @@ namespace QuantumTek.QuantumDialogue.Editor
         {
             QD_Node node = QD_DialogueEditor.db.GetNode(ID);
             EditorGUI.BeginChangeCheck();
-            /*List<FieldInfo> variables = new List<FieldInfo>();
-            foreach (var variable in Data.Variables)
-                variables.Add(variable);*/
 
-            List<Object> objects = new List<Object>();
-            foreach (var obj in Data.Objects)
-                objects.Add(obj);
+            List<VariableInfo> variableInfos = new List<VariableInfo>();
+            foreach (var variable in Data.VariableInfos)
+                variableInfos.Add(variable);
 
-            List<Component> scripts = new List<Component>();
-            foreach (var c in Data.Scripts)
-                scripts.Add(c);
-
-            int count = Data.Objects.Count;
-            if (GUI.Button(new Rect(140, 60 + count * 70, 20, 20), "+", QD_DialogueEditor.skin.button) && Data.Variables.Count < 6)
+            int count = Data.VariableInfos.Count;
+            if (GUI.Button(new Rect(140, 60 + count * 70, 20, 20), "+", QD_DialogueEditor.skin.button) && Data.VariableInfos.Count < 6)
             {
                 EditorUtility.SetDirty(QD_DialogueEditor.db);
                 EditorUtility.SetDirty(QD_DialogueEditor.db.DataDB);
                 node.Window.height += 70;
-                /*Data.Variables.Add(null);
-                variables.Add(null);*/
-                Data.Objects.Add(null);
-                objects.Add(null);
-                Data.Scripts.Add(null);
-                scripts.Add(null);
+                Data.VariableInfos.Add(null);
+                variableInfos.Add(null);
                 QD_DialogueEditor.db.DataDB.SetVariable(Data.ID, Data);
             }
 
             for (int i = count - 1; i >= 0; --i)
             {
                 EditorGUI.LabelField(new Rect(5, 40 + i * 70, 65, 40), "Variable " + (i + 1), QD_DialogueEditor.skin.label);
-                objects[i] = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), objects[i], typeof(GameObject));
+                //objects[i] = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), objects[i], typeof(GameObject));
+                if (variableInfos[i] == null)
+                    variableInfos[i] = new VariableInfo();
+                variableInfos[i].parentObject = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), variableInfos[i].parentObject, typeof(GameObject));
+                var parent = variableInfos[i].parentObject;
                 
 
-                if (objects[i] != null)
+                if (variableInfos[i] != null && parent != null)
                 {
-                    var scs = (objects[i] as GameObject).GetComponents<Component>();
+                    var scs = (parent as GameObject).GetComponents<Component>();
                     string[] names = scs.Select(x => x.GetType().Name).ToArray();
-                    int index = scripts[i] == null
-                        ? 0
-                        : ArrayUtility.IndexOf(names, scripts[i].GetType().Name);
-                    scripts[i] = scs[EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), index, names)];
+                    variableInfos[i].componentIndex = EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), variableInfos[i].componentIndex, names);
                 }
                 
-                /*if (scripts[i] != null)
+                if (variableInfos[i] != null && parent != null && variableInfos[i].componentIndex != -1)
                 {
-                    var fields = scripts[i].GetType().GetFields();
+                    var fields = (parent as GameObject).GetComponents<Component>()[variableInfos[i].componentIndex].GetType().GetFields();
                     if (fields.Length > 0)
                     {
                         string[] names = fields.Select(x => x.Name).ToArray();
-
-                        int index = variables[i] == null
-                            ? 0
-                            : ArrayUtility.IndexOf(names, variables[i].Name);
-                        variables[i] = fields[EditorGUI.Popup(new Rect(75, 40 + (i + 1) * 30, 195, 20), index, names)];
+                        variableInfos[i].fieldIndex = EditorGUI.Popup(new Rect(75, 40 + (i + 1) * 30, 195, 20), variableInfos[i].fieldIndex, names);
                     }
-                }*/
+                }
 
                 if (i == count - 1)
                 {
@@ -104,9 +90,7 @@ namespace QuantumTek.QuantumDialogue.Editor
                     {
                         EditorUtility.SetDirty(QD_DialogueEditor.db);
                         EditorUtility.SetDirty(QD_DialogueEditor.db.DataDB);
-                        //variables.RemoveAt(i);
-                        objects.RemoveAt(i);
-                        scripts.RemoveAt(i);
+                        variableInfos.RemoveAt(i);
                         QD_DialogueEditor.editor.selectedNode = node;
                         node.Window.height -= 70;
                         QD_DialogueEditor.db.DataDB.SetVariable(Data.ID, Data);
@@ -118,9 +102,7 @@ namespace QuantumTek.QuantumDialogue.Editor
             {
                 EditorUtility.SetDirty(QD_DialogueEditor.db);
                 EditorUtility.SetDirty(QD_DialogueEditor.db.DataDB);
-              //  Data.Variables = variables;
-                Data.Objects = objects;
-                Data.Scripts = scripts;
+                Data.VariableInfos = variableInfos;
                 QD_DialogueEditor.db.DataDB.SetVariable(Data.ID, Data);
             }
 

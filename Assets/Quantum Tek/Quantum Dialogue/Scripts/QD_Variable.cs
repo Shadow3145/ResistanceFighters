@@ -1,16 +1,49 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace QuantumTek.QuantumDialogue
 {
     [System.Serializable]
+    public class VariableInfo
+    {
+        public Object parentObject = null;
+        public int componentIndex = -1;
+        public int fieldIndex = -1;
+        
+        public VariableInfo(Object parent, int componentIndex, int fieldIndex)
+        {
+            this.parentObject = parent;
+            this.componentIndex = componentIndex;
+            this.fieldIndex = fieldIndex;
+        }
+
+        public VariableInfo()
+        {}
+
+        public Component GetComponent()
+        {
+            if (parentObject == null || componentIndex == -1)
+                return null;
+
+            GameObject parent = parentObject as GameObject;
+
+            return parent.GetComponents<Component>()[componentIndex];
+        }
+
+        public string GetValue()
+        {
+            if (parentObject == null || componentIndex == -1 || fieldIndex == -1)
+                return null;
+            Component component = GetComponent();
+            return component.GetType().GetFields()[fieldIndex].GetValue(component).ToString();
+        }
+    }
+
+    [System.Serializable]
     public class QD_Variable
     {
         public int ID;
-        public List<FieldInfo> Variables = new List<FieldInfo>();
-        public List<Object> Objects = new List<Object>();
-        public List<Component> Scripts = new List<Component>();
+        public List<VariableInfo> VariableInfos = new List<VariableInfo>();
         public int Parent = -1;
 
         public QD_Variable(int id)

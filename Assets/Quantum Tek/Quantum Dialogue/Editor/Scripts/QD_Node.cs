@@ -159,7 +159,7 @@ namespace QuantumTek.QuantumDialogue.Editor
         /// <param name="knobType">The type of this node's knob.</param>
         public virtual void OnConnect(QD_Dialogue dialogue, QD_NodeType connectionType, int connectionID, int connectionKnobID, int knobID, QD_KnobType knobType)
         {
-            if (Type == QD_NodeType.Speaker)
+            if (Type == QD_NodeType.Speaker) 
                 QD_DialogueEditor.db.GetSpeakerNode(ID).OnConnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);
             else if (Type == QD_NodeType.Message)
                 QD_DialogueEditor.db.GetMessageNode(ID).OnConnect(dialogue, connectionType, connectionID, connectionKnobID, knobID, knobType);

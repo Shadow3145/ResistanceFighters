@@ -890,6 +890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: John
   characterHP: 10
+  privateName: 
 --- !u!4 &1381755549
 Transform:
   m_ObjectHideFlags: 0
