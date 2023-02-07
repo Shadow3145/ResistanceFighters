@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestDialogueDB
   m_EditorClassIdentifier: 
   DataDB: {fileID: 11400000, guid: 4e91e394d88010d4790caebfa93eb8a5, type: 2}
-  NextID: 11
+  NextID: 13
   Nodes:
   - ID: 0
     Type: 1
@@ -98,7 +98,7 @@ MonoBehaviour:
       Y: 70
       AllowMultipleConnections: 0
       Connections:
-        keys: 0a000000
+        keys: 0c000000
         values:
         - Array: 00000000
     Outputs:
@@ -172,12 +172,12 @@ MonoBehaviour:
       InputID: 5
       OutputType: 3
       OutputID: 1
-  - ID: 10
+  - ID: 12
     Type: 5
     Window:
       serializedVersion: 2
-      x: 333
-      y: 513
+      x: 361
+      y: 482
       width: 300
       height: 170
     Inputs: []
@@ -357,7 +357,7 @@ MonoBehaviour:
       SpeakerName: Garrett
       PreviousMessage: -1
       NextMessage: -1
-      MessageText: 
+      MessageText: Hi {0}!
       Clip: {fileID: 0}
   ConversationNodes:
   - ID: 0
@@ -390,7 +390,7 @@ MonoBehaviour:
       FirstMessage: 3
   ChoiceNodes: []
   VariableNodes:
-  - ID: 10
+  - ID: 12
     Type: 5
     Window:
       serializedVersion: 2
@@ -435,9 +435,9 @@ MonoBehaviour:
       OutputType: 5
       OutputID: 0
     Data:
-      ID: 10
+      ID: 12
       VariableInfos:
       - parentObject: {fileID: 0}
-        componentIndex: 1
-        fieldIndex: 0
+        componentName: PropertyTester
+        fieldName: characterName
       Parent: 3

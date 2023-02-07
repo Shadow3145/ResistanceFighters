@@ -7,14 +7,14 @@ namespace QuantumTek.QuantumDialogue
     public class VariableInfo
     {
         public Object parentObject = null;
-        public int componentIndex = -1;
-        public int fieldIndex = -1;
+        public string componentName = "";
+        public string fieldName = "";
         
-        public VariableInfo(Object parent, int componentIndex, int fieldIndex)
+        public VariableInfo(Object parent, string componentName, string fieldName)
         {
             this.parentObject = parent;
-            this.componentIndex = componentIndex;
-            this.fieldIndex = fieldIndex;
+            this.componentName = componentName;
+            this.fieldName = fieldName;
         }
 
         public VariableInfo()
@@ -22,20 +22,20 @@ namespace QuantumTek.QuantumDialogue
 
         public Component GetComponent()
         {
-            if (parentObject == null || componentIndex == -1)
+            if (parentObject == null || componentName == "")
                 return null;
 
             GameObject parent = parentObject as GameObject;
 
-            return parent.GetComponents<Component>()[componentIndex];
+            return parent.GetComponent(componentName);
         }
 
         public string GetValue()
         {
-            if (parentObject == null || componentIndex == -1 || fieldIndex == -1)
+            if (parentObject == null || componentName == "" || fieldName == "")
                 return null;
             Component component = GetComponent();
-            return component.GetType().GetFields()[fieldIndex].GetValue(component).ToString();
+            return component.GetType().GetField(fieldName).GetValue(component).ToString();
         }
     }
 

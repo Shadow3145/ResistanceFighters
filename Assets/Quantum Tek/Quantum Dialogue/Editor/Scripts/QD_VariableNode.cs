@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using System.Reflection;
 
 namespace QuantumTek.QuantumDialogue.Editor
 {
@@ -63,7 +62,7 @@ namespace QuantumTek.QuantumDialogue.Editor
                 //objects[i] = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), objects[i], typeof(GameObject));
                 if (variableInfos[i] == null)
                     variableInfos[i] = new VariableInfo();
-                variableInfos[i].parentObject = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), variableInfos[i].parentObject, typeof(GameObject));
+                variableInfos[i].parentObject = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), variableInfos[i].parentObject, typeof(GameObject), true);
                 var parent = variableInfos[i].parentObject;
                 
 
@@ -71,16 +70,24 @@ namespace QuantumTek.QuantumDialogue.Editor
                 {
                     var scs = (parent as GameObject).GetComponents<Component>();
                     string[] names = scs.Select(x => x.GetType().Name).ToArray();
-                    variableInfos[i].componentIndex = EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), variableInfos[i].componentIndex, names);
+                    int index = variableInfos[i].componentName == ""
+                        ? 0
+                        : ArrayUtility.IndexOf(names, variableInfos[i].componentName);
+
+                    //variableInfos[i].componentIndex = EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), variableInfos[i].componentIndex, names);
+                    variableInfos[i].componentName = names[EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), index, names)];
                 }
                 
-                if (variableInfos[i] != null && parent != null && variableInfos[i].componentIndex != -1)
+                if (variableInfos[i] != null && parent != null && variableInfos[i].componentName != "")
                 {
-                    var fields = (parent as GameObject).GetComponents<Component>()[variableInfos[i].componentIndex].GetType().GetFields();
+                    var fields = variableInfos[i].GetComponent().GetType().GetFields();
                     if (fields.Length > 0)
                     {
                         string[] names = fields.Select(x => x.Name).ToArray();
-                        variableInfos[i].fieldIndex = EditorGUI.Popup(new Rect(75, 40 + (i + 1) * 30, 195, 20), variableInfos[i].fieldIndex, names);
+                        int index = variableInfos[i].fieldName == ""
+                            ? 0
+                            : ArrayUtility.IndexOf(names, variableInfos[i].fieldName);
+                        variableInfos[i].fieldName = names[EditorGUI.Popup(new Rect(75, 40 + (i + 1) * 30, 195, 20), index, names)];
                     }
                 }
 
