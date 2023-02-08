@@ -59,7 +59,6 @@ namespace QuantumTek.QuantumDialogue.Editor
             for (int i = count - 1; i >= 0; --i)
             {
                 EditorGUI.LabelField(new Rect(5, 40 + i * 70, 65, 40), "Variable " + (i + 1), QD_DialogueEditor.skin.label);
-                //objects[i] = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), objects[i], typeof(GameObject));
                 if (variableInfos[i] == null)
                     variableInfos[i] = new VariableInfo();
                 variableInfos[i].parentObject = EditorGUI.ObjectField(new Rect(75, 40 + i * 70, 95, 20), variableInfos[i].parentObject, typeof(GameObject), true);
@@ -74,7 +73,6 @@ namespace QuantumTek.QuantumDialogue.Editor
                         ? 0
                         : ArrayUtility.IndexOf(names, variableInfos[i].componentName);
 
-                    //variableInfos[i].componentIndex = EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), variableInfos[i].componentIndex, names);
                     variableInfos[i].componentName = names[EditorGUI.Popup(new Rect(175, 40 + i * 70, 95, 20), index, names)];
                 }
                 
