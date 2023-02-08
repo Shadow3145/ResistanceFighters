@@ -59,19 +59,25 @@ public class IngredientGenerator : MonoBehaviour
         Rarity rarity = GetRarity();
         int amount = GetAmountOfEffects(rarity);
         List<EffectType> effectTypes = GetEffectTypes(amount);
+        if (effectTypes == null)
+            return null;
         Effect primaryEffect = GetPrimaryEffect(effectTypes);
         if (primaryEffect == null)
             return null;
         amount--;
         float strength = GetPrimaryEffectStrenght(rarity);
         IngredientEffect mainEffect = new IngredientEffect(primaryEffect, strength);
+        
         List<IngredientEffect> secondaryEffects = GetSecondaryIngredientEffects(amount, effectTypes, rarity, mainEffect);
+        if (secondaryEffects == null)
+            return null;
         float price = GetPrice(rarity, mainEffect, secondaryEffects);
         float dropProbability = GetDropProbability(rarity, mainEffect, secondaryEffects);
 
         return ScriptableObject.CreateInstance<Ingredient>().Init(price, rarity, mainEffect, secondaryEffects, dropProbability);
     }
 
+    #region Delete
     public static void Delete(string folderPath)
     {
         string[] folder = { folderPath };
@@ -80,13 +86,13 @@ public class IngredientGenerator : MonoBehaviour
             var path = AssetDatabase.GUIDToAssetPath(asset);
             AssetDatabase.DeleteAsset(path);
         }
-    }
+    }    
 
     public static void DeleteDefault()
     {
         Delete("Assets/ScriptableObjects/Ingredients/Generated");
     }
-
+    #endregion
 
     private Rarity GetRarity()
     {
@@ -131,7 +137,9 @@ public class IngredientGenerator : MonoBehaviour
             effectTypes.Add(GetRandomEffectType());
             return effectTypes;
         }
-
+        EffectTypeCombo combo = GetComboOfSize(amount);
+        if (combo == null)
+            return null;
         return GetComboOfSize(amount).GetEffectTypes();        
     }
 
@@ -143,20 +151,24 @@ public class IngredientGenerator : MonoBehaviour
             if (etc.GetSize() == size)
                 combos.Add(etc);
         }
+        if (combos.Count == 0)
+            return null;
         int rand = UnityEngine.Random.Range(0, combos.Count);
         return combos[rand];
     }
 
+    #region Primary Effect
     private Effect GetPrimaryEffect(List<EffectType> effectTypes)
     {
-        int tries = 10;
+        int tries = 5;
         while (tries > 0)
         {
             tries--;
             int rand = UnityEngine.Random.Range(0, effectTypes.Count);
             EffectType type = effectTypes[rand];
 
-            List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.FindAll(e => e.GetEffectType() == type && !config.ignoreMainEffects.Contains(e));
+            List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.
+            FindAll(e => e.GetEffectType() == type && !config.ignoreMainEffects.Contains(e));
             if (eff.Count == 0)
                 continue;
             rand = UnityEngine.Random.Range(0, eff.Count);
@@ -166,12 +178,23 @@ public class IngredientGenerator : MonoBehaviour
 
         return null;
     }
+     private float GetPrimaryEffectStrenght(Rarity rarity)
+    {
+        IngredientRaritySettings raritySettings = GetRaritySettings(rarity);
+        (float min, float max) range = raritySettings.GetPrimaryValueRange();
+        float strength = UnityEngine.Random.Range(range.min, range.max);
+
+        return (float)Math.Round(strength, 1);
+    }
+    #endregion
 
     private Effect GetEffect(List<EffectType> effectTypes, List<Effect> usedEffects)
     {
-        Effect ret;
-        while (true)
+        Effect ret = null;
+        int tries = 5;
+        while (tries > 0)
         {
+            tries--;
             int rand = UnityEngine.Random.Range(0, effectTypes.Count);
             EffectType type = effectTypes[rand];
             List<Effect> eff = GetComponentInParent<AlchemyGeneratorManager>().effects.
@@ -185,16 +208,7 @@ public class IngredientGenerator : MonoBehaviour
         }
 
         return ret;        
-    }
-
-    private float GetPrimaryEffectStrenght(Rarity rarity)
-    {
-        IngredientRaritySettings raritySettings = GetRaritySettings(rarity);
-        (float min, float max) range = raritySettings.GetPrimaryValueRange();
-        float strength = UnityEngine.Random.Range(range.min, range.max);
-
-        return (float)Math.Round(strength, 1);
-    }
+    }   
 
     private IngredientRaritySettings GetRaritySettings(Rarity rarity)
     {
@@ -211,10 +225,13 @@ public class IngredientGenerator : MonoBehaviour
         }
     }
 
+    #region Secondary Effect
     private List<IngredientEffect> GetSecondaryIngredientEffects(int amount, List<EffectType> effectTypes, Rarity rarity, IngredientEffect primary)
     {
         List<IngredientEffect> ingredientEffects = new List<IngredientEffect>();
         List<Effect> secondaryEffects = GetSecondaryEffects(amount, effectTypes, primary.GetEffect());
+        if (secondaryEffects.Count == 0)
+            return null;
         List<float> secondaryValues = GetSecondaryEffectValues(amount, primary.GetEffectStrength(), rarity);
         if (secondaryValues.Count == 0)
             return ingredientEffects;
@@ -231,11 +248,19 @@ public class IngredientGenerator : MonoBehaviour
     private List<Effect> GetSecondaryEffects(int amount, List<EffectType> effectTypes, Effect primaryEffect)
     {
         List<Effect> usedEffects = new List<Effect>();
+        int tries = 5;
         usedEffects.Add(primaryEffect);
 
         for (int i = 0; i < amount; i++)
         {
             Effect e = GetEffect(effectTypes, usedEffects);
+            if (e == null)
+            {
+                tries--;
+                if (tries > 0)
+                    i--;                
+                continue;
+            }
             usedEffects.Add(e);
         }
         usedEffects.Remove(primaryEffect);
@@ -259,6 +284,9 @@ public class IngredientGenerator : MonoBehaviour
             float avg = sum / amount;
             float mod = UnityEngine.Random.Range(0f, avg - amount);
             float val = UnityEngine.Random.Range(avg - mod, avg + mod);
+            float dif = primaryStrength - val;
+            if (dif < 0)
+                val += dif;
             values.Add((float)Math.Round(val, 1));
             sum -= val;
             amount--;
@@ -267,6 +295,7 @@ public class IngredientGenerator : MonoBehaviour
 
         return values;
     }
+    #endregion
 
     private float GetPrice(Rarity rarity, IngredientEffect main, List<IngredientEffect> secondary)
     {

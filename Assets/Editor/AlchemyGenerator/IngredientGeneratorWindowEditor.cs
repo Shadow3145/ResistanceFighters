@@ -48,17 +48,17 @@ public class IngredientGeneratorWindowEditor : EditorWindow
     {
         pcgManager = FindObjectOfType<IngredientGenerator>();
 
-        VisualElement basicConfigurationElem = new VisualElement();
+        ScrollView basicConfigurationElem = new ScrollView();
         VisualSetting.SetContainerVisuals(basicConfigurationElem);
         ShowBasicSettings(basicConfigurationElem);
         rootVisualElement.Add(basicConfigurationElem);
 
-        VisualElement constraintsElem = new VisualElement();
+        ScrollView constraintsElem = new ScrollView();
         VisualSetting.SetContainerVisuals(constraintsElem);
         ShowConstraintsSettings(constraintsElem);
         rootVisualElement.Add(constraintsElem);
 
-        VisualElement configElem = new VisualElement();
+        ScrollView configElem = new ScrollView();
         VisualSetting.SetContainerVisuals(configElem);
         ShowConfigFileSettings(configElem);
         rootVisualElement.Add(configElem);
@@ -207,6 +207,7 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         configNameField = new TextField();
         configNameField.style.width = VisualSetting.longWidth;
         configElem.Add(configNameField);
+
         configElem.Add(VisualSetting.CreateButton("Save config file", () => SaveConfigFile()));
         configElem.Add(VisualSetting.CreateButton("Delete config file and its settings", () => DeleteConfigFile()));
         configElem.Add(VisualSetting.CreateButton("Load values from config", () => LoadValuesFromConfig(configPathField.value + configNameField.value + ".asset")));
@@ -271,6 +272,7 @@ public class IngredientGeneratorWindowEditor : EditorWindow
         }
 
     }
+    
     private void GenerateIngredients()
     {
         IngredientGeneratorConfiguration config = CreateConfiguration();

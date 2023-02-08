@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083116b0340b2d941a7d5aea5aea2bb3, type: 3}
+  m_Name: FoxMushroom
+  m_EditorClassIdentifier: 
+  itemName: FoxMushroom
+  icon: {fileID: 21300000, guid: 5e23818f8abfc4a4eaeb182fcf1509a9, type: 3}
+  price: 0.112
+  description: 
+  dropProbability: 0.63
+  rarity: 0
+  mainEffect:
+    effect: {fileID: 11400000, guid: 248bdaf7b002ce149ae1fdba8c3afa1b, type: 2}
+    effectStrength: 7.5
+  secondaryEffects:
+  - effect: {fileID: 11400000, guid: 1d4ccb86f68ccdf4a9bbae00f0b27a26, type: 2}
+    effectStrength: 1.7
