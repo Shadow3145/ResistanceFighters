@@ -16,20 +16,30 @@ MonoBehaviour:
   rare: {fileID: 11400000, guid: b67f27b0eebf30f40bc2511ffda22869, type: 2}
   epic: {fileID: 11400000, guid: 24a4f215e9ee50b4d993137b36dc289b, type: 2}
   amountToGenerate: 10
-  rareProbability: 0.25
-  epicProbability: 0.1
+  rareProbability: 0.15
+  epicProbability: 1
   folderPath: Assets/ScriptableObjects/Ingredients/Generated
   ignoreEffectTypes: 
   ignoreMainEffects:
+  - {fileID: 11400000, guid: 23057612d7a82a347943bca49f5caf14, type: 2}
+  - {fileID: 11400000, guid: 1c9fa2cea540c6c47bd5e8de408a1ee4, type: 2}
   - {fileID: 11400000, guid: a9df1076684932c43ac06e7e700a8e3c, type: 2}
   - {fileID: 11400000, guid: b7b681d1c87c68048a301b519eaa040e, type: 2}
   - {fileID: 11400000, guid: 61f2dbc78fc3cfb4691f84fb74226892, type: 2}
+  - {fileID: 11400000, guid: 248bdaf7b002ce149ae1fdba8c3afa1b, type: 2}
   - {fileID: 11400000, guid: bf13e13f0c9f0ca4a87ce9cbe3c0228d, type: 2}
+  - {fileID: 11400000, guid: 8f239458491740142b5deeffa6e28544, type: 2}
   - {fileID: 11400000, guid: 1d4ccb86f68ccdf4a9bbae00f0b27a26, type: 2}
   - {fileID: 11400000, guid: 342035a33cbd1c74b966a9ff300e9907, type: 2}
   - {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
   ignoreSecondaryEffects:
+  - {fileID: 11400000, guid: 23057612d7a82a347943bca49f5caf14, type: 2}
   - {fileID: 11400000, guid: 1c9fa2cea540c6c47bd5e8de408a1ee4, type: 2}
   - {fileID: 11400000, guid: a9df1076684932c43ac06e7e700a8e3c, type: 2}
+  - {fileID: 11400000, guid: b7b681d1c87c68048a301b519eaa040e, type: 2}
+  - {fileID: 11400000, guid: 61f2dbc78fc3cfb4691f84fb74226892, type: 2}
   - {fileID: 11400000, guid: 248bdaf7b002ce149ae1fdba8c3afa1b, type: 2}
   - {fileID: 11400000, guid: bf13e13f0c9f0ca4a87ce9cbe3c0228d, type: 2}
+  - {fileID: 11400000, guid: 8f239458491740142b5deeffa6e28544, type: 2}
+  - {fileID: 11400000, guid: 1d4ccb86f68ccdf4a9bbae00f0b27a26, type: 2}
+  - {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
