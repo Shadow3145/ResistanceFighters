@@ -8,11 +8,14 @@ public class Connection
     public ConnectionKnob inKnob;
     public ConnectionKnob outKnob;
 
+    Action<Connection> RemoveConnection;
 
-    public Connection(ConnectionKnob inKnob, ConnectionKnob outKnob)
+    public Connection(ConnectionKnob inKnob, ConnectionKnob outKnob, Action<Connection> RemoveConnection)
     {
         this.inKnob = inKnob;
         this.outKnob = outKnob;
+
+        this.RemoveConnection = RemoveConnection;
     }
 
     public Connection DrawConnection()
@@ -27,5 +30,10 @@ public class Connection
         }
 
         return null;
+    }
+
+    public void DeleteConnection()
+    {
+        RemoveConnection(this);
     }
 }

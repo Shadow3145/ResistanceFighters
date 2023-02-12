@@ -12,10 +12,13 @@ public class ConnectionKnob
 
     private float width = 10f;
     private float height = 20f;
+    private float yOffset;
 
     public Action<ConnectionKnob> OnClickConnectionKnob;
 
-    public ConnectionKnob(Node ownerNode, ConnectionKnobType type, GUIStyle guiStyle, Action<ConnectionKnob> OnClickConnectionKnob)
+    public Connection connection;
+
+    public ConnectionKnob(Node ownerNode, ConnectionKnobType type, GUIStyle guiStyle, Action<ConnectionKnob> OnClickConnectionKnob, float yPos)
     {
         this.ownerNode = ownerNode;
         this.type = type;
@@ -23,12 +26,12 @@ public class ConnectionKnob
         this.OnClickConnectionKnob = OnClickConnectionKnob;
 
         this.rect = new Rect(0f, 0f, width, height);
+        yOffset = yPos;
     }
 
     public void DrawKnob()
     {
-        rect.y = ownerNode.rect.y + (ownerNode.rect.height * 0.5f) - rect.height * 0.5f;
-
+        rect.y = ownerNode.rect.y + yOffset;
         switch (type)
         {
             case ConnectionKnobType.In:

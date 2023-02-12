@@ -2,22 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using System;
 
 public class DialogueNodeEditorWindow : EditorWindow
 {
-    private List<Node> nodes;
+    private Dictionary<int, Node> nodes;
     private List<Connection> connections;
 
-    private GUIStyle nodeStyle;
-    private GUIStyle selectedNodeStyle;
-    private GUIStyle knobStyle;
-    private GUIStyle buttonStyle;
+    private int lastId = 1;
+
+    [SerializeField] private Stylesheet stylesheet;
 
 
     private ConnectionKnob selectedInKnob;
     private ConnectionKnob selectedOutKnob;
 
-    private GUIStyle topPanelStyle;
     private Rect topPanel;
 
     private Vector2 drag;
@@ -39,32 +38,7 @@ public class DialogueNodeEditorWindow : EditorWindow
 
     private void OnEnable()
     {
-        topPanelStyle = new GUIStyle();
-        topPanelStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/darkviewbackground.png") as Texture2D;
-        topPanelStyle.normal.textColor = Color.white;
-        topPanelStyle.border = new RectOffset(12, 12, 12, 12);
         topPanel = new Rect(0, 0, this.position.width, 50);
-
-        nodeStyle = new GUIStyle();
-        nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
-        nodeStyle.border = new RectOffset(12, 12, 12, 12);
-
-        selectedNodeStyle = new GUIStyle();
-        selectedNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
-        selectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
-
-        knobStyle = new GUIStyle();
-        knobStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
-        knobStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D;
-        knobStyle.border = new RectOffset(4, 4, 12, 12);
-
-        buttonStyle = new GUIStyle();
-        buttonStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn.png") as Texture2D;
-        buttonStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn on.png") as Texture2D;
-        buttonStyle.border = new RectOffset(12, 12, 12, 12);
-        buttonStyle.alignment = TextAnchor.UpperCenter;
-        buttonStyle.normal.textColor = Color.white;
-        buttonStyle.fontSize = 20;
     }
 
     private void SetDialogue()
@@ -129,9 +103,9 @@ public class DialogueNodeEditorWindow : EditorWindow
     private void DrawTopPanel()
     {
         topPanel.width = position.width;
-        GUI.Box(topPanel, "", topPanelStyle);
+        GUI.Box(topPanel, "", stylesheet.topPanel);
 
-        if (GUI.Button(new Rect(250, 10, 30, 30), "+", buttonStyle))
+        if (GUI.Button(new Rect(250, 10, 30, 30), "+", stylesheet.button))
         {
             DialoguePopupWindow window = new DialoguePopupWindow(OnClosePopupWindow);
             PopupWindow.Show(GUILayoutUtility.GetLastRect(), window);
@@ -160,7 +134,7 @@ public class DialogueNodeEditorWindow : EditorWindow
     {
         if (nodes != null)
         {
-            foreach (Node node in nodes)
+            foreach (Node node in nodes.Values)
                 node.DrawNode();
         }
     }
@@ -179,7 +153,14 @@ public class DialogueNodeEditorWindow : EditorWindow
         }
 
         if (toRemove != null)
-            connections.Remove(toRemove);
+            RemoveConnection(toRemove);
+    }
+
+    private void RemoveConnection(Connection connection)
+    {
+        connection.inKnob.connection = null;
+        connection.outKnob.connection = null;
+        connections.Remove(connection);
     }
 
     private void DrawConnectionLine(Event e)
@@ -230,7 +211,7 @@ public class DialogueNodeEditorWindow : EditorWindow
     {
         if (nodes != null)
         {
-            foreach (Node node in nodes)
+            foreach (Node node in nodes.Values)
             {
                 bool guiChanged = node.ProcessEvents(e);
 
@@ -243,16 +224,45 @@ public class DialogueNodeEditorWindow : EditorWindow
     private void ShowContextMenu(Vector2 position)
     {
         GenericMenu contextMenu = new GenericMenu();
-        contextMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(position));
+        foreach (NodeType nodeType in Enum.GetValues(typeof(NodeType)))
+        {
+            if (nodeType == NodeType.StartNode && nodes.ContainsKey(0))
+                continue;
+            contextMenu.AddItem(new GUIContent(nodeType.ToString()), false, () => OnClickAddNode(position, nodeType));
+        }
         contextMenu.ShowAsContext();
     }
 
-    private void OnClickAddNode(Vector2 position)
+    private void OnClickAddNode(Vector2 position, NodeType nodeType = NodeType.BaseNode)
     {
         if (nodes == null)
-            nodes = new List<Node>();
+            nodes = new Dictionary<int, Node>();
 
-       nodes.Add(new Node(position, 200, 100, nodeStyle, selectedNodeStyle ,knobStyle, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+        switch (nodeType)
+        {
+            case NodeType.BaseNode:
+                nodes.Add(lastId, new Node(lastId, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                lastId++;
+                break;
+            case NodeType.StartNode:
+                nodes.Add(0, new StartNode(0, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                break;
+            case NodeType.SpeakerNode:
+                nodes.Add(lastId, new SpeakerNode(lastId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                lastId++;
+                break;
+            case NodeType.DialogueNode:
+                nodes.Add(lastId, new DialogueNode(lastId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                lastId++;
+                break;
+            case NodeType.ChoiceNode:
+                nodes.Add(lastId, new ChoiceNode(lastId, position, 300, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                lastId++;
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void OnClickInKnob(ConnectionKnob inKnob)
@@ -274,7 +284,7 @@ public class DialogueNodeEditorWindow : EditorWindow
             Connection connection = connections.FirstOrDefault(x => x.inKnob == selectedInKnob);
             if (connection == null)
                 return;
-            connections.Remove(connection);
+            RemoveConnection(connection);
             selectedOutKnob = connection.outKnob;
             selectedInKnob = null;
             GUI.changed = true;
@@ -302,7 +312,10 @@ public class DialogueNodeEditorWindow : EditorWindow
         if (connections == null)
             connections = new List<Connection>();
 
-        connections.Add(new Connection(selectedInKnob, selectedOutKnob));
+        Connection connection = new Connection(selectedInKnob, selectedOutKnob, RemoveConnection);
+        selectedInKnob.connection = connection;
+        selectedOutKnob.connection = connection;
+        connections.Add(connection);
     }
     
     private void ClearConnectionSelection()
@@ -319,15 +332,16 @@ public class DialogueNodeEditorWindow : EditorWindow
 
             foreach (Connection connection in connections)
             {
-                if (connection.inKnob == node.inKnob || connection.outKnob == node.outKnob)
+                if (node.inKnobs.Contains(connection.inKnob) || node.outKnobs.Contains(connection.outKnob))
                     connectionsToRemove.Add(connection);
             }
 
             foreach (Connection connection in connectionsToRemove)
-                connections.Remove(connection);
+            {
+                RemoveConnection(connection);
+            }
         }
-
-        nodes.Remove(node);
+        nodes.Remove(node.id);
     }
 
     private void OnDrag(Vector2 delta)
@@ -335,7 +349,7 @@ public class DialogueNodeEditorWindow : EditorWindow
         drag = delta;
         if (nodes != null)
         {
-            foreach (Node node in nodes)
+            foreach (Node node in nodes.Values)
                 node.DragNode(delta);
         }
 

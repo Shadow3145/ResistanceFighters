@@ -1,42 +1,84 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+
+public enum NodeType
+{
+    BaseNode,
+    StartNode,
+    SpeakerNode,
+    DialogueNode,
+    ChoiceNode
+}
 
 [System.Serializable]
 public class Node
 {
+    public int id;
+
     public Rect rect;
     public string title;
+    
     public bool isDragged = false;
     public bool isSelected = false;
 
-    public ConnectionKnob inKnob;
-    public ConnectionKnob outKnob;
+    public List<ConnectionKnob> inKnobs;
+    public List<ConnectionKnob> outKnobs;
 
     public GUIStyle nodeStyle;
     public GUIStyle defaultNodeStyle;
     public GUIStyle selectedNodeStyle;
 
+    protected Stylesheet stylesheet;
+
     public Action<Node> OnRemoveNode;
 
-    public Node(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle selectedNodeStyle, GUIStyle knobStyle, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode)
+    public NodeType nodeType;
+
+    protected float leftMargin;
+    protected float topMargin;
+
+
+    public Node(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
+        Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode)
     {
+        this.id = id;
+        this.stylesheet = stylesheet;
         rect = new Rect(position.x, position.y, width, height);
-        this.nodeStyle = nodeStyle;
-        this.defaultNodeStyle = nodeStyle;
-        this.selectedNodeStyle = selectedNodeStyle;
+        nodeStyle = stylesheet.node.defaultStyle;
+        defaultNodeStyle = stylesheet.node.defaultStyle;
+        selectedNodeStyle = stylesheet.node.selectedStyle;
 
-        inKnob = new ConnectionKnob(this, ConnectionKnobType.In, knobStyle, OnClickInKnob);
-        outKnob = new ConnectionKnob(this, ConnectionKnobType.Out, knobStyle, OnClickOutKnob);
+        OnRemoveNode = OnClickRemoveNode;
 
-        this.OnRemoveNode = OnClickRemoveNode;
+        leftMargin = nodeStyle.border.left / 1.5f;
+        topMargin = nodeStyle.border.top / 2;
+
+        inKnobs = new List<ConnectionKnob>();
+        outKnobs = new List<ConnectionKnob>();
+
+        Init(stylesheet, OnClickInKnob, OnClickOutKnob);
     }
 
-    public void DrawNode()
+    public virtual void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
+    {        
+        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15));
+        outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15));
+        nodeType = NodeType.BaseNode;
+        title = "Node";
+    }
+
+    public virtual void DrawNode()
     {
-        GUI.Box(rect, title, nodeStyle);
-        inKnob.DrawKnob();
-        outKnob.DrawKnob();
+        Rect headerRect = new Rect(new Vector2(rect.x + leftMargin, rect.y + topMargin), new Vector2(rect.width - (nodeStyle.border.left*1.3f), 25f));
+        GUI.Box(rect, "", nodeStyle);
+        GUI.Box(headerRect, title, stylesheet.nodeHeader);
+        DrawNodeContent();
+        foreach (ConnectionKnob knob in inKnobs)
+            knob.DrawKnob();
+        foreach (ConnectionKnob knob in outKnobs)
+            knob.DrawKnob();
     }
 
     public virtual void DrawNodeContent()
