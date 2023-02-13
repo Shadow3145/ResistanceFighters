@@ -17,8 +17,10 @@ public class ChoiceNode : Node
 
     public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
     {
-        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15));
-        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40));
+        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15,
+           new List<NodeType>() {NodeType.StartNode, NodeType.DialogueNode }, true ));
+        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40,
+            new List<NodeType>() { NodeType.SpeakerNode}, false));
 
         this.OnClickOutKnob = OnClickOutKnob;
 
@@ -32,7 +34,8 @@ public class ChoiceNode : Node
         if (GUI.Button(new Rect(rect.x + rect.width/2 - 10, rect.y + 50 + choices.Count*35, 30, 30), "+", stylesheet.button))
         {
             choices.Add("");
-            outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 50 + (choices.Count-1)*35));
+            outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 50 + (choices.Count-1)*35,
+                new List<NodeType>() {NodeType.DialogueNode, NodeType.EndNode }, false));
             rect.height += 35;
         }
         List<int> toRemove = new List<int>();
@@ -46,8 +49,9 @@ public class ChoiceNode : Node
         foreach (int index in toRemove)
         {
             choices.RemoveAt(index);
-            if (outKnobs[index].connection != null)
-                outKnobs[index].connection.DeleteConnection();
+            if (outKnobs[index].connections != null)
+                foreach (Connection connection in outKnobs[index].connections)
+                    connection.DeleteConnection();
             outKnobs.RemoveAt(index);
             rect.height -= 35;
         }

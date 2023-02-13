@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum ConnectionKnobType { In, Out};
@@ -16,16 +17,25 @@ public class ConnectionKnob
 
     public Action<ConnectionKnob> OnClickConnectionKnob;
 
-    public Connection connection;
+    public List<NodeType> allowedConnections;
 
-    public ConnectionKnob(Node ownerNode, ConnectionKnobType type, GUIStyle guiStyle, Action<ConnectionKnob> OnClickConnectionKnob, float yPos)
+    public bool allowMoreConnections;
+
+    public List<Connection> connections;
+
+    public ConnectionKnob(Node ownerNode, ConnectionKnobType type, GUIStyle guiStyle, Action<ConnectionKnob> OnClickConnectionKnob, float yPos, List<NodeType> allowedConnections, bool allowMoreConnections)
     {
         this.ownerNode = ownerNode;
         this.type = type;
         this.guiStyle = guiStyle;
         this.OnClickConnectionKnob = OnClickConnectionKnob;
 
+        this.allowedConnections = allowedConnections;
+        this.allowMoreConnections = allowMoreConnections;
+
         this.rect = new Rect(0f, 0f, width, height);
+
+        connections = new List<Connection>();
         yOffset = yPos;
     }
 

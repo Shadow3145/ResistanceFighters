@@ -9,7 +9,8 @@ public enum NodeType
     StartNode,
     SpeakerNode,
     DialogueNode,
-    ChoiceNode
+    ChoiceNode,
+    EndNode
 }
 
 [System.Serializable]
@@ -63,10 +64,6 @@ public class Node
 
     public virtual void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
     {        
-        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15));
-        outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15));
-        nodeType = NodeType.BaseNode;
-        title = "Node";
     }
 
     public virtual void DrawNode()

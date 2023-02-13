@@ -16,9 +16,12 @@ public class DialogueNode : Node
 
     public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
     {
-        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15));
-        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40));
-        outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15));
+        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15, 
+            new List<NodeType>() { NodeType.DialogueNode, NodeType.StartNode, NodeType.ChoiceNode}, true));
+        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40,
+            new List<NodeType>() { NodeType.SpeakerNode}, false));
+        outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
+            new List<NodeType>() { NodeType.ChoiceNode, NodeType.DialogueNode, NodeType.EndNode}, false));
         nodeType = NodeType.DialogueNode;
         title = "Dialogue";
     }
