@@ -32,7 +32,9 @@ public class DialoguePopupWindow : PopupWindowContent
             if (GUI.Button(new Rect(25, 80, 100, 30), "Create"))
             {
                 Dialogue dialogue = ScriptableObject.CreateInstance<Dialogue>();
-                AssetDatabase.CreateAsset(dialogue, "Assets/Editor/DialogueNodeEdtior/Database/" + newDialogueName + ".asset");
+                dialogue.lastConnectionId = 0;
+                dialogue.lastNodeId = 1;
+                AssetDatabase.CreateAsset(dialogue, "Assets/Scripts/DialogueNodeEditor/Database/" + newDialogueName + ".asset");
                 OnClosePopup(this);
                 PopupWindow.mouseOverWindow.Close();
             }

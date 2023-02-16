@@ -144,4 +144,9 @@ public class Node
         if (this.OnRemoveNode != null)
             OnRemoveNode(this);
     }
+
+    public Node GetNode()
+    {
+        return this;
+    }
 }

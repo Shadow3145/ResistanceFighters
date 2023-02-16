@@ -8,9 +8,10 @@ public class ChoiceNode : Node
 {
     public List<string> choices;
 
+    private Action<int> OnRemoveChoice;
     private Action<ConnectionKnob> OnClickOutKnob;
     public ChoiceNode(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
-        Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode) :
+        Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode, Action<int> OnRemoveChoice) :
         base(id, position, width, height, stylesheet,
             OnClickInKnob, OnClickOutKnob, OnClickRemoveNode)
     { }
@@ -18,9 +19,9 @@ public class ChoiceNode : Node
     public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
     {
         inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15,
-           new List<NodeType>() {NodeType.StartNode, NodeType.DialogueNode }, true ));
+           new List<NodeType>() {NodeType.StartNode, NodeType.DialogueNode }, true, ConnectionKnobSubType.Flow ));
         inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40,
-            new List<NodeType>() { NodeType.SpeakerNode}, false));
+            new List<NodeType>() { NodeType.SpeakerNode}, false, ConnectionKnobSubType.Speaker));
 
         this.OnClickOutKnob = OnClickOutKnob;
 
@@ -35,7 +36,7 @@ public class ChoiceNode : Node
         {
             choices.Add("");
             outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 50 + (choices.Count-1)*35,
-                new List<NodeType>() {NodeType.DialogueNode, NodeType.EndNode }, false));
+                new List<NodeType>() {NodeType.DialogueNode, NodeType.EndNode }, false, ConnectionKnobSubType.Flow));
             rect.height += 35;
         }
         List<int> toRemove = new List<int>();
@@ -50,8 +51,8 @@ public class ChoiceNode : Node
         {
             choices.RemoveAt(index);
             if (outKnobs[index].connections != null)
-                foreach (Connection connection in outKnobs[index].connections)
-                    connection.DeleteConnection();
+                foreach (int connection in outKnobs[index].connections)
+                    OnRemoveChoice(connection);
             outKnobs.RemoveAt(index);
             rect.height -= 35;
         }

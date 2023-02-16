@@ -6,7 +6,7 @@ using System;
 
 public class DialogueNode : Node
 {
-    public string dialogue;
+    public string dialogue = "";
 
     public DialogueNode(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
         Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode) :
@@ -17,11 +17,11 @@ public class DialogueNode : Node
     public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
     {
         inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15, 
-            new List<NodeType>() { NodeType.DialogueNode, NodeType.StartNode, NodeType.ChoiceNode}, true));
+            new List<NodeType>() { NodeType.DialogueNode, NodeType.StartNode, NodeType.ChoiceNode}, true, ConnectionKnobSubType.Flow));
         inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40,
-            new List<NodeType>() { NodeType.SpeakerNode}, false));
+            new List<NodeType>() { NodeType.SpeakerNode}, false, ConnectionKnobSubType.Speaker));
         outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
-            new List<NodeType>() { NodeType.ChoiceNode, NodeType.DialogueNode, NodeType.EndNode}, false));
+            new List<NodeType>() { NodeType.ChoiceNode, NodeType.DialogueNode, NodeType.EndNode}, false, ConnectionKnobSubType.Flow));
         nodeType = NodeType.DialogueNode;
         title = "Dialogue";
     }

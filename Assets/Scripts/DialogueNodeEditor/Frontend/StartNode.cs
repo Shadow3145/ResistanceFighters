@@ -13,7 +13,7 @@ public class StartNode : Node
     public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
     {
         outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
-            new List<NodeType>() { NodeType.DialogueNode, NodeType.ChoiceNode}, false));
+            new List<NodeType>() { NodeType.DialogueNode, NodeType.ChoiceNode}, false, ConnectionKnobSubType.Flow));
         nodeType = NodeType.StartNode;
         title = "Start Node";
     }

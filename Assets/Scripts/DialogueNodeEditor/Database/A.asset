@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b741da3fe0d60a745aef29a11fe0f8c0, type: 3}
   m_Name: A
   m_EditorClassIdentifier: 
-  connections: []
+  lastNodeId: 1
+  lastConnectionId: 0
+  nodesList: []
+  connectionsList: []

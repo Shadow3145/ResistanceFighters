@@ -4,11 +4,16 @@ using UnityEngine;
 
 public enum ConnectionKnobType { In, Out};
 
+public enum ConnectionKnobSubType {Flow, Speaker, Data};
+
+[System.Serializable]
 public class ConnectionKnob
 {
     public Rect rect;
     public ConnectionKnobType type;
-    public Node ownerNode;
+
+    public ConnectionKnobSubType subType;
+
     public GUIStyle guiStyle;
 
     private float width = 10f;
@@ -16,40 +21,47 @@ public class ConnectionKnob
     private float yOffset;
 
     public Action<ConnectionKnob> OnClickConnectionKnob;
+    public Func<Node> GetNode;
+
+    public int ownerNodeId;
 
     public List<NodeType> allowedConnections;
 
     public bool allowMoreConnections;
 
-    public List<Connection> connections;
+    public List<int> connections;
 
-    public ConnectionKnob(Node ownerNode, ConnectionKnobType type, GUIStyle guiStyle, Action<ConnectionKnob> OnClickConnectionKnob, float yPos, List<NodeType> allowedConnections, bool allowMoreConnections)
+    public ConnectionKnob(Node ownerNode, ConnectionKnobType type, GUIStyle guiStyle, Action<ConnectionKnob> OnClickConnectionKnob, float yPos, 
+    List<NodeType> allowedConnections, bool allowMoreConnections, ConnectionKnobSubType subType)
     {
-        this.ownerNode = ownerNode;
+        this.GetNode = () => ownerNode.GetNode();
+        this.ownerNodeId = ownerNode.id;
         this.type = type;
+        this.subType = subType;
         this.guiStyle = guiStyle;
         this.OnClickConnectionKnob = OnClickConnectionKnob;
+
 
         this.allowedConnections = allowedConnections;
         this.allowMoreConnections = allowMoreConnections;
 
         this.rect = new Rect(0f, 0f, width, height);
 
-        connections = new List<Connection>();
+        connections = new List<int>();
         yOffset = yPos;
     }
 
     public void DrawKnob()
     {
-        rect.y = ownerNode.rect.y + yOffset;
+        rect.y = GetNode().rect.y + yOffset;
         switch (type)
         {
             case ConnectionKnobType.In:
-                rect.x = ownerNode.rect.x - rect.width + 8f;
+                rect.x = GetNode().rect.x - rect.width + 8f;
                 break;
 
             case ConnectionKnobType.Out:
-                rect.x = ownerNode.rect.x + ownerNode.rect.width - 8f;
+                rect.x = GetNode().rect.x + GetNode().rect.width - 8f;
                 break;
         }
 

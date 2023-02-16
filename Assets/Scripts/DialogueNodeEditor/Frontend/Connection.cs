@@ -8,10 +8,13 @@ public class Connection
     public ConnectionKnob inKnob;
     public ConnectionKnob outKnob;
 
+    public int id;
+
     Action<Connection> RemoveConnection;
 
-    public Connection(ConnectionKnob inKnob, ConnectionKnob outKnob, Action<Connection> RemoveConnection)
+    public Connection(int id, ConnectionKnob inKnob, ConnectionKnob outKnob, Action<Connection> RemoveConnection)
     {
+        this.id = id;
         this.inKnob = inKnob;
         this.outKnob = outKnob;
 

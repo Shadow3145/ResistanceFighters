@@ -6,10 +6,8 @@ using System;
 
 public class DialogueNodeEditorWindow : EditorWindow
 {
-    private Dictionary<int, Node> nodes;
+    private List<Node> nodes;
     private List<Connection> connections;
-
-    private int lastId = 1;
 
     [SerializeField] private Stylesheet stylesheet;
 
@@ -26,6 +24,7 @@ public class DialogueNodeEditorWindow : EditorWindow
     private bool isDrawing = false;
 
     public string selectedDialogue ="";
+    private int selectedDialogueIndex;
     public Dialogue[] dialogues;
 
     [MenuItem("Window/Dialogue Node Editor")]
@@ -41,7 +40,7 @@ public class DialogueNodeEditorWindow : EditorWindow
         topPanel = new Rect(0, 0, this.position.width, 50);
     }
 
-    private void SetDialogue()
+    private bool SetDialogue()
     {
         dialogues = Resources.FindObjectsOfTypeAll<Dialogue>();
         string[] names = dialogues.Select(x => x.name).ToArray();
@@ -49,9 +48,13 @@ public class DialogueNodeEditorWindow : EditorWindow
         if (selectedDialogue != "" && names.Contains(selectedDialogue))
         {
             int index = ArrayUtility.IndexOf(names, selectedDialogue);
-            nodes = dialogues[index].nodes;
-            connections = dialogues[index].connections;
+            selectedDialogueIndex = index;
+            nodes = dialogues[index].nodesList;
+            connections = dialogues[index].connectionsList;
+            return true;
         }
+
+        return false;
     }
 
     private void OnGUI()
@@ -61,8 +64,8 @@ public class DialogueNodeEditorWindow : EditorWindow
 
 
         DrawTopPanel();
-        SetDialogue();
-
+        if (!SetDialogue())
+            return;
         DrawNodes();
         DrawConnections();
         ProcessEvents(Event.current);
@@ -134,7 +137,7 @@ public class DialogueNodeEditorWindow : EditorWindow
     {
         if (nodes != null)
         {
-            foreach (Node node in nodes.Values)
+            foreach (Node node in nodes)
                 node.DrawNode();
         }
     }
@@ -158,8 +161,8 @@ public class DialogueNodeEditorWindow : EditorWindow
 
     private void RemoveConnection(Connection connection)
     {
-        connection.inKnob.connections.Remove(connection);
-        connection.outKnob.connections.Remove(connection);
+        connection.inKnob.connections.Remove(connection.id);
+        connection.outKnob.connections.Remove(connection.id);
         connections.Remove(connection);
     }
 
@@ -211,7 +214,7 @@ public class DialogueNodeEditorWindow : EditorWindow
     {
         if (nodes != null)
         {
-            foreach (Node node in nodes.Values)
+            foreach (Node node in nodes)
             {
                 bool guiChanged = node.ProcessEvents(e);
 
@@ -226,7 +229,7 @@ public class DialogueNodeEditorWindow : EditorWindow
         GenericMenu contextMenu = new GenericMenu();
         foreach (NodeType nodeType in Enum.GetValues(typeof(NodeType)))
         {
-            if (nodeType == NodeType.BaseNode || (nodeType == NodeType.StartNode && nodes.ContainsKey(0)))
+            if (nodeType == NodeType.BaseNode || (nodeType == NodeType.StartNode && nodes.Find(x => x.id == 0) != null))
                 continue;
             contextMenu.AddItem(new GUIContent(nodeType.ToString()), false, () => OnClickAddNode(position, nodeType));
         }
@@ -236,30 +239,30 @@ public class DialogueNodeEditorWindow : EditorWindow
     private void OnClickAddNode(Vector2 position, NodeType nodeType = NodeType.BaseNode)
     {
         if (nodes == null)
-            nodes = new Dictionary<int, Node>();
+            nodes = new List<Node>();
 
         switch (nodeType)
         {
             case NodeType.BaseNode:
                 break;
             case NodeType.StartNode:
-                nodes.Add(0, new StartNode(0, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                nodes.Add(new StartNode(0, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
                 break;
             case NodeType.SpeakerNode:
-                nodes.Add(lastId, new SpeakerNode(lastId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
-                lastId++;
+                nodes.Add(new SpeakerNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.DialogueNode:
-                nodes.Add(lastId, new DialogueNode(lastId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
-                lastId++;
+                nodes.Add(new DialogueNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.ChoiceNode:
-                nodes.Add(lastId, new ChoiceNode(lastId, position, 300, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
-                lastId++;
+                nodes.Add(new ChoiceNode(dialogues[selectedDialogueIndex].lastNodeId, position, 300, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode, OnRemoveChoice));
+                dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.EndNode:
-                nodes.Add(lastId, new EndNode(lastId, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
-                lastId++;
+                nodes.Add(new EndNode(dialogues[selectedDialogueIndex].lastNodeId, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             default:
                 break;
@@ -273,9 +276,9 @@ public class DialogueNodeEditorWindow : EditorWindow
 
         if (selectedOutKnob != null)
         {
-            if (selectedOutKnob.ownerNode != selectedInKnob.ownerNode  
-                && selectedOutKnob.allowedConnections.Contains(selectedInKnob.ownerNode.nodeType) 
-                && selectedInKnob.allowedConnections.Contains(selectedOutKnob.ownerNode.nodeType)
+            if (selectedOutKnob.GetNode() != selectedInKnob.GetNode()  
+                && selectedOutKnob.allowedConnections.Contains(selectedInKnob.GetNode().nodeType) 
+                && selectedInKnob.allowedConnections.Contains(selectedOutKnob.GetNode().nodeType)
                 && (selectedInKnob.connections.Count == 0 || selectedInKnob.allowMoreConnections)
                 && (selectedOutKnob.connections.Count == 0 || selectedOutKnob.allowMoreConnections))
             {
@@ -303,9 +306,9 @@ public class DialogueNodeEditorWindow : EditorWindow
 
         if (selectedInKnob != null)
         {
-            if (selectedOutKnob.ownerNode != selectedInKnob.ownerNode
-                && selectedOutKnob.allowedConnections.Contains(selectedInKnob.ownerNode.nodeType)
-                && selectedInKnob.allowedConnections.Contains(selectedOutKnob.ownerNode.nodeType)
+            if (selectedOutKnob.GetNode() != selectedInKnob.GetNode()
+                && selectedOutKnob.allowedConnections.Contains(selectedInKnob.GetNode().nodeType)
+                && selectedInKnob.allowedConnections.Contains(selectedOutKnob.GetNode().nodeType)
                 && (selectedInKnob.connections.Count == 0 || selectedInKnob.allowMoreConnections)
                 && (selectedOutKnob.connections.Count == 0 || selectedOutKnob.allowMoreConnections))
             {
@@ -322,9 +325,10 @@ public class DialogueNodeEditorWindow : EditorWindow
         if (connections == null)
             connections = new List<Connection>();
 
-        Connection connection = new Connection(selectedInKnob, selectedOutKnob, RemoveConnection);
-        selectedInKnob.connections.Add(connection);
-        selectedOutKnob.connections.Add(connection);
+        Connection connection = new Connection(dialogues[selectedDialogueIndex].lastConnectionId, selectedInKnob, selectedOutKnob, RemoveConnection);
+        dialogues[selectedDialogueIndex].lastConnectionId++;
+        selectedInKnob.connections.Add(connection.id);
+        selectedOutKnob.connections.Add(connection.id);
         connections.Add(connection);
     }
     
@@ -351,7 +355,12 @@ public class DialogueNodeEditorWindow : EditorWindow
                 RemoveConnection(connection);
             }
         }
-        nodes.Remove(node.id);
+        nodes.Remove(node);
+    }
+
+    private void OnRemoveChoice(int connectionID)
+    {
+        connections.Remove(connections.Find(x => x.id == connectionID));
     }
 
     private void OnDrag(Vector2 delta)
@@ -359,7 +368,7 @@ public class DialogueNodeEditorWindow : EditorWindow
         drag = delta;
         if (nodes != null)
         {
-            foreach (Node node in nodes.Values)
+            foreach (Node node in nodes)
                 node.DragNode(delta);
         }
 

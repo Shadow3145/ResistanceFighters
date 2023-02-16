@@ -13,7 +13,7 @@ public class EndNode : Node
     public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
     {
         inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15,
-            new List<NodeType>() { NodeType.DialogueNode, NodeType.ChoiceNode }, true));
+            new List<NodeType>() { NodeType.DialogueNode, NodeType.ChoiceNode }, true, ConnectionKnobSubType.Flow));
         nodeType = NodeType.EndNode;
         title = "End Node";
     }
