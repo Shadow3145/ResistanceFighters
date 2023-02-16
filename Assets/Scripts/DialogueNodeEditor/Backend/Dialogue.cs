@@ -8,7 +8,13 @@ public class Dialogue : ScriptableObject
     public int lastNodeId;
     public int lastConnectionId;
     public List<Node> nodesList = new List<Node>();
+    
     private Dictionary<int, Node> nodes = new Dictionary<int, Node>();
+
+    public Dictionary<int, DialogueNodeData> dialogueNodes = new Dictionary<int, DialogueNodeData>();
+    public Dictionary<int, SpeakerNodeData> speakerNodes = new Dictionary<int, SpeakerNodeData>();
+    public Dictionary<int, ChoiceNodeData> choiceNodes = new Dictionary<int, ChoiceNodeData>();
+
     public List<Connection> connectionsList = new List<Connection>();
 
     private Dictionary<int, Connection> connections = new Dictionary<int, Connection>();
@@ -70,8 +76,8 @@ public class Dialogue : ScriptableObject
             int connectionID = GetConnectionId(id, 0);
             if (connectionID == -1)
                 return -1;
-            int newId = connections[connectionID].inKnob.GetNode().id;
-            if (nodes[newId].nodeType == NodeType.EndNode)
+            int newId = connections[connectionID].inKnob.ownerNodeId;
+            if (!nodes.ContainsKey(newId) || nodes[newId].nodeType == NodeType.EndNode)
                 return -1;
             else
                 return newId;
@@ -81,8 +87,8 @@ public class Dialogue : ScriptableObject
             int connectionID = GetConnectionId(id, choiceIndex);
             if (connectionID == -1)
                 return -1;
-            int newId = connections[connectionID].inKnob.GetNode().id;
-            if (nodes[newId].nodeType == NodeType.EndNode)
+            int newId = connections[connectionID].inKnob.ownerNodeId;
+            if (!nodes.ContainsKey(newId) || nodes[newId].nodeType == NodeType.EndNode)
                 return -1;
             else
                 return newId;
@@ -91,15 +97,10 @@ public class Dialogue : ScriptableObject
 
     public string GetDialogueText(int id)
     {
-        if (!nodes.ContainsKey(id) || nodes[id].nodeType != NodeType.DialogueNode)
+        if (!nodes.ContainsKey(id) || nodes[id].nodeType != NodeType.DialogueNode || !dialogueNodes.ContainsKey(id))
             return null;
 
-        DialogueNode node = nodes[id] as DialogueNode;
-        
-        if (node == null)
-            return id.ToString();
-
-        return node.dialogue;
+        return dialogueNodes[id].dialogue;
     }
 
     public int GetSpeaker(int id)
@@ -113,24 +114,22 @@ public class Dialogue : ScriptableObject
         int connectionID = GetConnectionId(speakerKnob);
         if (connectionID == -1)
             return -1;
-        return connections[connectionID].outKnob.GetNode().id;
+        return connections[connectionID].outKnob.ownerNodeId;
     }
 
     public Sprite GetSpeakerIcon(int id)
     {
-        if (!nodes.ContainsKey(id) || nodes[id].nodeType != NodeType.SpeakerNode)
+        if (!nodes.ContainsKey(id) || nodes[id].nodeType != NodeType.SpeakerNode || !speakerNodes.ContainsKey(id))
             return null;
         
-        SpeakerNode node = nodes[id] as SpeakerNode;
-        return node.icon;
+        return speakerNodes[id].icon;
     }
 
     public string GetSpeakerName(int id)
     {
-        if (!nodes.ContainsKey(id) || nodes[id].nodeType != NodeType.SpeakerNode)
+        if (!nodes.ContainsKey(id) || nodes[id].nodeType != NodeType.SpeakerNode || !speakerNodes.ContainsKey(id))
             return null;
         
-        SpeakerNode node = nodes[id] as SpeakerNode;
-        return node.name;
+        return speakerNodes[id].name;
     }
 }

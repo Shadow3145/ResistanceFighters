@@ -73,9 +73,9 @@ public class Node
         GUI.Box(headerRect, title, stylesheet.nodeHeader);
         DrawNodeContent();
         foreach (ConnectionKnob knob in inKnobs)
-            knob.DrawKnob();
+            knob.DrawKnob(this);
         foreach (ConnectionKnob knob in outKnobs)
-            knob.DrawKnob();
+            knob.DrawKnob(this);
     }
 
     public virtual void DrawNodeContent()

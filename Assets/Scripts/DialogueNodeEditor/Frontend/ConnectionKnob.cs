@@ -21,7 +21,6 @@ public class ConnectionKnob
     private float yOffset;
 
     public Action<ConnectionKnob> OnClickConnectionKnob;
-    public Func<Node> GetNode;
 
     public int ownerNodeId;
 
@@ -34,7 +33,6 @@ public class ConnectionKnob
     public ConnectionKnob(Node ownerNode, ConnectionKnobType type, GUIStyle guiStyle, Action<ConnectionKnob> OnClickConnectionKnob, float yPos, 
     List<NodeType> allowedConnections, bool allowMoreConnections, ConnectionKnobSubType subType)
     {
-        this.GetNode = () => ownerNode.GetNode();
         this.ownerNodeId = ownerNode.id;
         this.type = type;
         this.subType = subType;
@@ -51,17 +49,17 @@ public class ConnectionKnob
         yOffset = yPos;
     }
 
-    public void DrawKnob()
+    public void DrawKnob(Node owner)
     {
-        rect.y = GetNode().rect.y + yOffset;
+        rect.y = owner.rect.y + yOffset;
         switch (type)
         {
             case ConnectionKnobType.In:
-                rect.x = GetNode().rect.x - rect.width + 8f;
+                rect.x = owner.rect.x - rect.width + 8f;
                 break;
 
             case ConnectionKnobType.Out:
-                rect.x = GetNode().rect.x + GetNode().rect.width - 8f;
+                rect.x = owner.rect.x + owner.rect.width - 8f;
                 break;
         }
 

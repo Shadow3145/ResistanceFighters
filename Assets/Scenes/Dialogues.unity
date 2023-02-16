@@ -999,7 +999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cdada039a28fe4479e9f3436b2088b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 11400000, guid: a17765ecfe943f64fbef46bfc71923fe, type: 2}
+  dialogue: {fileID: 11400000, guid: 135307858d808cb4ca8d9211d6d3a687, type: 2}
   speakerIcon: {fileID: 1995522562}
   dialogueText: {fileID: 1041086505}
   speakerName: {fileID: 1629179601}

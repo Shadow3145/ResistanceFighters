@@ -249,11 +249,15 @@ public class DialogueNodeEditorWindow : EditorWindow
                 nodes.Add(new StartNode(0, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
                 break;
             case NodeType.SpeakerNode:
-                nodes.Add(new SpeakerNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                SpeakerNode sNode = new SpeakerNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+                nodes.Add(sNode);
+                dialogues[selectedDialogueIndex].speakerNodes.Add(dialogues[selectedDialogueIndex].lastNodeId, sNode.nodeData);
                 dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.DialogueNode:
-                nodes.Add(new DialogueNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode));
+                DialogueNode dNode = new DialogueNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+                nodes.Add(dNode);
+                dialogues[selectedDialogueIndex].dialogueNodes.Add(dialogues[selectedDialogueIndex].lastNodeId, dNode.nodeData);
                 dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.ChoiceNode:
@@ -276,9 +280,9 @@ public class DialogueNodeEditorWindow : EditorWindow
 
         if (selectedOutKnob != null)
         {
-            if (selectedOutKnob.GetNode() != selectedInKnob.GetNode()  
-                && selectedOutKnob.allowedConnections.Contains(selectedInKnob.GetNode().nodeType) 
-                && selectedInKnob.allowedConnections.Contains(selectedOutKnob.GetNode().nodeType)
+            if (selectedOutKnob.ownerNodeId != selectedInKnob.ownerNodeId
+                && selectedOutKnob.allowedConnections.Contains(GetNodeType(selectedInKnob.ownerNodeId)) 
+                && selectedInKnob.allowedConnections.Contains(GetNodeType(selectedOutKnob.ownerNodeId))
                 && (selectedInKnob.connections.Count == 0 || selectedInKnob.allowMoreConnections)
                 && (selectedOutKnob.connections.Count == 0 || selectedOutKnob.allowMoreConnections))
             {
@@ -300,15 +304,20 @@ public class DialogueNodeEditorWindow : EditorWindow
         }
     }
 
+    private NodeType GetNodeType(int id)
+    {
+        return nodes.Find(x => x.id == id).nodeType;
+    }
+
     private void OnClickOutKnob(ConnectionKnob outKnob)
     {
         selectedOutKnob = outKnob;
 
         if (selectedInKnob != null)
         {
-            if (selectedOutKnob.GetNode() != selectedInKnob.GetNode()
-                && selectedOutKnob.allowedConnections.Contains(selectedInKnob.GetNode().nodeType)
-                && selectedInKnob.allowedConnections.Contains(selectedOutKnob.GetNode().nodeType)
+            if (selectedOutKnob.ownerNodeId != selectedInKnob.ownerNodeId
+                && selectedOutKnob.allowedConnections.Contains(GetNodeType(selectedInKnob.ownerNodeId))
+                && selectedInKnob.allowedConnections.Contains(GetNodeType(selectedOutKnob.ownerNodeId))
                 && (selectedInKnob.connections.Count == 0 || selectedInKnob.allowMoreConnections)
                 && (selectedOutKnob.connections.Count == 0 || selectedOutKnob.allowMoreConnections))
             {

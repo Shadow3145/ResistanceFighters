@@ -6,7 +6,7 @@ using System;
 
 public class DialogueNode : Node
 {
-    public string dialogue = "";
+    public DialogueNodeData nodeData;
 
     public DialogueNode(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
         Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode) :
@@ -23,12 +23,14 @@ public class DialogueNode : Node
         outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
             new List<NodeType>() { NodeType.ChoiceNode, NodeType.DialogueNode, NodeType.EndNode}, false, ConnectionKnobSubType.Flow));
         nodeType = NodeType.DialogueNode;
+
+        nodeData = new DialogueNodeData("");
         title = "Dialogue";
     }
 
     public override void DrawNodeContent()
     {
         Rect dialogueRect = new Rect(rect.x + leftMargin + 10, rect.y + 50, rect.width - leftMargin*2 - 20, rect.height - topMargin - 70);
-        dialogue = EditorGUI.TextArea(dialogueRect, dialogue);
+        nodeData.dialogue = EditorGUI.TextArea(dialogueRect, nodeData.dialogue);
     }
 }

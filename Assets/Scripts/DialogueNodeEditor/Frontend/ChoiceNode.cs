@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class ChoiceNode : Node
 {
-    public List<string> choices;
+    public ChoiceNodeData nodeData;
 
     private Action<int> OnRemoveChoice;
     private Action<ConnectionKnob> OnClickOutKnob;
@@ -27,20 +27,20 @@ public class ChoiceNode : Node
 
         nodeType = NodeType.ChoiceNode;
         title = "Choice";
-        choices = new List<string>();
+        nodeData = new ChoiceNodeData(new List<string>());
     }
 
     public override void DrawNodeContent()
     {
-        if (GUI.Button(new Rect(rect.x + rect.width/2 - 10, rect.y + 50 + choices.Count*35, 30, 30), "+", stylesheet.button))
+        if (GUI.Button(new Rect(rect.x + rect.width/2 - 10, rect.y + 50 + nodeData.choices.Count*35, 30, 30), "+", stylesheet.button))
         {
-            choices.Add("");
-            outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 50 + (choices.Count-1)*35,
+            nodeData.choices.Add("");
+            outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 50 + (nodeData.choices.Count-1)*35,
                 new List<NodeType>() {NodeType.DialogueNode, NodeType.EndNode }, false, ConnectionKnobSubType.Flow));
             rect.height += 35;
         }
         List<int> toRemove = new List<int>();
-        for (int i = 0; i < choices.Count; i++)
+        for (int i = 0; i < nodeData.choices.Count; i++)
         {
             int res = DrawChoice(i * 35, i);
             if (res != -1)
@@ -49,7 +49,7 @@ public class ChoiceNode : Node
 
         foreach (int index in toRemove)
         {
-            choices.RemoveAt(index);
+            nodeData.choices.RemoveAt(index);
             if (outKnobs[index].connections != null)
                 foreach (int connection in outKnobs[index].connections)
                     OnRemoveChoice(connection);
@@ -61,7 +61,7 @@ public class ChoiceNode : Node
     private int DrawChoice(float height, int index)
     {
         EditorGUI.LabelField(new Rect(rect.x + leftMargin + 10, rect.y + 50 + height, 15, 30), (index+1).ToString(), stylesheet.label);
-        choices[index] = EditorGUI.TextArea(new Rect(rect.x + leftMargin + 30, rect.y + 50 + height, 200, 30), choices[index]);
+        nodeData.choices[index] = EditorGUI.TextArea(new Rect(rect.x + leftMargin + 30, rect.y + 50 + height, 200, 30), nodeData.choices[index]);
         if (GUI.Button(new Rect(rect.x + leftMargin + 237.5f, rect.y + 50 + height, 30, 30), "-", stylesheet.button))
         {
             return index;
