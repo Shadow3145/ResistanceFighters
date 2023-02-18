@@ -10,7 +10,7 @@ public class Connection
 
     public int id;
 
-    Action<Connection> RemoveConnection;
+    public Action<Connection> RemoveConnection;
 
     public Connection(int id, ConnectionKnob inKnob, ConnectionKnob outKnob, Action<Connection> RemoveConnection)
     {

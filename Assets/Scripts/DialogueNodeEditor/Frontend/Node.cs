@@ -33,7 +33,7 @@ public class Node
 
     protected Stylesheet stylesheet;
 
-    public Action<Node> OnRemoveNode;
+    [SerializeField] public Action<Node> OnRemoveNode;
 
     public NodeType nodeType;
 

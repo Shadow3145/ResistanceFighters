@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 
+[System.Serializable]
 public class SpeakerNode : Node
 {
     public SpeakerNodeData nodeData;

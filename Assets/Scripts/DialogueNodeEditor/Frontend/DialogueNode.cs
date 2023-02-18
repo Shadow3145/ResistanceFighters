@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
+[System.Serializable]
 public class DialogueNode : Node
 {
     public DialogueNodeData nodeData;

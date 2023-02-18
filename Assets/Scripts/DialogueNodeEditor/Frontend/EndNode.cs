@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class EndNode : Node
 {
     public EndNode(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
