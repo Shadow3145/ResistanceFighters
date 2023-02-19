@@ -18,7 +18,7 @@ public class ConnectionKnob
 
     private float width = 10f;
     private float height = 20f;
-    private float yOffset;
+    [SerializeField] private float yOffset;
 
     public Action<ConnectionKnob> OnClickConnectionKnob;
 

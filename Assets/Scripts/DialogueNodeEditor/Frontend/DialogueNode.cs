@@ -7,31 +7,39 @@ using System;
 [System.Serializable]
 public class DialogueNode : Node
 {
-    public DialogueNodeData nodeData;
+    public string dialogue;
 
-    public DialogueNode(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
-        Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode) :
-        base(id, position, width, height, stylesheet,
-            OnClickInKnob, OnClickOutKnob, OnClickRemoveNode)
-    { }
-
-    public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
+    public DialogueNode(int id, Vector2 position, float width, float height, List<ConnectionKnob> inKnobs, List<ConnectionKnob> outKnobs, string dialogue) :
+        base(id, position, width, height, inKnobs, outKnobs)
     {
-        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15, 
-            new List<NodeType>() { NodeType.DialogueNode, NodeType.StartNode, NodeType.ChoiceNode}, true, ConnectionKnobSubType.Flow));
-        inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40,
-            new List<NodeType>() { NodeType.SpeakerNode}, false, ConnectionKnobSubType.Speaker));
-        outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
-            new List<NodeType>() { NodeType.ChoiceNode, NodeType.DialogueNode, NodeType.EndNode}, false, ConnectionKnobSubType.Flow));
-        nodeType = NodeType.DialogueNode;
+        this.dialogue = dialogue;
 
-        nodeData = new DialogueNodeData("");
+        nodeType = NodeType.DialogueNode;
         title = "Dialogue";
+    }
+
+    public override void Init(Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode)
+    {
+        base.Init(OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+        if (inKnobs == null)
+        {
+            inKnobs = new List<ConnectionKnob>();
+            inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 15,
+            new List<NodeType>() { NodeType.DialogueNode, NodeType.StartNode, NodeType.ChoiceNode }, true, ConnectionKnobSubType.Flow));
+            inKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.In, stylesheet.leftKnob, OnClickInKnob, 40,
+                new List<NodeType>() { NodeType.SpeakerNode }, false, ConnectionKnobSubType.Speaker));
+        }
+        if (outKnobs == null)
+        {
+            outKnobs = new List<ConnectionKnob>();
+            outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
+                new List<NodeType>() { NodeType.ChoiceNode, NodeType.DialogueNode, NodeType.EndNode }, false, ConnectionKnobSubType.Flow));
+        }
     }
 
     public override void DrawNodeContent()
     {
         Rect dialogueRect = new Rect(rect.x + leftMargin + 10, rect.y + 50, rect.width - leftMargin*2 - 20, rect.height - topMargin - 70);
-        nodeData.dialogue = EditorGUI.TextArea(dialogueRect, nodeData.dialogue);
+        dialogue = EditorGUI.TextArea(dialogueRect, dialogue);
     }
 }

@@ -6,7 +6,7 @@ using System;
 
 public class DialogueNodeEditorWindow : EditorWindow
 {
-    [SerializeField] private Stylesheet stylesheet;
+    private Stylesheet stylesheet;
 
     private ConnectionKnob selectedInKnob;
     private ConnectionKnob selectedOutKnob;
@@ -23,6 +23,8 @@ public class DialogueNodeEditorWindow : EditorWindow
     private int selectedDialogueIndex;
     public Dialogue[] dialogues;
 
+    private bool reloadDialogue = true;
+
     [MenuItem("Window/Dialogue Node Editor")]
     private static void ShowWindow()
     {
@@ -34,6 +36,13 @@ public class DialogueNodeEditorWindow : EditorWindow
     private void OnEnable()
     {
         topPanel = new Rect(0, 0, this.position.width, 50);
+        Resources.LoadAll("");
+        stylesheet = Resources.FindObjectsOfTypeAll<Stylesheet>()[0];
+        dialogues = Resources.FindObjectsOfTypeAll<Dialogue>();
+        if (dialogues == null)
+            return;
+        foreach (Dialogue dialogue in dialogues)
+            dialogue.LoadData();
     }
 
     private bool SetDialogue()
@@ -44,6 +53,9 @@ public class DialogueNodeEditorWindow : EditorWindow
         if (selectedDialogue != "" && names.Contains(selectedDialogue))
         {
             int index = ArrayUtility.IndexOf(names, selectedDialogue);
+            if (index == selectedDialogueIndex && !reloadDialogue)
+                return true;
+            dialogues[index].LoadData();
             selectedDialogueIndex = index;
             ResetActions();
             return true;
@@ -54,16 +66,16 @@ public class DialogueNodeEditorWindow : EditorWindow
 
     private void ResetActions()
     {
-        ResetActions(dialogues[selectedDialogueIndex].startNodes);
-        ResetActions(dialogues[selectedDialogueIndex].endNodes);
-        ResetActions(dialogues[selectedDialogueIndex].speakerNodes);
-        ResetActions(dialogues[selectedDialogueIndex].dialogueNodes);
-        ResetActions(dialogues[selectedDialogueIndex].choiceNodes);
 
         foreach (Connection connection in dialogues[selectedDialogueIndex].connectionsList)
         {
             connection.RemoveConnection = RemoveConnection;
         }
+        ResetActions(dialogues[selectedDialogueIndex].startNodes);
+        ResetActions(dialogues[selectedDialogueIndex].endNodes);
+        ResetActions(dialogues[selectedDialogueIndex].speakerNodes);
+        ResetActions(dialogues[selectedDialogueIndex].dialogueNodes);
+        ResetActions(dialogues[selectedDialogueIndex].choiceNodes);
     }
 
     private void ResetActions<T>(List<T> nodes) where T : Node
@@ -74,11 +86,23 @@ public class DialogueNodeEditorWindow : EditorWindow
             foreach (ConnectionKnob knob in node.inKnobs)
             {
                 knob.OnClickConnectionKnob = OnClickInKnob;
+                foreach (int connection in knob.connections)
+                {
+                    Connection c = dialogues[selectedDialogueIndex].connectionsList.Find(x => x.id == connection);
+                    if (c != null)
+                        c.inKnob = knob;
+                }
             }
 
             foreach (ConnectionKnob knob in node.outKnobs)
             {
                 knob.OnClickConnectionKnob = OnClickOutKnob;
+                foreach (int connection in knob.connections)
+                {
+                    Connection c = dialogues[selectedDialogueIndex].connectionsList.Find(x => x.id == connection);
+                    if (c != null)
+                        c.outKnob = knob;
+                }
             }
         }
     }
@@ -88,6 +112,8 @@ public class DialogueNodeEditorWindow : EditorWindow
         DrawGrid(20, 0.2f, Color.gray);
         DrawGrid(100, 0.4f, Color.gray);
 
+        if (stylesheet == null)
+            stylesheet = Resources.FindObjectsOfTypeAll<Stylesheet>()[0];
 
         DrawTopPanel();
         if (!SetDialogue())
@@ -140,14 +166,25 @@ public class DialogueNodeEditorWindow : EditorWindow
             PopupWindow.Show(GUILayoutUtility.GetLastRect(), window);
         }
 
+        if (GUI.Button(new Rect(300, 10, 30, 30), "S", stylesheet.button))
+        {
+            if (this.dialogues.Length > selectedDialogueIndex && selectedDialogueIndex >= 0)
+                this.dialogues[selectedDialogueIndex].SaveData();
+        }
+
+
+        Resources.LoadAll<Dialogue>("");
         string[] dialogues = Resources.FindObjectsOfTypeAll<Dialogue>().Select(x => x.name).ToArray();
-        System.Array.Sort(dialogues);
+        Array.Sort(dialogues);
         int index = selectedDialogue != ""
             ? ArrayUtility.IndexOf(dialogues, selectedDialogue)
             : -1;
         int selectedIndex = EditorGUI.Popup(new Rect(20, 10, 200, 30), index, dialogues);
         if (selectedIndex != -1)
+        {
             selectedDialogue = dialogues[selectedIndex];
+            reloadDialogue = (selectedDialogueIndex != selectedIndex);
+        }
     }
 
     private void OnClosePopupWindow(DialoguePopupWindow popupWindow)
@@ -283,26 +320,32 @@ public class DialogueNodeEditorWindow : EditorWindow
             case NodeType.BaseNode:
                 break;
             case NodeType.StartNode:
-                StartNode stNode = new StartNode(0, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+                StartNode stNode = new StartNode(0, position, 200, 100, null, null);
+                stNode.Init(OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
                 dialogues[selectedDialogueIndex].startNodes.Add(stNode);
                 break;
             case NodeType.SpeakerNode:
-                SpeakerNode sNode = new SpeakerNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+                SpeakerNode sNode = new SpeakerNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, null, null, "", null);
+                sNode.Init(OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
                 dialogues[selectedDialogueIndex].speakerNodes.Add(sNode);
                 dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.DialogueNode:
-                DialogueNode dNode = new DialogueNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+                DialogueNode dNode = new DialogueNode(dialogues[selectedDialogueIndex].lastNodeId, position, 215, 175, null, null, "");
+                dNode.Init(OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
                 dialogues[selectedDialogueIndex].dialogueNodes.Add(dNode);
                 dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.ChoiceNode:
-                ChoiceNode cNode = new ChoiceNode(dialogues[selectedDialogueIndex].lastNodeId, position, 300, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode, OnRemoveChoice);
+                ChoiceNode cNode = new ChoiceNode(dialogues[selectedDialogueIndex].lastNodeId, position, 300, 100, null, null, new List<string>());
+                cNode.Init(OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+                cNode.OnRemoveChoice = OnRemoveChoice;
                 dialogues[selectedDialogueIndex].choiceNodes.Add(cNode);
                 dialogues[selectedDialogueIndex].lastNodeId++;
                 break;
             case NodeType.EndNode:
-                EndNode eNode = new EndNode(dialogues[selectedDialogueIndex].lastNodeId, position, 200, 100, stylesheet, OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+                EndNode eNode = new EndNode(dialogues[selectedDialogueIndex].lastNodeId, position, 200, 100, null, null);
+                eNode.Init(OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
                 dialogues[selectedDialogueIndex].endNodes.Add(eNode);
                 dialogues[selectedDialogueIndex].lastNodeId++;
                 break;

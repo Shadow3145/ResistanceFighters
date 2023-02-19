@@ -30,44 +30,41 @@ public class Node
     public GUIStyle nodeStyle;
     public GUIStyle defaultNodeStyle;
     public GUIStyle selectedNodeStyle;
-
-    protected Stylesheet stylesheet;
-
-    [SerializeField] public Action<Node> OnRemoveNode;
+   
+    public Action<Node> OnRemoveNode;
 
     public NodeType nodeType;
 
     protected float leftMargin;
     protected float topMargin;
 
+    protected Stylesheet stylesheet;
 
-    public Node(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
-        Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode)
+    public Node(int id, Vector2 position, float width, float height, List<ConnectionKnob> inKnobs, List<ConnectionKnob> outKnobs)
     {
         this.id = id;
-        this.stylesheet = stylesheet;
         rect = new Rect(position.x, position.y, width, height);
+        stylesheet = Resources.FindObjectsOfTypeAll<Stylesheet>()[0];
         nodeStyle = stylesheet.node.defaultStyle;
         defaultNodeStyle = stylesheet.node.defaultStyle;
         selectedNodeStyle = stylesheet.node.selectedStyle;
 
-        OnRemoveNode = OnClickRemoveNode;
-
         leftMargin = nodeStyle.border.left / 1.5f;
         topMargin = nodeStyle.border.top / 2;
 
-        inKnobs = new List<ConnectionKnob>();
-        outKnobs = new List<ConnectionKnob>();
-
-        Init(stylesheet, OnClickInKnob, OnClickOutKnob);
+        this.inKnobs = inKnobs;
+        this.outKnobs = outKnobs;
     }
 
-    public virtual void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
-    {        
+    public virtual void Init(Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode)
+    {
+        OnRemoveNode = OnClickRemoveNode;
     }
 
     public virtual void DrawNode()
     {
+        if (stylesheet == null)
+            stylesheet = Resources.FindObjectsOfTypeAll<Stylesheet>()[0];
         Rect headerRect = new Rect(new Vector2(rect.x + leftMargin, rect.y + topMargin), new Vector2(rect.width - (nodeStyle.border.left*1.3f), 25f));
         GUI.Box(rect, "", nodeStyle);
         GUI.Box(headerRect, title, stylesheet.nodeHeader);

@@ -5,17 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class StartNode : Node
 {
-    public StartNode(int id, Vector2 position, float width, float height, Stylesheet stylesheet,
-        Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode) : 
-        base(id, position, width, height, stylesheet, 
-            OnClickInKnob, OnClickOutKnob, OnClickRemoveNode)
-    {}
-
-    public override void Init(Stylesheet stylesheet, Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob)
+    public StartNode(int id, Vector2 position, float width, float height, List<ConnectionKnob> inKnobs, List<ConnectionKnob> outKnobs) : 
+        base(id, position, width, height, inKnobs, outKnobs)
     {
-        outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
-            new List<NodeType>() { NodeType.DialogueNode, NodeType.ChoiceNode}, false, ConnectionKnobSubType.Flow));
         nodeType = NodeType.StartNode;
         title = "Start Node";
+    }
+
+    public override void Init(Action<ConnectionKnob> OnClickInKnob, Action<ConnectionKnob> OnClickOutKnob, Action<Node> OnClickRemoveNode)
+    {
+        base.Init(OnClickInKnob, OnClickOutKnob, OnClickRemoveNode);
+        inKnobs = new List<ConnectionKnob>();
+        if (outKnobs == null)
+        {
+            outKnobs = new List<ConnectionKnob>();
+            outKnobs.Add(new ConnectionKnob(this, ConnectionKnobType.Out, stylesheet.rightKnob, OnClickOutKnob, 15,
+                new List<NodeType>() { NodeType.DialogueNode, NodeType.ChoiceNode }, false, ConnectionKnobSubType.Flow));
+        }
+
     }
 }

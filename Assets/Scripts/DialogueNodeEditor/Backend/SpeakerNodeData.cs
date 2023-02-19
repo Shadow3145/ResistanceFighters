@@ -1,14 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct SpeakerNodeData
+public class SpeakerNodeData : NodeData
 { 
-    public string name;
+    public string speakerName;
     public Sprite icon;
 
-    public SpeakerNodeData(string name, Sprite icon)
+    public SpeakerNodeData(int id, Rect rect, List<ConnectionKnob> inKnobs, List<ConnectionKnob> outKnobs, string speakerName, Sprite icon) : 
+        base(id, rect, inKnobs, outKnobs)
     {
-        this.name = name;
+        this.speakerName = speakerName;
         this.icon = icon;
     }
 }

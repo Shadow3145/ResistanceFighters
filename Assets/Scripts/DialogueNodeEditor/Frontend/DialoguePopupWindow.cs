@@ -34,7 +34,9 @@ public class DialoguePopupWindow : PopupWindowContent
                 Dialogue dialogue = ScriptableObject.CreateInstance<Dialogue>();
                 dialogue.lastConnectionId = 0;
                 dialogue.lastNodeId = 1;
-                AssetDatabase.CreateAsset(dialogue, "Assets/Scripts/DialogueNodeEditor/Database/" + newDialogueName + ".asset");
+                dialogue.name = newDialogueName;             
+                AssetDatabase.CreateAsset(dialogue, "Assets/Resources/Dialogues/" + newDialogueName + ".asset");
+                dialogue.SaveData();
                 OnClosePopup(this);
                 PopupWindow.mouseOverWindow.Close();
             }

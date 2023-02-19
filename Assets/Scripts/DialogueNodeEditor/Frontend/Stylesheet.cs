@@ -9,6 +9,7 @@ public class NodeStyle
     public GUIStyle selectedStyle;
 }
 
+[System.Serializable]
 [CreateAssetMenu(menuName = "SO/Editor/Stylesheet")]
 public class Stylesheet : ScriptableObject
 {
