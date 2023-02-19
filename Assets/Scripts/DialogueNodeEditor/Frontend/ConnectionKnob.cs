@@ -14,7 +14,7 @@ public class ConnectionKnob
 
     public ConnectionKnobSubType subType;
 
-    public GUIStyle guiStyle;
+    private GUIStyle guiStyle;
 
     private float width = 10f;
     private float height = 20f;
@@ -51,6 +51,14 @@ public class ConnectionKnob
 
     public void DrawKnob(Node owner)
     {
+        if (guiStyle == null)
+        {
+            Resources.LoadAll("");
+            Stylesheet stylesheet = Resources.FindObjectsOfTypeAll<Stylesheet>()[0];
+            guiStyle = type == ConnectionKnobType.In
+                ? stylesheet.leftKnob
+                : stylesheet.rightKnob;
+        }
         rect.y = owner.rect.y + yOffset;
         switch (type)
         {

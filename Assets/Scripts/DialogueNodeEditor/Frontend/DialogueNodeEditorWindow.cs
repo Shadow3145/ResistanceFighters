@@ -41,8 +41,11 @@ public class DialogueNodeEditorWindow : EditorWindow
         dialogues = Resources.FindObjectsOfTypeAll<Dialogue>();
         if (dialogues == null)
             return;
-        foreach (Dialogue dialogue in dialogues)
-            dialogue.LoadData();
+        for (int i = 0; i < dialogues.Length; i++)
+        {
+            dialogues[i].LoadData();
+            ResetActions(i);
+        }
     }
 
     private bool SetDialogue()
@@ -57,28 +60,33 @@ public class DialogueNodeEditorWindow : EditorWindow
                 return true;
             dialogues[index].LoadData();
             selectedDialogueIndex = index;
-            ResetActions();
+            ResetActions(selectedDialogueIndex);
             return true;
         }
 
         return false;
     }
 
-    private void ResetActions()
+    private void ResetActions(int dialogueIndex)
     {
 
-        foreach (Connection connection in dialogues[selectedDialogueIndex].connectionsList)
+        foreach (Connection connection in dialogues[dialogueIndex].connectionsList)
         {
             connection.RemoveConnection = RemoveConnection;
         }
-        ResetActions(dialogues[selectedDialogueIndex].startNodes);
-        ResetActions(dialogues[selectedDialogueIndex].endNodes);
-        ResetActions(dialogues[selectedDialogueIndex].speakerNodes);
-        ResetActions(dialogues[selectedDialogueIndex].dialogueNodes);
-        ResetActions(dialogues[selectedDialogueIndex].choiceNodes);
+        ResetActions(dialogues[dialogueIndex].startNodes, dialogueIndex);
+        ResetActions(dialogues[dialogueIndex].endNodes, dialogueIndex);
+        ResetActions(dialogues[dialogueIndex].speakerNodes, dialogueIndex);
+        ResetActions(dialogues[dialogueIndex].dialogueNodes, dialogueIndex);
+        ResetActions(dialogues[dialogueIndex].choiceNodes, dialogueIndex);
+        foreach (ChoiceNode node in dialogues[dialogueIndex].choiceNodes)
+        {
+            node.OnRemoveChoice = OnRemoveChoice;
+            node.OnClickOutKnob = OnClickOutKnob;
+        }
     }
 
-    private void ResetActions<T>(List<T> nodes) where T : Node
+    private void ResetActions<T>(List<T> nodes, int dialogueIndex) where T : Node
     {
         foreach (Node node in nodes)
         {
@@ -88,7 +96,7 @@ public class DialogueNodeEditorWindow : EditorWindow
                 knob.OnClickConnectionKnob = OnClickInKnob;
                 foreach (int connection in knob.connections)
                 {
-                    Connection c = dialogues[selectedDialogueIndex].connectionsList.Find(x => x.id == connection);
+                    Connection c = dialogues[dialogueIndex].connectionsList.Find(x => x.id == connection);
                     if (c != null)
                         c.inKnob = knob;
                 }
@@ -99,7 +107,7 @@ public class DialogueNodeEditorWindow : EditorWindow
                 knob.OnClickConnectionKnob = OnClickOutKnob;
                 foreach (int connection in knob.connections)
                 {
-                    Connection c = dialogues[selectedDialogueIndex].connectionsList.Find(x => x.id == connection);
+                    Connection c = dialogues[dialogueIndex].connectionsList.Find(x => x.id == connection);
                     if (c != null)
                         c.outKnob = knob;
                 }
