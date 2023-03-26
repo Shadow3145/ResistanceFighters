@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class AlchemyTable : MonoBehaviour
+public class AlchemyPot : MonoBehaviour
 {
     [SerializeField] private List<PotionRecipe> recipes; 
 
-    public static AlchemyTable instance;
+    public static AlchemyPot instance;
 
     private List<Ingredient> ingredients;
 

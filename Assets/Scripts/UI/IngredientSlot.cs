@@ -14,16 +14,16 @@ public class IngredientSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
     public void OnDrop(PointerEventData eventData)
     {
         if (ingredient != null)
-            AlchemyTable.instance.RemoveIngredient(ingredient);
+            AlchemyPot.instance.RemoveIngredient(ingredient);
 
         SetItem(eventData.pointerDrag.GetComponent<InventorySlot>().GetItem());
-        AlchemyTable.instance.AddIngredient(ingredient);
+        AlchemyPot.instance.AddIngredient(ingredient);
         icon.sprite = ingredient.GetIcon();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        AlchemyTable.instance.RemoveIngredient(ingredient);
+        AlchemyPot.instance.RemoveIngredient(ingredient);
         Reset();
     }
 
