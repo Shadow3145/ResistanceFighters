@@ -32,6 +32,13 @@ public class GameManager : MonoBehaviour
 
     public void StartAlchemy()
     {
-        Debug.Log("Open Alchemy Table UI");
+        alchemyTable.SetActive(true);
+        lab.SetActive(false);
+    }
+
+    public void LeaveAlchemy()
+    {
+        alchemyTable.SetActive(false);
+        lab.SetActive(true);
     }
 }

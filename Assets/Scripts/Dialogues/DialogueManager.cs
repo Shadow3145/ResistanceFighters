@@ -6,7 +6,9 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private Dialogue dialogue;
+    public static DialogueManager instance;
+
+    private Dialogue dialogue;
 
     [SerializeField] private GameObject speakerIcon;
     [SerializeField] private GameObject dialogueText;
@@ -21,6 +23,11 @@ public class DialogueManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+    }
+
+    public void OpenDialogue(Dialogue dialogue)
+    {
         speakerIcon.SetActive(true);
         speakerName.SetActive(true);
         dialogueText.SetActive(true);
@@ -31,6 +38,7 @@ public class DialogueManager : MonoBehaviour
             Close();
             return;   
         }
+        this.dialogue = dialogue;
         (currentId, currentType) = dialogue.GetFirstNode();
         SetData(currentId, currentType);
     }

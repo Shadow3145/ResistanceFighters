@@ -73,11 +73,6 @@ public class Inventory : MonoBehaviour
         inventoryItems = new List<InventoryItem>();
         for (int i = 0; i < inventorySlots.Length; i++)
             inventoryItems.Add(null);
-        for (int i = 0; i < 3; i++)
-        {
-            inventoryItems[i] = new InventoryItem(i, ItemType.Ingredient, 10);
-            AddItemToUI(i);
-        }
     }
 
 
