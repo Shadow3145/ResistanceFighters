@@ -8,7 +8,7 @@ public class Settings : MonoBehaviour
     [SerializeField] private Slider masterVolume;
     [SerializeField] private Slider soundtrackVolume;
     [SerializeField] private Slider sfxVolume;
-    
+
     public void UpdateMasterVolume()
     {
         PlayerPrefs.SetFloat("masterVolume", masterVolume.value);
@@ -25,5 +25,5 @@ public class Settings : MonoBehaviour
     {
         PlayerPrefs.SetFloat("sfxVolume", soundtrackVolume.value);
         PlayerPrefs.Save();
-    }
+    }   
 }

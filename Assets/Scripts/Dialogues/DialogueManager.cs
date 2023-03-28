@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -20,7 +21,10 @@ public class DialogueManager : MonoBehaviour
 
     private int currentId;
     private NodeType currentType;
-    // Start is called before the first frame update
+
+    private Tween writerTween;
+    private const float writingSpeed = 15f;
+
     void Start()
     {
         instance = this;
@@ -76,7 +80,16 @@ public class DialogueManager : MonoBehaviour
         continueButton.SetActive(true);
         dialogueText.SetActive(true);
         choices.SetInactive();
-        dialogueText.GetComponent<TextMeshProUGUI>().text = dialogue.GetDialogueText(nodeId);
+        WriteText(nodeId);
+    }
+
+    private void WriteText(int nodeId)
+    {
+        string text = "";
+        writerTween = DOTween.To(() => text, x => text = x, dialogue.GetDialogueText(nodeId), dialogue.GetDialogueText(nodeId).Length / writingSpeed).OnUpdate(() =>
+        {
+            dialogueText.GetComponent<TextMeshProUGUI>().text = text;
+        });
     }
 
     private void SetChoiceData(int nodeId)
