@@ -11,6 +11,8 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] private Image itemIcon;
     [SerializeField] private Sprite defaultIcon;
     [SerializeField] private GameObject amount;
+    [SerializeField] private ItemType type;
+    
     private TextMeshProUGUI amountText;
 
     private DragDrop dragDrop;
@@ -97,6 +99,11 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         itemIndex = -1;
         SetIcon();
         amount.SetActive(false);
+    }
+
+    public ItemType GetSlotType()
+    {
+        return type;
     }
 }
 

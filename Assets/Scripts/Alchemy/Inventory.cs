@@ -89,7 +89,6 @@ public class Inventory : MonoBehaviour
         int i = FindFreeIndex();
         inventoryItems[i] = item;
         AddItemToUI(i);
-
     }
 
     public void ConsumeItem(InventoryItem item)
@@ -132,7 +131,7 @@ public class Inventory : MonoBehaviour
     {
         foreach (InventorySlot slot in inventorySlots)
         {
-            if (slot.itemIndex != -1)
+            if (slot.itemIndex != -1 || slot.GetSlotType() != inventoryItems[index].GetItemType())
                 continue;
 
             slot.itemIndex = index;
