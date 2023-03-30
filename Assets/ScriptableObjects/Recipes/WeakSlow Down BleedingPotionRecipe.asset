@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fa5b5086e08e0a4684fc689435257af, type: 3}
+  m_Name: WeakSlow Down BleedingPotionRecipe
+  m_EditorClassIdentifier: 
+  requiredIngredients:
+  - {fileID: 11400000, guid: 26eb065436eb7ff4f949a5f3c659d22f, type: 2}
+  - {fileID: 11400000, guid: 524d601311d6b3744bf9b07ce8d20821, type: 2}
+  - {fileID: 11400000, guid: bfeef50ec61e876448b75ded9519c17b, type: 2}
+  - {fileID: 11400000, guid: 2c710483fdb12eb449cdaa9db7ec31cf, type: 2}
+  amountOfIngredients: 3
+  effects:
+  - effect: {fileID: 11400000, guid: 8f239458491740142b5deeffa6e28544, type: 2}
+    effectStrength: 12
+  result: {fileID: 11400000, guid: 55cecc86be557da4287ba134b58709b2, type: 2}

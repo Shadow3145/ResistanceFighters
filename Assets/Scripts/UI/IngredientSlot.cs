@@ -16,6 +16,7 @@ public class IngredientSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
         if (ingredient != null)
             AlchemyPot.instance.RemoveIngredient(ingredient);
 
+        SoundManager.instance.PlaySFX(0);
         SetItem(eventData.pointerDrag.GetComponent<InventorySlot>().GetItem());
         AlchemyPot.instance.AddIngredient(ingredient);
         icon.sprite = ingredient.GetIcon();
@@ -29,6 +30,8 @@ public class IngredientSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 
     private void SetItem(InventoryItem item)
     {
+        if (item == null)
+            return;
         ingredient = item.GetItem() as Ingredient;
     }
 

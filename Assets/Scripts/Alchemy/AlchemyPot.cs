@@ -48,15 +48,15 @@ public class AlchemyPot : MonoBehaviour
         if (potions.Count == 0)
         {
             CraftingMessage.instance.Show();
+            SoundManager.instance.PlaySFX(4);
             return;
         }
+        SoundManager.instance.PlaySFX(6);
         Potion potion = GetPotionOfHighestRarity(potions);
         int index = ItemManager.instance.GetIndex(potion);
         InventoryItem potionItem = new InventoryItem(index, ItemType.Potion);
         CraftingMessage.instance.Show(potionItem);
         Inventory.instance.AddItem(potionItem);
-
-        //TODO: Add recipe to recipes
     }
 
     private void ConsumeIngredients()

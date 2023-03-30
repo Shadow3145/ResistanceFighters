@@ -10,6 +10,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject alchemyTable;
     [SerializeField] private GameObject settings;
 
+   /* [Header("SFX")]
+    [SerializeField] private SoundName resistanceLeader;
+    [SerializeField] private SoundName entrance;
+    [SerializeField] private SoundName alchemyTableSFX;
+    [SerializeField] private SoundName addToPot;
+    [SerializeField] private SoundName success;
+    [SerializeField] private SoundName fail;
+    [SerializeField] private SoundName hover;
+    [SerializeField] private SoundName click;*/
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

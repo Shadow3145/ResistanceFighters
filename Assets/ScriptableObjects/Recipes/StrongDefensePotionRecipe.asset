@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fa5b5086e08e0a4684fc689435257af, type: 3}
+  m_Name: StrongDefensePotionRecipe
+  m_EditorClassIdentifier: 
+  requiredIngredients:
+  - {fileID: 11400000, guid: 95d2bd4bcc983734c97ac319c2dbbf5a, type: 2}
+  - {fileID: 11400000, guid: bbb0842a4c6db3d4ba79c7a471c61c33, type: 2}
+  - {fileID: 11400000, guid: 48128c85dc5f00544aea58fbd26f2c4b, type: 2}
+  - {fileID: 11400000, guid: 1978301e69fc5b544ab5dae6d964a3f1, type: 2}
+  - {fileID: 11400000, guid: 3b928e014b081bd4b9c58fba35e3d634, type: 2}
+  amountOfIngredients: 4
+  effects:
+  - effect: {fileID: 11400000, guid: a9df1076684932c43ac06e7e700a8e3c, type: 2}
+    effectStrength: 21
+  result: {fileID: 11400000, guid: afb9558b7c5cc714ba0d44d72acfa942, type: 2}

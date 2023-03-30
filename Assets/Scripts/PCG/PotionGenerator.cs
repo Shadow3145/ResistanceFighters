@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.Text;
 
 public class PotionGenerator : MonoBehaviour
 {
@@ -8,11 +9,6 @@ public class PotionGenerator : MonoBehaviour
     [SerializeField] PotionRecipeGeneratorConfiguration defaultConfig;
 
     private PotionRecipeGeneratorConfiguration config;
-
-   /* [SerializeField] private List<PotionRaritySettings> raritySettings;
-    [SerializeField] private string folderPath;
-
-    private int minStrength = 10;*/
 
     public void GeneratePotionRecipes(PotionRecipeGeneratorConfiguration config = null)
     {
@@ -28,12 +24,36 @@ public class PotionGenerator : MonoBehaviour
                 PotionRecipe potionRecipe = GeneratePotionRecipe(effect, (Rarity)i);
                 if (potionRecipe == null)
                     continue;
-                string fileName = GetRarityName((Rarity)i) + effect.GetEffectName() + "PotionRecipe.asset";
+                string potionName = GetRarityName((Rarity)i) + effect.GetEffectName();
+                Potion potion = CreatePotion(potionName, potionRecipe.GetEffects(), (Rarity)i);
+                potionRecipe.SetResult(potion);
+                string fileName = potionName + "PotionRecipe.asset";
                 AssetDatabase.CreateAsset(potionRecipe, config.folderPath + "/" + fileName);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }
         }
+    }
+
+    private Potion CreatePotion(string potionName, List<IngredientEffect> effects, Rarity rarity)
+    {
+        Potion potion = ScriptableObject.CreateInstance<Potion>().Init(potionName, CreatePotionDescription(effects), rarity);
+        AssetDatabase.CreateAsset(potion, "Assets/ScriptableObjects/Potions/" + potionName + ".asset");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        return potion;
+    }
+
+    private string CreatePotionDescription(List<IngredientEffect> effects)
+    {
+        StringBuilder description = new StringBuilder();
+        description.AppendLine("<b>Effects:</b>");
+        foreach (IngredientEffect effect in effects)
+        {
+            description.AppendLine(effect.GetEffect().GetEffectDescription());
+        }
+
+        return description.ToString();
     }
 
     public void Delete()

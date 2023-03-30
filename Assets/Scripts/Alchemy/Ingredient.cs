@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 [CreateAssetMenu(menuName = "SO/Alchemy/Ingredient")]
 public class Ingredient : Item
@@ -52,5 +53,24 @@ public class Ingredient : Item
     public Rarity GetRarity()
     {
         return rarity;
+    }
+
+    public void SetDescription()
+    {
+        StringBuilder description = new StringBuilder();
+        description.AppendLine("<b>Main Effect:</b>");
+        description.AppendLine(mainEffect.GetEffect().GetEffectDescription());
+        if (secondaryEffects == null || secondaryEffects.Count == 0)
+        {
+            this.description = description.ToString();
+            return;
+        }
+        description.AppendLine("<b>Secondary Effects:</b>");
+        foreach (IngredientEffect effect in secondaryEffects)
+        {
+            description.AppendLine(effect.GetEffect().GetEffectDescription());
+        }
+
+        this.description = description.ToString();
     }
 }

@@ -31,6 +31,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             eventData = null;
             return;
         }
+        SoundManager.instance.PlaySFX(2);
         dragDrop.SetItem(Inventory.instance.GetInventoryItem(itemIndex));
         dragDrop.transform.position = eventData.position;
     }
@@ -56,6 +57,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
 
         Tooltip.instance.ShowItemTooltip(Inventory.instance.GetInventoryItem(itemIndex));
+        SoundManager.instance.PlaySFX(3);
     }
 
     public void OnPointerExit(PointerEventData eventData)

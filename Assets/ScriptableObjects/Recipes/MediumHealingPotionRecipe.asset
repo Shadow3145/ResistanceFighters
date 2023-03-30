@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fa5b5086e08e0a4684fc689435257af, type: 3}
-  m_Name: HealingPotionRecipe
+  m_Name: MediumHealingPotionRecipe
   m_EditorClassIdentifier: 
   requiredIngredients:
   - {fileID: 11400000, guid: 9c83e9761c576ed4aa940445b6522d89, type: 2}
   - {fileID: 11400000, guid: 40759f9ea138cf0458316dd31ad91cb9, type: 2}
   - {fileID: 11400000, guid: 9a4467be8585d0c4982ada6f816eef05, type: 2}
   - {fileID: 11400000, guid: 42a5bfedcde23a7479ab574def88e80f, type: 2}
-  amountOfIngredients: 2
+  - {fileID: 11400000, guid: bd62807151d9dad489cbcffaf8020420, type: 2}
+  amountOfIngredients: 3
   effects:
   - effect: {fileID: 11400000, guid: 45cef91428361ee4887ac89333eaf6d8, type: 2}
-    effectStrength: 12
-  result: {fileID: 11400000, guid: a123b9380d9ce9743af79a2d5d0beee0, type: 2}
+    effectStrength: 14
+  result: {fileID: 11400000, guid: 52570ada5edb4d84abaf2607b653d0f7, type: 2}

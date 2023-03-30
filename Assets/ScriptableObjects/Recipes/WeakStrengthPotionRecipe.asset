@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fa5b5086e08e0a4684fc689435257af, type: 3}
+  m_Name: WeakStrengthPotionRecipe
+  m_EditorClassIdentifier: 
+  requiredIngredients:
+  - {fileID: 11400000, guid: a0fe2c61729b64d4eb73cc2fbdae0fb5, type: 2}
+  - {fileID: 11400000, guid: be07b332c07ea894b9c1a2261974e32c, type: 2}
+  - {fileID: 11400000, guid: 183cc5b223548bd4f823125e11ba7e1c, type: 2}
+  - {fileID: 11400000, guid: 60b4bfacbebd00d46a0e643f47111603, type: 2}
+  amountOfIngredients: 1
+  effects:
+  - effect: {fileID: 11400000, guid: 1d4ccb86f68ccdf4a9bbae00f0b27a26, type: 2}
+    effectStrength: 9
+  result: {fileID: 11400000, guid: 349c46b6491cc9c4b993ab789ebd0f57, type: 2}

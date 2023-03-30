@@ -9,12 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4db9dbf3ede32543b8c9edfd45e39ac, type: 3}
-  m_Name: StrongHealingPotion
+  m_Script: {fileID: 11500000, guid: 5c5fcb1b7a6d15c49a2d1a7b85c95a8e, type: 3}
+  m_Name: StrongHealing
   m_EditorClassIdentifier: 
   itemName: Strong Healing Potion
   icon: {fileID: 21300000, guid: 4dca8a5cf301c7747a9545eff18a5484, type: 3}
-  price: 40
-  description: 
-  rarity: 3
-  value: 25
+  price: 0
+  description: '<b>Effects:</b>
+
+    Restores health of target unit.
+
+'
+  dropProbability: 0
+  rarity: 2

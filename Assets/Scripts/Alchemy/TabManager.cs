@@ -41,7 +41,8 @@ public class TabManager : MonoBehaviour
         tabs[index].GetComponent<Image>().color = Color.white;
         tabs[index].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
         inventories[index].GetComponent<CanvasGroup>().interactable = false;
-        inventories[index].SetActive(false);
+        inventories[index].GetComponent<CanvasGroup>().alpha = 0f;
+        inventories[index].GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     private void Select(int index)
@@ -49,7 +50,8 @@ public class TabManager : MonoBehaviour
         tabs[index].GetComponent<Image>().color = clickColor;
         tabs[index].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
         inventories[index].GetComponent<CanvasGroup>().interactable = true;
-        inventories[index].SetActive(true);
+        inventories[index].GetComponent<CanvasGroup>().alpha = 1f;
+        inventories[index].GetComponent<CanvasGroup>().blocksRaycasts = true;
         selected = index;
     }
 }

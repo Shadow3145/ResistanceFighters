@@ -22,6 +22,14 @@ public class ItemManager : MonoBehaviour
             instance = this;
     }
 
+    private void Start()
+    {
+        foreach (Ingredient ingredient in ingredients)
+        {
+            ingredient.SetDescription();
+        }
+    }
+
     public Item GetItem(InventoryItem inventoryItem)
     {
         switch (inventoryItem.GetItemType())
@@ -69,5 +77,10 @@ public class ItemManager : MonoBehaviour
     public int GetIndex(Ingredient ingredient)
     {
         return ingredients.IndexOf(ingredient);
+    }
+
+    public List<Ingredient> GetIngredients()
+    {
+        return ingredients;
     }
 }

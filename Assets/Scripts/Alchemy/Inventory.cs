@@ -70,9 +70,14 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         inventorySlots = FindObjectsOfType<InventorySlot>();
+        Array.Reverse(inventorySlots);
         inventoryItems = new List<InventoryItem>();
         for (int i = 0; i < inventorySlots.Length; i++)
             inventoryItems.Add(null);
+        for (int i = 0; i < ItemManager.instance.GetIngredients().Count; i++)
+        {
+            AddItem(new InventoryItem(i, ItemType.Ingredient, 20));
+        }
     }
 
 

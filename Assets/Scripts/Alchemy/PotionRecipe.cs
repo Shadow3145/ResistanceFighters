@@ -57,6 +57,15 @@ public class PotionRecipe : ScriptableObject
         return HasIngredients(ingredients) && MeetsEffectRequirements(ingredients);
     }
 
+    public List<IngredientEffect> GetEffects()
+    {
+        return effects;
+    }
+
+    public void SetResult(Potion potion)
+    {
+        result = potion;
+    }
     public Potion GetResult()
     {
         return result;
