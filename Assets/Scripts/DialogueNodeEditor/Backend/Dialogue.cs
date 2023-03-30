@@ -12,9 +12,10 @@ public class DialogueData
     public List<ChoiceNodeData> choiceNodes;
     public List<NodeData> startNodes;
     public List<NodeData> endNodes;
+    public List<Connection> connections;
 
     public DialogueData(int lastNodeId, int lastConnectionId, List<DialogueNode> dialogueNodes, List<SpeakerNode> speakerNodes,
-        List<ChoiceNode> choiceNodes, List<StartNode> startNodes, List<EndNode> endNodes)
+        List<ChoiceNode> choiceNodes, List<StartNode> startNodes, List<EndNode> endNodes, List<Connection> connections)
     {
         this.lastNodeId = lastNodeId;
         this.lastConnectionId = lastConnectionId;
@@ -23,6 +24,8 @@ public class DialogueData
         this.choiceNodes = new List<ChoiceNodeData>();
         this.startNodes = new List<NodeData>();
         this.endNodes = new List<NodeData>();
+        this.connections = connections;
+
         foreach (DialogueNode dNode in dialogueNodes)
             this.dialogueNodes.Add(new DialogueNodeData(dNode.id, dNode.rect, dNode.inKnobs, dNode.outKnobs, dNode.dialogue));
         foreach (SpeakerNode sNode in speakerNodes)
@@ -32,7 +35,7 @@ public class DialogueData
         foreach (StartNode sNode in startNodes)
             this.startNodes.Add(new NodeData(sNode.id, sNode.rect, sNode.inKnobs, sNode.outKnobs));
         foreach (EndNode eNode in endNodes)
-            this.endNodes.Add(new NodeData(eNode.id, eNode.rect, eNode.inKnobs, eNode.outKnobs));       
+            this.endNodes.Add(new NodeData(eNode.id, eNode.rect, eNode.inKnobs, eNode.outKnobs));
     }
 }
 
@@ -57,7 +60,7 @@ public class Dialogue : ScriptableObject
 
     public void SaveData()
     {
-        DialogueData dialogueData = new DialogueData(lastNodeId, lastConnectionId, dialogueNodes, speakerNodes, choiceNodes, startNodes, endNodes);
+        DialogueData dialogueData = new DialogueData(lastNodeId, lastConnectionId, dialogueNodes, speakerNodes, choiceNodes, startNodes, endNodes, connectionsList);
         string dialogue = JsonUtility.ToJson(dialogueData);
         System.IO.File.WriteAllText("Assets/Resources/Dialogues/" + name + ".json", dialogue);
     }
@@ -74,6 +77,7 @@ public class Dialogue : ScriptableObject
         choiceNodes = new List<ChoiceNode>();
         startNodes = new List<StartNode>();
         endNodes = new List<EndNode>();
+        connectionsList = dialogueData.connections;
 
         foreach (DialogueNodeData d in dialogueData.dialogueNodes)
             dialogueNodes.Add(new DialogueNode(d.id, d.rect.position, d.rect.width, d.rect.height, d.inKnobs, d.outKnobs, d.dialogue));
@@ -89,6 +93,7 @@ public class Dialogue : ScriptableObject
 
     private void CreateNodeDictionary()
     {
+        nodes = new Dictionary<int, Node>();
         foreach (Node node in dialogueNodes)
             nodes.Add(node.id, node);
         foreach (Node node in speakerNodes)
@@ -103,6 +108,7 @@ public class Dialogue : ScriptableObject
 
     private void CreateConnectionsDictionary()
     {
+        connections = new Dictionary<int, Connection>();
         foreach (Connection connection in connectionsList)
             connections.Add(connection.id, connection);
     }
@@ -125,11 +131,11 @@ public class Dialogue : ScriptableObject
 
     public (int, NodeType) GetFirstNode()
     {
+        LoadData();
         CreateNodeDictionary();
         CreateConnectionsDictionary();
         if (nodes.Count == 0 || connections.Count == 0 || !nodes.ContainsKey(0))
         {
-            Debug.Log(nodes.Count.ToString() + " " + connections.Count.ToString());
             return (-1, NodeType.BaseNode);
         }
         int connectionId = GetConnectionId(0, 0);

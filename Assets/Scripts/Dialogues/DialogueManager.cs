@@ -7,8 +7,6 @@ using DG.Tweening;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager instance;
-
     private Dialogue dialogue;
 
     [SerializeField] private GameObject speakerIcon;
@@ -22,16 +20,14 @@ public class DialogueManager : MonoBehaviour
     private int currentId;
     private NodeType currentType;
 
+    private bool close = false;
+
     private Tween writerTween;
     private const float writingSpeed = 15f;
 
-    void Start()
-    {
-        instance = this;
-    }
-
     public void OpenDialogue(Dialogue dialogue)
     {
+        close = false;
         speakerIcon.SetActive(true);
         speakerName.SetActive(true);
         dialogueText.SetActive(true);
@@ -103,6 +99,11 @@ public class DialogueManager : MonoBehaviour
 
     public void Continue(int choiceIndex=-1)
     {
+        if (close)
+        {
+            this.gameObject.SetActive(false);
+            return;
+        }
         (currentId, currentType) = dialogue.GetNextNode(currentId, choiceIndex);
         SetData(currentId, currentType);
     }
@@ -114,5 +115,6 @@ public class DialogueManager : MonoBehaviour
         choices.enabled = false;
         dialogueText.SetActive(true);
         dialogueText.GetComponent<TextMeshProUGUI>().text = "Dialogue End";
+        close = true;
     }
 }

@@ -44,13 +44,16 @@ public class Node
     {
         this.id = id;
         rect = new Rect(position.x, position.y, width, height);
-        stylesheet = Resources.FindObjectsOfTypeAll<Stylesheet>()[0];
-        nodeStyle = stylesheet.node.defaultStyle;
-        defaultNodeStyle = stylesheet.node.defaultStyle;
-        selectedNodeStyle = stylesheet.node.selectedStyle;
-
-        leftMargin = nodeStyle.border.left / 1.5f;
-        topMargin = nodeStyle.border.top / 2;
+        Stylesheet[] sheets = Resources.FindObjectsOfTypeAll<Stylesheet>();
+        if (sheets != null && sheets.Length > 0)
+        {
+            stylesheet = sheets[0];
+            nodeStyle = stylesheet.node.defaultStyle;
+            defaultNodeStyle = stylesheet.node.defaultStyle;
+            selectedNodeStyle = stylesheet.node.selectedStyle;
+            leftMargin = nodeStyle.border.left / 1.5f;
+            topMargin = nodeStyle.border.top / 2;
+        }
 
         this.inKnobs = inKnobs;
         this.outKnobs = outKnobs;

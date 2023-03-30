@@ -52,7 +52,6 @@ public class DialogueNodeEditorWindow : EditorWindow
     {
         dialogues = Resources.FindObjectsOfTypeAll<Dialogue>();
         string[] names = dialogues.Select(x => x.name).ToArray();
-
         if (selectedDialogue != "" && names.Contains(selectedDialogue))
         {
             int index = ArrayUtility.IndexOf(names, selectedDialogue);
@@ -183,7 +182,7 @@ public class DialogueNodeEditorWindow : EditorWindow
 
         Resources.LoadAll<Dialogue>("");
         string[] dialogues = Resources.FindObjectsOfTypeAll<Dialogue>().Select(x => x.name).ToArray();
-        Array.Sort(dialogues);
+        //Array.Sort(dialogues);
         int index = selectedDialogue != ""
             ? ArrayUtility.IndexOf(dialogues, selectedDialogue)
             : -1;

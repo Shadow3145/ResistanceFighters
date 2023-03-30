@@ -5,13 +5,14 @@ using UnityEngine;
 public class NPC : MonoBehaviour
 {
     [SerializeField] private List<Dialogue> dialogues;
+    [SerializeField] private DialogueManager manager;
     private int currentDialogue = 0;
     
     public void OpenDialogue()
     {
-        DialogueManager.instance.gameObject.SetActive(true);
-        DialogueManager.instance.OpenDialogue(dialogues[currentDialogue]);
-        
-        currentDialogue = Random.Range(1, dialogues.Count);
+        manager.gameObject.SetActive(true);
+        manager.OpenDialogue(dialogues[currentDialogue]);
+
+        currentDialogue = Mathf.Min(currentDialogue+1, dialogues.Count - 1);
     }
 }

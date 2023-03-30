@@ -10512,7 +10512,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef10bdc20a7697b4da473aa3a496bc39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogues: []
+  dialogues:
+  - {fileID: 11400000, guid: 775b863002ad3384b81524f750e742ee, type: 2}
+  - {fileID: 11400000, guid: 0dcf21af43e8f3f4eabbb18ccc46b89a, type: 2}
+  - {fileID: 11400000, guid: 0fe3951aee6b14449aeb891e3fa30b4c, type: 2}
+  manager: {fileID: 850404901}
 --- !u!1 &708035628
 GameObject:
   m_ObjectHideFlags: 0
@@ -11985,6 +11989,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 834658498}
   m_CullTransparentMesh: 1
+--- !u!114 &850404901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5659031831266705535, guid: 372e4c3884e393a47a33a1db83c3b267, type: 3}
+  m_PrefabInstance: {fileID: 994604506}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cdada039a28fe4479e9f3436b2088b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &859252525
 GameObject:
   m_ObjectHideFlags: 0
@@ -15550,7 +15565,7 @@ PrefabInstance:
       objectReference: {fileID: 1539801660}
     - target: {fileID: 1072401395160810307, guid: 7bd5379686176b4478c9421339d08a6a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Settings
+      value: GoToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 1072401395160810307, guid: 7bd5379686176b4478c9421339d08a6a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -27087,6 +27102,10 @@ PrefabInstance:
       propertyPath: ambients.Array.data[2]
       value: 
       objectReference: {fileID: 250155053}
+    - target: {fileID: 2907824130270808789, guid: 7f9e1375fd76b6242a6b320a112936a5, type: 3}
+      propertyPath: sfx.Array.data[5].volume
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2907824130270808794, guid: 7f9e1375fd76b6242a6b320a112936a5, type: 3}
       propertyPath: m_RootOrder
       value: 3
