@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public int itemIndex = -1;
     [SerializeField] private Image itemIcon;
@@ -106,6 +106,14 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public ItemType GetSlotType()
     {
         return type;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (itemIndex == -1)
+            return;
+        SoundManager.instance.PlaySFX(2);
+        Tooltip.instance.ShowItemTooltip(Inventory.instance.GetInventoryItem(itemIndex));
     }
 }
 
