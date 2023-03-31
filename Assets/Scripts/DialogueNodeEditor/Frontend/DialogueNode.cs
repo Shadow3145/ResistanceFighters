@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -36,10 +35,12 @@ public class DialogueNode : Node
                 new List<NodeType>() { NodeType.ChoiceNode, NodeType.DialogueNode, NodeType.EndNode }, false, ConnectionKnobSubType.Flow));
         }
     }
+#if UNITY_EDITOR
 
     public override void DrawNodeContent()
     {
         Rect dialogueRect = new Rect(rect.x + leftMargin + 10, rect.y + 50, rect.width - leftMargin*2 - 20, rect.height - topMargin - 70);
         dialogue = EditorGUI.TextArea(dialogueRect, dialogue);
     }
+#endif
 }

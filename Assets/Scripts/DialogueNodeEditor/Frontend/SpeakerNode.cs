@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -30,7 +29,7 @@ public class SpeakerNode : Node
         }
         inKnobs = new List<ConnectionKnob>();
     }
-
+#if UNITY_EDITOR
     public override void DrawNodeContent()
     {
         Rect speakerName = new Rect(rect.x + leftMargin + 10, rect.y + 50, 50, 20);
@@ -42,4 +41,5 @@ public class SpeakerNode : Node
         icon = EditorGUI.ObjectField(new Rect(speakerIcon.x + 60, speakerIcon.y, 60, 60), icon, typeof(Sprite), false) as Sprite;
         
     }
+#endif
 }

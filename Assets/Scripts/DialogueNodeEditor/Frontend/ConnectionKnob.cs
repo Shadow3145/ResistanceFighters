@@ -1,3 +1,5 @@
+
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +50,7 @@ public class ConnectionKnob
         connections = new List<int>();
         yOffset = yPos;
     }
-
+#if UNITY_EDITOR
     public void DrawKnob(Node owner)
     {
         if (guiStyle == null)
@@ -79,4 +81,5 @@ public class ConnectionKnob
             }
         }
     }
+#endif
 }

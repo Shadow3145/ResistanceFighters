@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System;
 using UnityEditor;
@@ -327,3 +328,4 @@ public class IngredientGenerator : MonoBehaviour
         return (float)Math.Round(probability, 2);
     }
 }
+#endif

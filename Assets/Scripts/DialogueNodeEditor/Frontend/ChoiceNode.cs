@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -37,6 +36,7 @@ public class ChoiceNode : Node
 
         this.OnClickOutKnob = OnClickOutKnob;
     }
+#if UNITY_EDITOR
 
     public override void DrawNodeContent()
     {
@@ -77,4 +77,5 @@ public class ChoiceNode : Node
 
         return -1;
     }
+#endif
 }

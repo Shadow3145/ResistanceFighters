@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -169,3 +169,4 @@ public class AlchemyContentGeneratorWindowEditor : EditorWindow
         parent.Add(recipesWindow);
     }
 }
+#endif

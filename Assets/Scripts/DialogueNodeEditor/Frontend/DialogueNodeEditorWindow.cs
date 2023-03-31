@@ -1,8 +1,10 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using System;
+
 
 public class DialogueNodeEditorWindow : EditorWindow
 {
@@ -516,3 +518,4 @@ public class DialogueNodeEditorWindow : EditorWindow
         GUI.changed = true;
     }
 }
+#endif
