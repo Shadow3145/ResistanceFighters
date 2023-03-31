@@ -7,8 +7,6 @@ public class ChoiceUIManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> choiceObjects;
 
-    private Tween writerTween;
-    private const float writingSpeed = 15f;
     public void SetChoices(List<string> choices)
     {
         if (choices == null)
@@ -16,12 +14,8 @@ public class ChoiceUIManager : MonoBehaviour
         for (int i = 0; i < choices.Count; i++)
         {
             choiceObjects[i].SetActive(true);
-            string text = "";
             string finalString = (i + 1).ToString() + ". " + choices[i];
-            writerTween = DOTween.To(() => text, x => text = x, finalString, finalString.Length / writingSpeed).OnUpdate(() =>
-            {
-                choiceObjects[i].GetComponent<TextMeshProUGUI>().text = text;
-            });
+            choiceObjects[i].GetComponent<TextMeshProUGUI>().text = finalString;
         }
     }
 

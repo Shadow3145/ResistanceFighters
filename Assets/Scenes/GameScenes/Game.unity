@@ -27436,7 +27436,7 @@ PrefabInstance:
       objectReference: {fileID: 250155053}
     - target: {fileID: 2907824130270808789, guid: 7f9e1375fd76b6242a6b320a112936a5, type: 3}
       propertyPath: sfx.Array.data[5].volume
-      value: 0.25
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 2907824130270808794, guid: 7f9e1375fd76b6242a6b320a112936a5, type: 3}
       propertyPath: m_RootOrder
