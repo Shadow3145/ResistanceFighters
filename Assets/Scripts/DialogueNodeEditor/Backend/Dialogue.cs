@@ -66,9 +66,9 @@ public class Dialogue : ScriptableObject
 
     public void LoadData()
     {
-        string dialogue = Resources.Load(name).ToString(); 
+        TextAsset dialogue = Resources.Load<TextAsset>("Dialogues/" + name);
        //     System.IO.File.ReadAllText("Assets/Resources/Dialogues/" + name + ".json");
-        DialogueData dialogueData = JsonUtility.FromJson<DialogueData>(dialogue);
+        DialogueData dialogueData = JsonUtility.FromJson<DialogueData>(dialogue.text);
         lastNodeId = dialogueData.lastNodeId;
         lastConnectionId = dialogueData.lastConnectionId;
 
