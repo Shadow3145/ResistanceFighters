@@ -82,6 +82,7 @@ public class SoundManager : MonoBehaviour
     void Update()
     {
         soundtrackSource.volume = PlayerPrefs.GetFloat("masterVolume")*PlayerPrefs.GetFloat("soundtrackVolume");
+        PlaySoundtrack();
         UpdateSFXVolume();
     }
 
