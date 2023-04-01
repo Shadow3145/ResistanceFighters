@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -70,7 +70,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         inventorySlots = FindObjectsOfType<InventorySlot>();
-        Array.Reverse(inventorySlots);
+        Array.Sort(inventorySlots.Select(n => Int32.Parse(n.name.Trim(new char[]{ 'S', 'l', 'o', 't', '(', ')', ' '}))).ToArray(), inventorySlots);
         inventoryItems = new List<InventoryItem>();
         for (int i = 0; i < inventorySlots.Length; i++)
             inventoryItems.Add(null);

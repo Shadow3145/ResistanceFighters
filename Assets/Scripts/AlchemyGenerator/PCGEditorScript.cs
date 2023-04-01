@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -41,3 +40,4 @@ public class PotionGeneratorEditor : Editor
             FindObjectOfType<PotionGenerator>().Delete();
     }
 }
+#endif

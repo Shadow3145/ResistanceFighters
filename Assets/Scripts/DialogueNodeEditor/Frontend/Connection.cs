@@ -21,6 +21,7 @@ public class Connection
         this.RemoveConnection = RemoveConnection;
     }
 
+#if UNITY_EDITOR
     public Connection DrawConnection()
     {
         Handles.DrawBezier(inKnob.rect.center, outKnob.rect.center,
@@ -39,4 +40,5 @@ public class Connection
     {
         RemoveConnection(this);
     }
+#endif
 }

@@ -44,6 +44,7 @@ public class Node
     {
         this.id = id;
         rect = new Rect(position.x, position.y, width, height);
+#if UNITY_EDITOR
         Stylesheet[] sheets = Resources.FindObjectsOfTypeAll<Stylesheet>();
         if (sheets != null && sheets.Length > 0)
         {
@@ -54,7 +55,7 @@ public class Node
             leftMargin = nodeStyle.border.left / 1.5f;
             topMargin = nodeStyle.border.top / 2;
         }
-
+#endif
         this.inKnobs = inKnobs;
         this.outKnobs = outKnobs;
     }
@@ -63,6 +64,7 @@ public class Node
     {
         OnRemoveNode = OnClickRemoveNode;
     }
+    #if UNITY_EDITOR
 
     public virtual void DrawNode()
     {
@@ -144,7 +146,7 @@ public class Node
         if (this.OnRemoveNode != null)
             OnRemoveNode(this);
     }
-
+#endif
     public Node GetNode()
     {
         return this;
