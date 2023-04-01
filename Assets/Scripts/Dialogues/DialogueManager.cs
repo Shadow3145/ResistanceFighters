@@ -25,6 +25,9 @@ public class DialogueManager : MonoBehaviour
     private Tween writerTween;
     private const float writingSpeed = 15f;
 
+    private bool isWriting;
+    private string currentMessage;
+
     public void OpenDialogue(Dialogue dialogue)
     {
         close = false;
@@ -82,10 +85,15 @@ public class DialogueManager : MonoBehaviour
     private void WriteText(int nodeId)
     {
         string text = "";
-        writerTween = DOTween.To(() => text, x => text = x, dialogue.GetDialogueText(nodeId), dialogue.GetDialogueText(nodeId).Length / writingSpeed).OnUpdate(() =>
+        currentMessage = dialogue.GetDialogueText(nodeId);
+        isWriting = true;
+        writerTween = DOTween.To(() => text, x => text = x, currentMessage, currentMessage.Length / writingSpeed).OnUpdate(() =>
         {
-            dialogueText.GetComponent<TextMeshProUGUI>().text = text;
+            if (isWriting)
+                dialogueText.GetComponent<TextMeshProUGUI>().text = text;
         });
+        isWriting = false;
+        currentMessage = "";
     }
 
     private void SetChoiceData(int nodeId)
@@ -102,6 +110,12 @@ public class DialogueManager : MonoBehaviour
         if (close)
         {
             this.gameObject.SetActive(false);
+            return;
+        }
+        if (isWriting)
+        {
+            dialogueText.GetComponent<TextMeshProUGUI>().text = currentMessage;
+            isWriting = false;
             return;
         }
         (currentId, currentType) = dialogue.GetNextNode(currentId, choiceIndex);

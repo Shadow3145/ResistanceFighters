@@ -81,7 +81,19 @@ public class Dialogue : ScriptableObject
         foreach (DialogueNodeData d in dialogueData.dialogueNodes)
             dialogueNodes.Add(new DialogueNode(d.id, d.rect.position, d.rect.width, d.rect.height, d.inKnobs, d.outKnobs, d.dialogue));
         foreach (SpeakerNodeData s in dialogueData.speakerNodes)
-            speakerNodes.Add(new SpeakerNode(s.id, s.rect.position, s.rect.width, s.rect.height, s.inKnobs, s.outKnobs, s.speakerName, s.icon));
+        {
+            Rect rect = new Rect();
+            rect.xMin = s.sprite.xMin;
+            rect.xMax = s.sprite.xMax;
+            rect.yMin = s.sprite.yMin;
+            rect.yMax = s.sprite.yMax;
+            Vector2 pivot = new Vector2(s.sprite.pivotX, s.sprite.pivotY);
+            Texture2D texture = new Texture2D(2,2);
+            texture.LoadImage(s.sprite.data);
+
+            Sprite charIcon = Sprite.Create(texture, rect, pivot);
+            speakerNodes.Add(new SpeakerNode(s.id, s.rect.position, s.rect.width, s.rect.height, s.inKnobs, s.outKnobs, s.speakerName, charIcon));
+        }
         foreach (ChoiceNodeData c in dialogueData.choiceNodes)
             choiceNodes.Add(new ChoiceNode(c.id, c.rect.position, c.rect.width, c.rect.height, c.inKnobs, c.outKnobs, c.choices));
         foreach (NodeData n in dialogueData.startNodes)
